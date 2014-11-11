@@ -137,5 +137,8 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	{
 		return height;
 	}
-	
+	public float getDeltaTime( )
+	{
+		return deltaTime;
+	}
 }

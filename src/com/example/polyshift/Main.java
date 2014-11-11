@@ -15,7 +15,7 @@ public class Main extends Activity {
 		
 		
 		
-		Intent intent = new Intent( this, TriangleActivity.class );
+		Intent intent = new Intent( this, PolyshiftActivity.class );
 		
 		startActivity( intent );
 		
