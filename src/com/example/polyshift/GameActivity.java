@@ -63,7 +63,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		this.width = width;
-		this.height = height;	
+		this.height = height;
 		
 	}
 

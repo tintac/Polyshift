@@ -2,6 +2,7 @@ package com.example.polyshift;
 
 public class GameObject {
 	
+	public boolean isMoving = false;
 	private Mesh mesh;
 
 	public Mesh getMesh() {

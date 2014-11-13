@@ -44,6 +44,8 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		gl.glMatrixMode( GL10.GL_MODELVIEW );
         gl.glLoadIdentity();
 		
+        simulation.update(activity);
+        
         renderer.renderObjects(activity, gl, simulation.objects);
         
         frames++;

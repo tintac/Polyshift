@@ -14,6 +14,8 @@ public class Renderer {
 	
 	float block_width;
 	float block_height;
+	float object_width = 80;
+	float object_height = 87;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -41,11 +43,11 @@ public class Renderer {
 					mesh.texCoord(0f, 1f);
 					mesh.vertex( i*block_width, j*block_height, 0 );
 					mesh.texCoord(1f, 1f);
-			        mesh.vertex( i*block_width + 100, j*block_height, 0 );
+			        mesh.vertex( i*block_width + object_width, j*block_height, 0 );
 			        mesh.texCoord(1f, 0f);
-			        mesh.vertex( i*block_width + 100, j*block_height + 100, 0 );
+			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
 			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i*block_width, j*block_height + 100, 0 );
+			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
 			        
 			        texture = new Texture(gl, bitmap, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        
@@ -59,11 +61,11 @@ public class Renderer {
 					mesh.color(1, 0, 0, 1);
 					mesh.vertex( i*block_width, j*block_height, 0 );
 					mesh.color(1, 0, 0, 1);
-					mesh.vertex( i*block_width + 100, j*block_height, block_height );
+					mesh.vertex( i*block_width + object_width, j*block_height, block_height );
 			        mesh.color(1, 0, 0, 1);
-			        mesh.vertex( i*block_width + 100, j*block_height + 100, 0 );
+			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
 			        mesh.color(1, 0, 0, 1);
-			        mesh.vertex( i*block_width, j*block_height + 100, 0 );
+			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
 			        mesh.color(1, 0, 0, 1);
 			        mesh.vertex( i*block_width, j*block_height, 0 );
 			        
@@ -77,6 +79,9 @@ public class Renderer {
 		
 		block_width = activity.getViewportWidth() / objects.length;
 		block_height = activity.getViewportHeight() / objects[0].length;
+		
+		Log.d("width", "block_width: " + block_width);
+		Log.d("height", "block_height: " + block_height);
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
