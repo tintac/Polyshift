@@ -50,6 +50,8 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 		glsv.setOnTouchListener(this);
 		
 		setContentView(glsv);
+		
+		
 	}
 
 	@Override

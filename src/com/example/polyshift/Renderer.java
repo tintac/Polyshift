@@ -14,13 +14,15 @@ public class Renderer {
 	
 	float block_width;
 	float block_height;
-	float object_width = 80;
-	float object_height = 87;
+	float object_width = 74;
+	float object_height = 90;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
 		block_width = activity.getViewportWidth() / objects.length;
 		block_height = activity.getViewportHeight() / objects[0].length;
+		
+		
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -79,6 +81,8 @@ public class Renderer {
 		
 		block_width = activity.getViewportWidth() / objects.length;
 		block_height = activity.getViewportHeight() / objects[0].length;
+		
+		
 		
 		Log.d("width", "block_width: " + block_width);
 		Log.d("height", "block_height: " + block_height);
