@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 
+
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 
 public class GameActivity extends Activity implements GLSurfaceView.Renderer, OnTouchListener {
@@ -50,8 +53,6 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 		glsv.setOnTouchListener(this);
 		
 		setContentView(glsv);
-		
-		
 	}
 
 	@Override
@@ -64,6 +65,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
+		
 		this.width = width;
 		this.height = height;
 		

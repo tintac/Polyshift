@@ -8,21 +8,33 @@ import com.example.polyshift.Texture.TextureWrap;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
 
 public class Renderer {
 	
 	float block_width;
 	float block_height;
-	float object_width = 74;
-	float object_height = 90;
+	float object_width;
+	float object_height;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
+		
+		Display display = activity.getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
 		
 		block_width = activity.getViewportWidth() / objects.length;
 		block_height = activity.getViewportHeight() / objects[0].length;
 		
+		object_width = width / objects.length;
+		object_height = height / objects[0].length;
 		
+		Log.d("width", "block_width: " + block_width);
+		Log.d("height", "block_height: " + block_height);
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -81,11 +93,6 @@ public class Renderer {
 		
 		block_width = activity.getViewportWidth() / objects.length;
 		block_height = activity.getViewportHeight() / objects[0].length;
-		
-		
-		
-		Log.d("width", "block_width: " + block_width);
-		Log.d("height", "block_height: " + block_height);
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){

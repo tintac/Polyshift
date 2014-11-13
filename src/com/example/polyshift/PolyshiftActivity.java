@@ -2,6 +2,7 @@ package com.example.polyshift;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.pm.ActivityInfo;
 import android.opengl.GLU;
 import android.os.Bundle;
 import android.view.Window;
@@ -18,11 +19,11 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-   	 setRequestedOrientation(0);
-     requestWindowFeature(Window.FEATURE_NO_TITLE);
-     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
-		 
-		
+	
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    
 		super.onCreate(savedInstanceState);
 		
 		setGameListener(this);
