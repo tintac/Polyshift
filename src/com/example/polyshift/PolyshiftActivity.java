@@ -32,8 +32,11 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	@Override
 	public void setup(GameActivity activity, GL10 gl) {
 		
-		simulation = new Simulation(activity);
-		renderer = new Renderer(activity, gl, simulation.objects);
+		if(!(simulation instanceof Simulation)){
+			simulation = new Simulation(activity);
+			renderer = new Renderer(activity, gl, simulation.objects);
+		}
+			
 	}
 	  
 	long start = System.nanoTime();

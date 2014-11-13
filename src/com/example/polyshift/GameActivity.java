@@ -108,7 +108,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	@Override
 	protected void onPause() {
 		super.onPause();
-		glsv.onPause();		
+		//glsv.onPause();		
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	@Override
 	protected void onResume() {
 		super.onResume();
-		glsv.onResume();		
+		//glsv.onResume();		
 	}		
 	
 	public int getTouchX() {

@@ -18,17 +18,12 @@
             
         </activity>
         <activity
-            android:name=".Main"
-            android:label="@string/title_activity_polyshift" >
-            <intent-filter>
+            android:name=".PolyshiftActivity"
+            android:label="@string/title_activity_triangle" ><intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".PolyshiftActivity"
-            android:label="@string/title_activity_triangle" >
         </activity>
     </application>
 
