@@ -45,19 +45,8 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	@Override
 	public void mainLoopIteration(GameActivity activity, GL10 gl) {
 		
-		gl.glViewport(0, 0, activity.getViewportWidth(), activity.getViewportHeight());
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		gl.glEnable( GL10.GL_TEXTURE_2D );
-		
-		gl.glMatrixMode( GL10.GL_PROJECTION );
-		gl.glLoadIdentity();
-		GLU.gluOrtho2D( gl, 0, activity.getViewportWidth(), 0, activity.getViewportHeight());
-		
-		gl.glMatrixMode( GL10.GL_MODELVIEW );
-        gl.glLoadIdentity();
-		
         simulation.update(activity);
-        
+        renderer.setPerspective(activity, gl);
         renderer.renderObjects(activity, gl, simulation.objects);
         
         frames++;

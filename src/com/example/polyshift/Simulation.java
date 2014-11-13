@@ -4,6 +4,11 @@ import android.util.Log;
 
 public class Simulation {
 	
+	final int PLAYGROUND_MAX_X = 17;
+	final int PLAYGROUND_MIN_X = 0;
+	final int PLAYGROUND_MAX_Y = 9;
+	final int PLAYGROUND_MIN_Y = 0;
+	
 	int touchedX;
 	int touchedY;
 
@@ -11,7 +16,7 @@ public class Simulation {
 	
 	public Simulation(GameActivity activity){
 		
-		this.objects = new GameObject[16][8];
+		this.objects = new GameObject[PLAYGROUND_MAX_X][PLAYGROUND_MAX_Y];
 		
 		Player player = new Player();
 		addGameObject(player, 0, 4);
@@ -24,6 +29,7 @@ public class Simulation {
 		Polynomio poly3 = new Polynomio();
 		addGameObject(poly3, 9, 2);
 	}
+	
 	public void addGameObject(GameObject object, int x, int y){
 		this.objects[x][y] = object;
 	}

@@ -9,6 +9,7 @@ import com.example.polyshift.Texture.TextureWrap;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.opengl.GLU;
 import android.util.Log;
 import android.view.Display;
 
@@ -89,6 +90,20 @@ public class Renderer {
 		}
 		
 	}
+	
+	public void setPerspective(GameActivity activity, GL10 gl){
+		gl.glViewport(0, 0, activity.getViewportWidth(), activity.getViewportHeight());
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		gl.glMatrixMode( GL10.GL_PROJECTION );
+		gl.glLoadIdentity();
+		GLU.gluOrtho2D( gl, 0, activity.getViewportWidth(), 0, activity.getViewportHeight());
+		
+		gl.glMatrixMode( GL10.GL_MODELVIEW );
+        gl.glLoadIdentity();
+		
+	}
+	
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
 		block_width = activity.getViewportWidth() / objects.length;
@@ -97,19 +112,18 @@ public class Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
+					gl.glEnable( GL10.GL_TEXTURE_2D );
 					gl.glPushMatrix();
 					gl.glTranslatef(i*block_width, j*block_height, 0 );
 					objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
 					gl.glPopMatrix();
-					
+					gl.glDisable( GL10.GL_TEXTURE_2D );
 				}
 				if(objects[i][j] instanceof Polynomio){
-					gl.glDisable( GL10.GL_TEXTURE_2D );
 					gl.glPushMatrix();
 					gl.glTranslatef(i*block_width, j*block_height, 0 );
 					objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
 					gl.glPopMatrix();
-					gl.glEnable( GL10.GL_TEXTURE_2D );
 				}
 			}
 		}
