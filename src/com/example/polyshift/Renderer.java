@@ -72,16 +72,16 @@ public class Renderer {
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Mesh mesh;
-					mesh = new Mesh( gl, 20, true, false, false );
-					mesh.color(1, 0, 0, 1);
+					mesh = new Mesh( gl, 20, false, false, false );
+					
 					mesh.vertex( i*block_width, j*block_height, 0 );
-					mesh.color(1, 0, 0, 1);
+					
 					mesh.vertex( i*block_width + object_width, j*block_height, block_height );
-			        mesh.color(1, 0, 0, 1);
+			        
 			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
-			        mesh.color(1, 0, 0, 1);
+			        
 			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
-			        mesh.color(1, 0, 0, 1);
+			        
 			        mesh.vertex( i*block_width, j*block_height, 0 );
 			        
 			        objects[i][j].setMesh(mesh);       
@@ -120,10 +120,12 @@ public class Renderer {
 					gl.glDisable( GL10.GL_TEXTURE_2D );
 				}
 				if(objects[i][j] instanceof Polynomio){
+					gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
 					gl.glPushMatrix();
 					gl.glTranslatef(i*block_width, j*block_height, 0 );
 					objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
 					gl.glPopMatrix();
+					gl.glColor4f(1, 1, 1, 1);
 				}
 			}
 		}
