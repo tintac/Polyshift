@@ -1,5 +1,8 @@
 package com.example.polyshift;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import android.util.Log;
 
 public class Simulation {
@@ -9,29 +12,72 @@ public class Simulation {
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
 	
+	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
+	
+	public GameObject[][] objects = new GameObject[PLAYGROUND_MAX_X+1][PLAYGROUND_MAX_Y+1];
 	int touchedX;
 	int touchedY;
 
-	public GameObject[][] objects;
 	
 	public Simulation(GameActivity activity){
+		populate();
+	}
+	
+	public void populate(){
+		
+		ArrayList<int[]>directions = new ArrayList<int[]>();
 		
 		this.objects = new GameObject[PLAYGROUND_MAX_X+1][PLAYGROUND_MAX_Y+1];
+
+		directions.add(new int[]{1,1,1,0}); //0 Horizontaler Strich positive X-Achse
+		directions.add(new int[]{2,2,2,0}); //1 Horizontaler Strich negative X-Achse//
+		directions.add(new int[]{3,3,3,0}); //2 Vertikaler Strich positive Y-Achse
+		directions.add(new int[]{4,4,4,0}); //3 Vertikaler Strich negative Y-Achse
+		directions.add(new int[]{1,1,3,0}); //4 Liegendes L nach Oben zeigend
+		directions.add(new int[]{1,1,4,0}); //5 Liegendes L nach unten zeigend
+		directions.add(new int[]{3,3,2,0}); //6 Stehendes L nach Oben zeigend
+		directions.add(new int[]{4,4,1,0}); //7 Stehendes L nach unten zeigend
+		directions.add(new int[]{1,3,1,0}); //8 S-Form liegend
+		directions.add(new int[]{3,1,3,0}); //9 S-Form stehend - rechtsknick
+		directions.add(new int[]{3,2,3,0}); //10 S-Form stehend - linksknick
+		directions.add(new int[]{1,3,4,1}); //11 Dreieck liegend - nach oben zeigend
+		directions.add(new int[]{1,4,3,1}); //12 Dreieck liegend - nach unten zeigend
+		directions.add(new int[]{3,2,1,3}); //13 Dreieck stehend - nach links zeigend
+		directions.add(new int[]{3,1,2,3}); //14 Dreieck stehend - nach rechts zeigend
+		directions.add(new int[]{1,3,2,0}); //15 Quader
 		
 		Player player = new Player();
-		addGameObject(player, 0, 4);
+		addGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
 		Player player2 = new Player();
-		addGameObject(player2, 16, 4);
-		Polynomio poly = new Polynomio();
-		addGameObject(poly, 5, 5);
-		Polynomio poly2 = new Polynomio();
-		addGameObject(poly2, 7, 3);
-		Polynomio poly3 = new Polynomio();
-		addGameObject(poly3, 9, 2);
+
+		addGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
+
+		polynomios.add(newPolynomio(directions.get(11),7,0));
+		polynomios.add(newPolynomio(directions.get(2),7,1));
+		polynomios.add(newPolynomio(directions.get(15),9,1));
+		polynomios.add(newPolynomio(directions.get(9),8,2));
+		polynomios.add(newPolynomio(directions.get(6),10,3));
+		polynomios.add(newPolynomio(directions.get(10),8,4));
+		polynomios.add(newPolynomio(directions.get(13),8,6));
+		polynomios.add(newPolynomio(directions.get(7),9,8));
+		
+		for(int i = 0;i<polynomios.size();i++){
+			Polynomio polynomio = polynomios.get(i);
+			for(int j = 0; j< polynomio.blocks.size();j++){
+				Block block = polynomio.blocks.get(j);
+				addGameObject(polynomio, block.x, block.y);
+			}
+		}
+		
+	}
+	
+	public Polynomio newPolynomio(int[] direction, int startX, int startY){
+		return (new Polynomio(direction, 4, startX, startY));
+
 	}
 	
 	public void addGameObject(GameObject object, int x, int y){
-		this.objects[x][y] = object;
+		objects[x][y] = object;
 	}
 	
 	public void getTouch(GameActivity activity){

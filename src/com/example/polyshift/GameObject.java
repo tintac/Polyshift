@@ -9,6 +9,7 @@ public class GameObject {
 	public Vector block_position;
 	public Vector pixel_position = new Vector(-1,-1,0);
 	private Mesh mesh;
+	public  float []colors = new float[4];
 
 	public Mesh getMesh() {
 		return mesh;
@@ -16,6 +17,10 @@ public class GameObject {
 
 	public void setMesh(Mesh mesh) {
 		this.mesh = mesh;
+	}
+	public void getColors(){
+		
+		
 	}
 
 }
