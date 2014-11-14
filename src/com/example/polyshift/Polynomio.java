@@ -23,6 +23,9 @@ public class Polynomio extends GameObject {
 		Block block = new Block(x, y);
 		blocks.add(block);
 	}
+	public ArrayList<Block> getBlocks(){
+		return blocks;
+	}
 	
 	public void populate(int[]direction,int startX, int startY){
 		int x = startX;

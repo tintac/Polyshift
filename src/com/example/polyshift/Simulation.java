@@ -84,77 +84,113 @@ public class Simulation {
 		if(activity.isTouched()){
 			int x = Math.round(activity.getTouchX() / (activity.getViewportWidth() / objects.length));
 			int y = Math.round(objects[0].length - (activity.getTouchY() / (activity.getViewportHeight() / objects[0].length)) - 1);
-			if((x == touchedX + 1 && y == touchedY) || (x == touchedX + 2 && y == touchedY)){
-				moveObject(touchedX, touchedY, "right");
+			if(x > touchedX && y == touchedY){
+				if(objects[touchedX][touchedY] != null){
+					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
+					while(!predictCollision(touchedX, touchedY, "right")){
+						moveObject(touchedX, touchedY, "right");
+						touchedX++;
+					}
+				}
+				/* if(objects[touchedX][touchedY] instanceof Polynomio){
+					Polynomio polynomio = (Polynomio) objects[touchedX][touchedY];
+					polynomio.block_position = new Vector(touchedX,touchedY,0);
+					while(!(predictCollision(polynomio.getBlocks().get(0).x, polynomio.getBlocks().get(0).y, "right") 
+					&& predictCollision(polynomio.getBlocks().get(1).x, polynomio.getBlocks().get(1).y, "right")
+					&& predictCollision(polynomio.getBlocks().get(2).x, polynomio.getBlocks().get(2).y, "right")
+					&& predictCollision(polynomio.getBlocks().get(3).x, polynomio.getBlocks().get(3).y, "right"))){
+						moveObject(polynomio.getBlocks().get(0).x, polynomio.getBlocks().get(0).y, "right");
+						moveObject(polynomio.getBlocks().get(1).x, polynomio.getBlocks().get(1).y, "right");
+						moveObject(polynomio.getBlocks().get(2).x, polynomio.getBlocks().get(2).y, "right");
+						moveObject(polynomio.getBlocks().get(3).x, polynomio.getBlocks().get(3).y, "right");
+						touchedX++;
+					}
+				} */
 			}
-			else if((x == touchedX - 1 && y == touchedY) || (x == touchedX - 2 && y == touchedY)){
-				moveObject(touchedX, touchedY, "left");
+			else if(x < touchedX && y == touchedY){
+				if(objects[touchedX][touchedY] != null){
+					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
+					while(!predictCollision(touchedX, touchedY, "left")){
+						moveObject(touchedX, touchedY, "left");
+						touchedX--;
+					}
+				}
 			}
-			else if((y == touchedY + 1 && x == touchedX) || (y == touchedY + 2 && x == touchedX)){
-				moveObject(touchedX, touchedY, "up");
+			else if(y > touchedY && x == touchedX){
+				if(objects[touchedX][touchedY] != null){
+					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
+					while(!predictCollision(touchedX, touchedY, "up")){
+						moveObject(touchedX, touchedY, "up");
+						touchedY++;
+					}
+				}
 			}
-			else if((y == touchedY - 1 && x == touchedX) || (y == touchedY - 2 && x == touchedX)){
-				moveObject(touchedX, touchedY, "down");
+			else if(y < touchedY && x == touchedX){
+				if(objects[touchedX][touchedY] != null){
+					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
+					while(!predictCollision(touchedX, touchedY, "down")){
+						moveObject(touchedX, touchedY, "down");
+						touchedY--;
+					}
+				}
 			}
 			touchedX = x;
 			touchedY = y;
 		}
 	}
-	public void moveObject(int touchedX, int touchedY, String direction){
-		boolean collision = false;
-		int x = touchedX;
-		int y = touchedY;
+	public void moveObject(int x, int y, String direction){
 		
 		if(objects[x][y] != null){
-			objects[x][y].block_position = new Vector(x,y,0);
-			while(collision == false){
-				if(direction.equals("right")){
-					if(x+1 <= PLAYGROUND_MAX_X && objects[x+1][y] == null){
-						objects[x][y].isMovingRight = true;
-						objects[x+1][y] = objects[x][y];
-						objects[x][y] = null;
-						x++;
-					}
-					else{
-						collision = true;
-					}
-				}
-				if(direction.equals("left")){
-					if( x-1 >= PLAYGROUND_MIN_X && objects[x-1][y] == null){
-						objects[x][y].isMovingLeft = true;
-						objects[x-1][y] = objects[x][y];
-						objects[x][y] = null;
-						x--;
-					}
-					else{
-						collision = true;
-					}
-				}
-				if(direction.equals("up")){
-					if(y+1 <= PLAYGROUND_MAX_Y && objects[x][y+1] == null){
-						objects[x][y].isMovingUp = true;
-						objects[x][y+1] = objects[x][y];
-						objects[x][y] = null;
-						y++;
-					}
-					else{
-						collision = true;
-					}
-				}
-				if(direction.equals("down")){
-					if(y-1 >= PLAYGROUND_MIN_Y && objects[x][y-1] == null){
-						objects[x][y].isMovingDown = true;
-						objects[x][y-1] = objects[x][y];
-						objects[x][y] = null;
-						y--;
-					}
-					else{
-						collision = true;
-					}
-				}
+			if(direction.equals("right")){
+				objects[x][y].isMovingRight = true;
+				objects[x+1][y] = objects[x][y];
+				objects[x][y] = null;
+			}
+			if(direction.equals("left")){
+				objects[x][y].isMovingLeft = true;
+				objects[x-1][y] = objects[x][y];
+				objects[x][y] = null;
+			}
+			if(direction.equals("up")){
+				objects[x][y].isMovingUp = true;
+				objects[x][y+1] = objects[x][y];
+				objects[x][y] = null;
+			}
+			if(direction.equals("down")){
+				objects[x][y].isMovingDown = true;
+				objects[x][y-1] = objects[x][y];
+				objects[x][y] = null;
 			}
 		}
 		
+	}
+	public boolean predictCollision(int x, int y, String direction){
+		boolean collision = false;
+		
+		if(objects[x][y] != null){
+			if(direction.equals("right")){
+				if((x+1 > PLAYGROUND_MAX_X || objects[x+1][y] != null)){
+					collision = true;
+				}
+			}
+			if(direction.equals("left")){
+				if((x-1 < PLAYGROUND_MIN_X || objects[x-1][y] != null)){
+					collision = true;
+				}
+			}
+			if(direction.equals("up")){
+				if((y+1 > PLAYGROUND_MAX_Y || objects[x][y+1] != null)){
+					collision = true;
+				}
+			}
+			if(direction.equals("down")){
+				if((y-1 < PLAYGROUND_MIN_Y || objects[x][y-1] != null)){
+					collision = true;
+				}
+			}
+		}
+		Log.d("col", "collision: " + collision);
+		return collision;
 	}
 	
 	public void update(GameActivity activity){

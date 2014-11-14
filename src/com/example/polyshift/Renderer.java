@@ -124,7 +124,7 @@ public class Renderer {
 							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
 							gl.glPopMatrix();
 							gl.glDisable( GL10.GL_TEXTURE_2D );
-							objects[i][j].pixel_position.x -= block_width / 15;
+							objects[i][j].pixel_position.x -= block_width * objects[i][j].movingVelocity;
 						}
 						else{
 							objects[i][j].isMovingLeft = false;
@@ -142,7 +142,7 @@ public class Renderer {
 							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
 							gl.glPopMatrix();
 							gl.glDisable( GL10.GL_TEXTURE_2D );
-							objects[i][j].pixel_position.x += block_width / 15;
+							objects[i][j].pixel_position.x += block_width * objects[i][j].movingVelocity;
 						}
 						else{
 							objects[i][j].isMovingRight = false;
@@ -160,7 +160,7 @@ public class Renderer {
 							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
 							gl.glPopMatrix();
 							gl.glDisable( GL10.GL_TEXTURE_2D );
-							objects[i][j].pixel_position.y += block_height / 15;
+							objects[i][j].pixel_position.y += block_height * objects[i][j].movingVelocity;
 						}
 						else{
 							objects[i][j].isMovingUp = false;
@@ -178,7 +178,7 @@ public class Renderer {
 							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
 							gl.glPopMatrix();
 							gl.glDisable( GL10.GL_TEXTURE_2D );
-							objects[i][j].pixel_position.y -= block_height / 15;
+							objects[i][j].pixel_position.y -= block_height * objects[i][j].movingVelocity;
 						}
 						else{
 							objects[i][j].isMovingDown = false;
