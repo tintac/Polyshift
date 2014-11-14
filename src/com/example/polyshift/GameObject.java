@@ -2,7 +2,12 @@ package com.example.polyshift;
 
 public class GameObject {
 	
-	public boolean isMoving = false;
+	public boolean isMovingLeft = false;
+	public boolean isMovingRight = false;
+	public boolean isMovingUp = false;
+	public boolean isMovingDown = false;
+	public Vector block_position;
+	public Vector pixel_position = new Vector(-1,-1,0);
 	private Mesh mesh;
 
 	public Mesh getMesh() {
