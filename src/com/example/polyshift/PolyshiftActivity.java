@@ -15,6 +15,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	Player player2;
 	Polynomio poly;
 	Renderer renderer;
+	StartScreen startScreen;
 	Simulation simulation;
 	
 	@Override
@@ -33,6 +34,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	public void setup(GameActivity activity, GL10 gl) {
 		
 		if(!(simulation instanceof Simulation)){
+			startScreen = new StartScreen(gl, activity);
 			simulation = new Simulation(activity);
 			renderer = new Renderer(activity, gl, simulation.objects);
 		}
@@ -44,11 +46,16 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	
 	@Override
 	public void mainLoopIteration(GameActivity activity, GL10 gl) {
-		
-        simulation.update(activity);
-        renderer.setPerspective(activity, gl);
-        renderer.renderObjects(activity, gl, simulation.objects);
-        
+		if(startScreen.isDone){
+			simulation.update(activity);
+			renderer.setPerspective(activity, gl);
+			renderer.renderObjects(activity, gl, simulation.objects);
+		}else{
+			startScreen.update(activity);
+			startScreen.render(gl, activity);
+			
+		}
+			
         frames++;
         if( System.nanoTime() - start > 1000000000 )
         {

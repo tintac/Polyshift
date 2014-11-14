@@ -13,7 +13,7 @@ public class Polynomio extends GameObject {
 	public Polynomio(int [] direction, int size, int startX, int startY){
 		this.size = size;
 		colors[0] = (float)Math.random();
-		colors[1] =  (float)Math.random();
+		colors[1] = (float)Math.random();
 		colors[2] = (float)Math.random();
 		colors[3] = (float)Math.random();
 		populate(direction,startX,startY);
