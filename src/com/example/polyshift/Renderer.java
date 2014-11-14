@@ -19,6 +19,7 @@ public class Renderer {
 	float block_height;
 	float object_width;
 	float object_height;
+	int count = 0;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -112,12 +113,86 @@ public class Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
-					gl.glEnable( GL10.GL_TEXTURE_2D );
-					gl.glPushMatrix();
-					gl.glTranslatef(i*block_width, j*block_height, 0 );
-					objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-					gl.glPopMatrix();
-					gl.glDisable( GL10.GL_TEXTURE_2D );
+					if(objects[i][j].isMovingLeft){
+						if(objects[i][j].pixel_position.x == -1){
+							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
+						}
+						if(objects[i][j].pixel_position.x > i*block_width){
+							gl.glEnable( GL10.GL_TEXTURE_2D );
+							gl.glPushMatrix();
+							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
+							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+							gl.glPopMatrix();
+							gl.glDisable( GL10.GL_TEXTURE_2D );
+							objects[i][j].pixel_position.x -= block_width / 15;
+						}
+						else{
+							objects[i][j].isMovingLeft = false;
+							objects[i][j].pixel_position.x = -1;
+						}
+					}
+					else if(objects[i][j].isMovingRight){
+						if(objects[i][j].pixel_position.x == -1){
+							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
+						}
+						if(objects[i][j].pixel_position.x < i*block_width){
+							gl.glEnable( GL10.GL_TEXTURE_2D );
+							gl.glPushMatrix();
+							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
+							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+							gl.glPopMatrix();
+							gl.glDisable( GL10.GL_TEXTURE_2D );
+							objects[i][j].pixel_position.x += block_width / 15;
+						}
+						else{
+							objects[i][j].isMovingRight = false;
+							objects[i][j].pixel_position.x = -1;
+						}
+					}
+					else if(objects[i][j].isMovingUp){
+						if(objects[i][j].pixel_position.y == -1){
+							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
+						}
+						if(objects[i][j].pixel_position.y < j*block_height){
+							gl.glEnable( GL10.GL_TEXTURE_2D );
+							gl.glPushMatrix();
+							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
+							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+							gl.glPopMatrix();
+							gl.glDisable( GL10.GL_TEXTURE_2D );
+							objects[i][j].pixel_position.y += block_height / 15;
+						}
+						else{
+							objects[i][j].isMovingUp = false;
+							objects[i][j].pixel_position.y = -1;
+						}
+					}
+					else if(objects[i][j].isMovingDown){
+						if(objects[i][j].pixel_position.y == -1){
+							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
+						}
+						if(objects[i][j].pixel_position.y > j*block_height){
+							gl.glEnable( GL10.GL_TEXTURE_2D );
+							gl.glPushMatrix();
+							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
+							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+							gl.glPopMatrix();
+							gl.glDisable( GL10.GL_TEXTURE_2D );
+							objects[i][j].pixel_position.y -= block_height / 15;
+						}
+						else{
+							objects[i][j].isMovingDown = false;
+							objects[i][j].pixel_position.y = -1;
+						}
+					}
+					else{
+						gl.glEnable( GL10.GL_TEXTURE_2D );
+						gl.glPushMatrix();
+						gl.glTranslatef(i*block_width, j*block_height, 0 );
+						objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+						gl.glPopMatrix();
+						gl.glDisable( GL10.GL_TEXTURE_2D );
+					}
 				}
 				if(objects[i][j] instanceof Polynomio){
 					gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
