@@ -1,6 +1,7 @@
 package com.example.polyshift;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.util.Log;
 
@@ -23,9 +24,6 @@ public class Polynomio extends GameObject {
 		Block block = new Block(x, y);
 		blocks.add(block);
 	}
-	public ArrayList<Block> getBlocks(){
-		return blocks;
-	}
 	
 	public void populate(int[]direction,int startX, int startY){
 		int x = startX;
@@ -47,6 +45,20 @@ public class Polynomio extends GameObject {
 			if(x != 100 && y != 100){
 				addBlock(x, y);
 			}
+		}
+	}
+	public void sortBlocks(String direction){
+		if(direction.equals("left")){
+			Collections.sort(blocks);
+		}
+		if(direction.equals("right")){
+			Collections.sort(blocks, Collections.reverseOrder());
+		}
+		if(direction.equals("up")){
+			Collections.sort(blocks, new BlockComparator());
+		}
+		if(direction.equals("down")){
+			Collections.sort(blocks, Collections.reverseOrder(new BlockComparator()));
 		}
 	}
 	
