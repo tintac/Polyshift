@@ -55,10 +55,10 @@ public class Polynomio extends GameObject {
 			Collections.sort(blocks, Collections.reverseOrder());
 		}
 		if(direction.equals("up")){
-			Collections.sort(blocks, new BlockComparator());
+			Collections.sort(blocks, Collections.reverseOrder(new BlockComparator()));
 		}
 		if(direction.equals("down")){
-			Collections.sort(blocks, Collections.reverseOrder(new BlockComparator()));
+			Collections.sort(blocks, new BlockComparator());
 		}
 	}
 	
