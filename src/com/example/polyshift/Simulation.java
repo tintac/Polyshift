@@ -11,6 +11,10 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
+	final String RIGHT = "right";
+	final String LEFT = "left";
+	final String UP = "up";
+	final String DOWN = "down";
 	
 	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
 	
@@ -87,49 +91,49 @@ public class Simulation {
 			if(x > touchedX && y == touchedY && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
 					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, "right")){
-						moveObject(touchedX, touchedY, "right");
+					while(!predictCollision(touchedX, touchedY, RIGHT)){
+						moveObject(touchedX, touchedY, RIGHT);
 						touchedX++;
 					}
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
-					movePolynomio(touchedX, touchedY, "right");
+					movePolynomio(touchedX, touchedY, RIGHT);
 				}
 			}
 			else if(x < touchedX && y == touchedY && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
 					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, "left")){
-						moveObject(touchedX, touchedY, "left");
+					while(!predictCollision(touchedX, touchedY, LEFT)){
+						moveObject(touchedX, touchedY, LEFT);
 						touchedX--;
 					}
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
-					movePolynomio(touchedX, touchedY, "left");
+					movePolynomio(touchedX, touchedY, LEFT);
 				}
 			}
 			else if(y > touchedY && x == touchedX && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
 					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, "up")){
-						moveObject(touchedX, touchedY, "up");
+					while(!predictCollision(touchedX, touchedY, UP)){
+						moveObject(touchedX, touchedY, UP);
 						touchedY++;
 					}
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
-					movePolynomio(touchedX, touchedY, "up");
+					movePolynomio(touchedX, touchedY, UP);
 				}
 			}
 			else if(y < touchedY && x == touchedX && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
 					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, "down")){
-						moveObject(touchedX, touchedY, "down");
+					while(!predictCollision(touchedX, touchedY, DOWN)){
+						moveObject(touchedX, touchedY, DOWN);
 						touchedY--;
 					}
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
-					movePolynomio(touchedX, touchedY, "down");
+					movePolynomio(touchedX, touchedY, DOWN);
 				}
 			}
 			touchedX = x;
@@ -139,23 +143,23 @@ public class Simulation {
 	public void moveObject(int x, int y, String direction){
 		
 		if(objects[x][y] != null){
-			if(direction.equals("right")){
+			if(direction.equals(RIGHT)){
 				objects[x][y].isMovingRight = true;
 				objects[x+1][y] = objects[x][y];
 				objects[x][y] = null;
 			}
-			if(direction.equals("left")){
+			if(direction.equals(LEFT)){
 				objects[x][y].isMovingLeft = true;
 				objects[x-1][y] = objects[x][y];
 				objects[x][y] = null;
 			}
-			if(direction.equals("up")){
+			if(direction.equals(UP)){
 				objects[x][y].isMovingUp = true;
 				objects[x][y+1] = objects[x][y];
 				Log.d("test", "x:" + x + "y:" + y+1);
 				objects[x][y] = null;
 			}
-			if(direction.equals("down")){
+			if(direction.equals(DOWN)){
 				objects[x][y].isMovingDown = true;
 				objects[x][y-1] = objects[x][y];
 				objects[x][y] = null;
@@ -168,75 +172,75 @@ public class Simulation {
 		boolean collision = false;
 		if(x <= PLAYGROUND_MAX_X && x >= PLAYGROUND_MIN_X && y <= PLAYGROUND_MAX_Y && y >= PLAYGROUND_MIN_Y){
 			if(objects[x][y] instanceof Player){
-				if(direction.equals("right")){
+				if(direction.equals(RIGHT)){
 					if((x+1 > PLAYGROUND_MAX_X || objects[x+1][y] != null)){
 						collision = true;
 					}
 				}
-				if(direction.equals("left")){
+				if(direction.equals(LEFT)){
 					if((x-1 < PLAYGROUND_MIN_X || objects[x-1][y] != null)){
 						collision = true;
 					}
 				}
-				if(direction.equals("up")){
+				if(direction.equals(UP)){
 					if((y+1 > PLAYGROUND_MAX_Y || objects[x][y+1] != null)){
 						collision = true;
 					}
 				}
-				if(direction.equals("down")){
+				if(direction.equals(DOWN)){
 					if((y-1 < PLAYGROUND_MIN_Y || objects[x][y-1] != null)){
 						collision = true;
 					}
 				}
 			}
 			if(objects[x][y] instanceof Polynomio){
-				if(direction.equals("right")){
+				if(direction.equals(RIGHT)){
 					if(x+1 > PLAYGROUND_MAX_X){
 						collision = true;
 					}	
 					else if(objects[x+1][y] != null){
 						collision = true;
 						if(objects[x+1][y] == objects[x][y]){
-							if(!predictCollision(x+2,y,"right")){	
+							if(!predictCollision(x+2,y,RIGHT)){	
 								collision = false;
 							}
 						}
 					}
 				}
-				if(direction.equals("left")){
+				if(direction.equals(LEFT)){
 					if(x-1 < PLAYGROUND_MIN_X){
 						collision = true;
 					}	
 					else if(objects[x-1][y] != null){
 						collision = true;
 						if(objects[x-1][y] == objects[x][y]){
-							if(!predictCollision(x-2,y,"left")){	
+							if(!predictCollision(x-2,y,LEFT)){	
 								collision = false;
 							}
 						}
 					}
 				}
-				if(direction.equals("up")){
+				if(direction.equals(UP)){
 					if(y+1 > PLAYGROUND_MAX_Y){
 						collision = true;
 					}	
 					else if(objects[x][y+1] != null){
 						collision = true;
 						if(objects[x][y+1] == objects[x][y]){
-							if(!predictCollision(x,y+2,"up")){	
+							if(!predictCollision(x,y+2,UP)){	
 								collision = false;
 							}
 						}
 					}
 				}
-				if(direction.equals("down")){
+				if(direction.equals(DOWN)){
 					if(y-1 < PLAYGROUND_MIN_Y){
 						collision = true;
 					}	
 					else if(objects[x][y-1] != null){
 						collision = true;
 						if(objects[x][y-1] == objects[x][y]){
-							if(!predictCollision(x,y-2,"down")){	
+							if(!predictCollision(x,y-2,DOWN)){	
 								collision = false;
 							}
 						}
@@ -260,16 +264,16 @@ public class Simulation {
 				for(int i = 0; i < polynomio.blocks.size(); i++){
 					moveObject(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction);
 					Block block = polynomio.blocks.get(i);
-					if(direction.equals("right")){
+					if(direction.equals(RIGHT)){
 						block.x++;
 					}
-					else if(direction.equals("left")){
+					else if(direction.equals(LEFT)){
 						block.x--;
 					}
-					else if(direction.equals("up")){
+					else if(direction.equals(UP)){
 						block.y++;
 					}
-					else if(direction.equals("down")){
+					else if(direction.equals(DOWN)){
 						block.y--;
 					}
 
