@@ -1,6 +1,8 @@
 package com.example.polyshift;
 
-public class Block {
+import java.util.Comparator;
+
+public class Block extends GameObject implements Comparable<Block>{
 	public int x;
 	public int y;
 	
@@ -9,4 +11,11 @@ public class Block {
 		this.y = y;
 		
 	}
+
+	@Override
+	public int compareTo(Block another) {
+		
+		return Integer.compare(this.x,another.x);
+	}
 }
+
