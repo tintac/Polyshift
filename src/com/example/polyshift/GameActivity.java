@@ -84,7 +84,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if( event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE )
+		if( event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			touchX = (int)event.getX();
 			touchY = (int)event.getY();
@@ -102,7 +102,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 		{
 
 		}			
-		return false;
+		return true;
 	}
 
 	@Override

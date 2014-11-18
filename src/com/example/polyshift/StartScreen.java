@@ -38,7 +38,7 @@ public class StartScreen implements GameScreen {
 		}
 		catch( Exception ex )
 		{
-			Log.d( "Space Invaders", "couldn't load textures" );
+			Log.d( "Startscreen", "Startscreen texture could not be loaded" );
 			throw new RuntimeException( ex );
 		}
 	}	

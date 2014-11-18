@@ -22,7 +22,7 @@ public class Simulation {
 	int touchedX;
 	int touchedY;
 
-	private Object lastMovedObject;
+	public Object lastMovedObject;
 	
 	public Simulation(GameActivity activity){
 		populate();
@@ -52,10 +52,10 @@ public class Simulation {
 		directions.add(new int[]{1,3,2,0}); //15 Quader
 		
 		Player player = new Player(true);
-		addGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
+		setGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
 		Player player2 = new Player(false);
 
-		addGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
+		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
 
 		polynomios.add(newPolynomio(directions.get(11),7,0));
 		polynomios.add(newPolynomio(directions.get(2),7,1));
@@ -70,18 +70,18 @@ public class Simulation {
 			Polynomio polynomio = polynomios.get(i);
 			for(int j = 0; j< polynomio.blocks.size();j++){
 				Block block = polynomio.blocks.get(j);
-				addGameObject(polynomio, block.x, block.y);
+				setGameObject(polynomio, block.x, block.y);
 			}
 		}
 		
 	}
-	
+		
 	public Polynomio newPolynomio(int[] direction, int startX, int startY){
 		return (new Polynomio(direction, 4, startX, startY));
 
 	}
 	
-	public void addGameObject(GameObject object, int x, int y){
+	public void setGameObject(GameObject object, int x, int y){
 		objects[x][y] = object;
 	}
 	
@@ -291,14 +291,14 @@ public class Simulation {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[0].length; j++){
 				if(lastMovedObject != null && objects[i][j] == lastMovedObject){
-					if(objects[i][j].isPlayerOne && i == PLAYGROUND_MAX_X){
-						setWinner((Player) objects[i][j]);
-					}
-					if(!objects[i][j].isPlayerOne && i == PLAYGROUND_MIN_X){
-						setWinner((Player) objects[i][j]);
-					}
 					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
-						if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
+						if(objects[i][j].isPlayerOne && i == PLAYGROUND_MAX_X){
+							setWinner((Player) objects[i][j]);
+						}
+						else if(!objects[i][j].isPlayerOne && i == PLAYGROUND_MIN_X){
+							setWinner((Player) objects[i][j]);
+						}
+						else if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
 							if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
 								movePlayer(i, j, RIGHT);
 							}
@@ -326,8 +326,8 @@ public class Simulation {
 	}
 	
 	public void update(GameActivity activity){
-		checkPlayerPosition();
 		getTouch(activity);
+		checkPlayerPosition();
 		
 	}
 }
