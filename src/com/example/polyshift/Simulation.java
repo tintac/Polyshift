@@ -1,9 +1,6 @@
 package com.example.polyshift;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import android.util.Log;
 
 public class Simulation {
 	
@@ -11,10 +8,10 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
-	final String RIGHT = "right";
-	final String LEFT = "left";
-	final String UP = "up";
-	final String DOWN = "down";
+	final static String RIGHT = "right";
+	final static String LEFT = "left";
+	final static String UP = "up";
+	final static String DOWN = "down";
 	
 	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
 	
@@ -90,11 +87,7 @@ public class Simulation {
 			int y = Math.round(objects[0].length - (activity.getTouchY() / (activity.getViewportHeight() / objects[0].length)) - 1);
 			if(x > touchedX && y == touchedY && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
-					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, RIGHT)){
-						moveObject(touchedX, touchedY, RIGHT);
-						touchedX++;
-					}
+					movePlayer(touchedX, touchedY, RIGHT);
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
 					movePolynomio(touchedX, touchedY, RIGHT);
@@ -102,11 +95,7 @@ public class Simulation {
 			}
 			else if(x < touchedX && y == touchedY && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
-					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, LEFT)){
-						moveObject(touchedX, touchedY, LEFT);
-						touchedX--;
-					}
+					movePlayer(touchedX, touchedY, LEFT);
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
 					movePolynomio(touchedX, touchedY, LEFT);
@@ -114,11 +103,7 @@ public class Simulation {
 			}
 			else if(y > touchedY && x == touchedX && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
-					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, UP)){
-						moveObject(touchedX, touchedY, UP);
-						touchedY++;
-					}
+					movePlayer(touchedX, touchedY, UP);
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
 					movePolynomio(touchedX, touchedY, UP);
@@ -126,11 +111,7 @@ public class Simulation {
 			}
 			else if(y < touchedY && x == touchedX && objects[x][y] == null){
 				if(objects[touchedX][touchedY] instanceof Player){
-					objects[touchedX][touchedY].block_position = new Vector(touchedX,touchedY,0);
-					while(!predictCollision(touchedX, touchedY, DOWN)){
-						moveObject(touchedX, touchedY, DOWN);
-						touchedY--;
-					}
+					movePlayer(touchedX, touchedY, DOWN);
 				}
 				if(objects[touchedX][touchedY] instanceof Polynomio){
 					movePolynomio(touchedX, touchedY, DOWN);
@@ -156,7 +137,6 @@ public class Simulation {
 			if(direction.equals(UP)){
 				objects[x][y].isMovingUp = true;
 				objects[x][y+1] = objects[x][y];
-				Log.d("test", "x:" + x + "y:" + y+1);
 				objects[x][y] = null;
 			}
 			if(direction.equals(DOWN)){
@@ -282,8 +262,54 @@ public class Simulation {
 			}
 		}
 	}
+	public void movePlayer(int x, int y, String direction){
+		objects[x][y].block_position = new Vector(x,y,0);
+		while(!predictCollision(x, y, direction)){
+			moveObject(x, y, direction);
+			if(direction.equals(RIGHT)){
+				x++;
+			}
+			else if(direction.equals(LEFT)){
+				x--;
+			}
+			else if(direction.equals(UP)){
+				y++;
+			}
+			else if(direction.equals(DOWN)){
+				y--;
+			}
+		}
+	}
+	
+	public void checkPlayerPosition(){
+		for(int i = 0; i < objects.length; i++){
+			for(int j = 0; j < objects[0].length; j++){
+				if(objects[i][j] instanceof Player){
+					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
+						if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
+							if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
+								movePlayer(i, j, RIGHT);
+							}
+							else if(predictCollision(i, j, RIGHT) && !predictCollision(i, j, LEFT)){
+								movePlayer(i, j, LEFT);
+							}
+						}
+						else if((predictCollision(i, j, RIGHT) && objects[i][j].lastState.equals(RIGHT)) || (predictCollision(i, j, LEFT) && objects[i][j].lastState.equals(LEFT))){
+							if(!predictCollision(i, j, UP) && predictCollision(i, j, DOWN)){
+								movePlayer(i, j, UP);
+							}
+							else if(predictCollision(i, j, UP) && !predictCollision(i, j, DOWN)){
+								movePlayer(i, j, DOWN);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	public void update(GameActivity activity){
 		getTouch(activity);
+		checkPlayerPosition();
 	}
 }

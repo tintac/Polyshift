@@ -128,6 +128,7 @@ public class Renderer {
 						}
 						else{
 							objects[i][j].isMovingLeft = false;
+							objects[i][j].lastState = Simulation.LEFT;
 							objects[i][j].pixel_position.x = -1;
 						}
 					}
@@ -146,6 +147,7 @@ public class Renderer {
 						}
 						else{
 							objects[i][j].isMovingRight = false;
+							objects[i][j].lastState = Simulation.RIGHT;
 							objects[i][j].pixel_position.x = -1;
 						}
 					}
@@ -164,6 +166,7 @@ public class Renderer {
 						}
 						else{
 							objects[i][j].isMovingUp = false;
+							objects[i][j].lastState = Simulation.UP;
 							objects[i][j].pixel_position.y = -1;
 						}
 					}
@@ -182,6 +185,7 @@ public class Renderer {
 						}
 						else{
 							objects[i][j].isMovingDown = false;
+							objects[i][j].lastState = Simulation.DOWN;
 							objects[i][j].pixel_position.y = -1;
 						}
 					}
