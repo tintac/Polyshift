@@ -33,8 +33,10 @@ public class EndScreen implements GameScreen {
 		
 		try
 		{
-			Bitmap bitmap = BitmapFactory.decodeStream( activity.getAssets().open( "SplashScreen.png" ) );
+			Bitmap bitmap = BitmapFactory.decodeStream( activity.getAssets().open( "winnerPlayerOne.png" ) );
 			textureWinnerPlayerOne = new Texture( gl, bitmap, TextureFilter.MipMap, TextureFilter.Nearest, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
+			bitmap = BitmapFactory.decodeStream( activity.getAssets().open( "winnerPlayerTwo.png" ) );
+			textureWinnerPlayerTwo = new Texture( gl, bitmap, TextureFilter.MipMap, TextureFilter.Nearest, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
 			
 			
 		}
@@ -70,9 +72,9 @@ public class EndScreen implements GameScreen {
 		gl.glLoadIdentity();
 		if(winner.isPlayerOne){
 			textureWinnerPlayerOne.bind();
-		}//else{
-			//textureWinnerPlayerTwo.bind();
-		//}
+		}else{
+			textureWinnerPlayerTwo.bind();
+		}
 		
 		pictureMesh.render(PrimitiveType.TriangleFan );
 		gl.glDisable( GL10.GL_TEXTURE_2D );

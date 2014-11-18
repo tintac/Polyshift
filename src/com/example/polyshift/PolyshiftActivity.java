@@ -36,6 +36,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		
 		if(!(simulation instanceof Simulation)){
 			startScreen = new StartScreen(gl, activity);
+			endScreen = new EndScreen(gl, activity);
 			simulation = new Simulation(activity);
 			renderer = new Renderer(activity, gl, simulation.objects);
 		}
