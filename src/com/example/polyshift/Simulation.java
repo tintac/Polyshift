@@ -291,6 +291,12 @@ public class Simulation {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[0].length; j++){
 				if(lastMovedObject != null && objects[i][j] == lastMovedObject){
+					if(objects[i][j].isPlayerOne && i == PLAYGROUND_MAX_X){
+						setWinner((Player) objects[i][j]);
+					}
+					if(!objects[i][j].isPlayerOne && i == PLAYGROUND_MIN_X){
+						setWinner((Player) objects[i][j]);
+					}
 					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
 						if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
 							if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
@@ -320,7 +326,8 @@ public class Simulation {
 	}
 	
 	public void update(GameActivity activity){
-		getTouch(activity);
 		checkPlayerPosition();
+		getTouch(activity);
+		
 	}
 }
