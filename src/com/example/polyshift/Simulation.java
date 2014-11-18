@@ -19,6 +19,7 @@ public class Simulation {
 	int touchedX;
 	int touchedY;
 
+	private Object lastMovedObject;
 	
 	public Simulation(GameActivity activity){
 		populate();
@@ -124,6 +125,8 @@ public class Simulation {
 	public void moveObject(int x, int y, String direction){
 		
 		if(objects[x][y] != null){
+			lastMovedObject  = objects[x][y];
+			
 			if(direction.equals(RIGHT)){
 				objects[x][y].isMovingRight = true;
 				objects[x+1][y] = objects[x][y];
@@ -284,7 +287,7 @@ public class Simulation {
 	public void checkPlayerPosition(){
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[0].length; j++){
-				if(objects[i][j] instanceof Player){
+				if(lastMovedObject != null && objects[i][j] == lastMovedObject){
 					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
 						if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
 							if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
