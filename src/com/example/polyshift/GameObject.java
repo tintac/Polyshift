@@ -10,6 +10,7 @@ public class GameObject {
 	public Vector pixel_position = new Vector(-1,-1,0);
 	private Mesh mesh;
 	public  float []colors = new float[4];
+	boolean isPlayerOne;
 
 	public Mesh getMesh() {
 		return mesh;

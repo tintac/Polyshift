@@ -3,8 +3,8 @@ package com.example.polyshift;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.pm.ActivityInfo;
-import android.opengl.GLU;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +16,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	Polynomio poly;
 	Renderer renderer;
 	StartScreen startScreen;
+	EndScreen endScreen;
 	Simulation simulation;
 	
 	@Override
@@ -50,6 +51,11 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			simulation.update(activity);
 			renderer.setPerspective(activity, gl);
 			renderer.renderObjects(activity, gl, simulation.objects);
+			if(simulation.hasWinner){
+				endScreen.setWinner(simulation.winner);
+				endScreen.update(activity);
+				endScreen.render(gl, activity);	
+			}
 		}else{
 			startScreen.update(activity);
 			startScreen.render(gl, activity);

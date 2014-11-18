@@ -12,6 +12,9 @@ public class Simulation {
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
 	
+	public boolean hasWinner =  false;
+	public Player winner;
+	
 	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
 	
 	public GameObject[][] objects = new GameObject[PLAYGROUND_MAX_X+1][PLAYGROUND_MAX_Y+1];
@@ -46,9 +49,9 @@ public class Simulation {
 		directions.add(new int[]{3,1,2,3}); //14 Dreieck stehend - nach rechts zeigend
 		directions.add(new int[]{1,3,2,0}); //15 Quader
 		
-		Player player = new Player();
+		Player player = new Player(true);
 		addGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
-		Player player2 = new Player();
+		Player player2 = new Player(false);
 
 		addGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
 
@@ -155,6 +158,11 @@ public class Simulation {
 			}
 		}
 		
+	}
+	
+	public void setWinner(Player winner){
+		this.winner = winner;
+		hasWinner = true;
 	}
 	
 	public void update(GameActivity activity){

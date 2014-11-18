@@ -20,6 +20,8 @@ public class Renderer {
 	float object_width;
 	float object_height;
 	int count = 0;
+	Texture texturePlayerOne;
+	Texture texturePlayerTwo;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -35,18 +37,21 @@ public class Renderer {
 		object_width = width / objects.length;
 		object_height = height / objects[0].length;
 		
+		
 		Log.d("width", "block_width: " + block_width);
 		Log.d("height", "block_height: " + block_height);
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
-					Bitmap bitmap;
-					Texture texture;
-					bitmap = null;
+					Bitmap bitmapPlayerOne = null;;
+					Bitmap bitmapPlayerTwo = null;;
+
+					
 					try
 					{
-					    bitmap = BitmapFactory.decodeStream( activity.getAssets().open( "droid.png" ) );
+					    bitmapPlayerOne = BitmapFactory.decodeStream( activity.getAssets().open( "droid.png" ) );
+					    bitmapPlayerTwo = BitmapFactory.decodeStream( activity.getAssets().open( "droid2.png" ) );
 					}
 					catch( Exception ex )
 					{
@@ -65,9 +70,13 @@ public class Renderer {
 			        mesh.texCoord(0f, 0f);
 			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
 			        
-			        texture = new Texture(gl, bitmap, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
-			        
-			        texture.bind();
+			        if(objects[i][j].isPlayerOne){
+			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
+			        	
+			        }else{
+			        	texturePlayerTwo = new Texture(gl, bitmapPlayerTwo, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
+			        	
+			        }
 			        
 			        objects[i][j].setMesh(mesh);
 				}
@@ -85,7 +94,8 @@ public class Renderer {
 			        
 			        mesh.vertex( i*block_width, j*block_height, 0 );
 			        
-			        objects[i][j].setMesh(mesh);       
+			        objects[i][j].setMesh(mesh);   
+			        
 				}
 			}
 		}
@@ -113,6 +123,11 @@ public class Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
+					if(objects[i][j].isPlayerOne){
+						texturePlayerOne.bind();
+					}else{
+						texturePlayerTwo.bind();
+					}
 					if(objects[i][j].isMovingLeft){
 						if(objects[i][j].pixel_position.x == -1){
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
