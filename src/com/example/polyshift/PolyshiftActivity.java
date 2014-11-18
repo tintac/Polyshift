@@ -52,6 +52,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			simulation.update(activity);
 			renderer.setPerspective(activity, gl);
 			renderer.renderObjects(activity, gl, simulation.objects);
+			Log.d("touch", String.valueOf(activity.isTouched()));
 			if(simulation.hasWinner){
 				endScreen.setWinner(simulation.winner);
 				endScreen.update(activity);

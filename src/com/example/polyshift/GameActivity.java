@@ -5,9 +5,11 @@ import javax.microedition.khronos.opengles.GL10;
 
 
 
+
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -83,17 +85,18 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	}
 
 	@Override
+	
 	public boolean onTouch(View v, MotionEvent event) {
-		if( event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE )
+		if( event.getAction() == MotionEvent.ACTION_DOWN )
 		{
 			touchX = (int)event.getX();
 			touchY = (int)event.getY();
 			isTouched = true;
 		}
 
-		if( event.getAction() == MotionEvent.ACTION_UP )
+		else if( event.getAction() == MotionEvent.ACTION_UP ){
 			isTouched = false;
-
+		}
 		try
 		{
 			Thread.sleep( 30 );
@@ -102,7 +105,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 		{
 
 		}			
-		return false;
+		return true;
 	}
 
 	@Override
