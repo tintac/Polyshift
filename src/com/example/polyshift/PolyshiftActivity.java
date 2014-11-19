@@ -2,6 +2,7 @@ package com.example.polyshift;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,8 +40,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			endScreen = new EndScreen(gl, activity);
 			simulation = new Simulation(activity);
 			renderer = new Renderer(activity, gl, simulation.objects);
-		}
-			
+		}	
 	}
 	  
 	long start = System.nanoTime();
@@ -48,24 +48,24 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	
 	@Override
 	public void mainLoopIteration(GameActivity activity, GL10 gl) {
-		if(startScreen.isDone){
-			simulation.update(activity);
+		if(!startScreen.isDone){
+			startScreen.update(activity);
+			startScreen.render(gl, activity);
+		}
+		else{
 			renderer.setPerspective(activity, gl);
 			renderer.renderObjects(activity, gl, simulation.objects);
-			Log.d("touch", String.valueOf(activity.isTouched()));
+			simulation.update(activity);
 			if(simulation.hasWinner){
 				endScreen.setWinner(simulation.winner);
 				endScreen.render(gl, activity);
 				endScreen.update(activity);
-				
-				Log.d("isdone",String.valueOf(activity.isTouched()));
-				if(endScreen.isDone()){
-					simulation.hasWinner = false;
+
+				if(activity.isTouched()){
+					activity.finish();
+					startActivity(activity.getIntent());
 				}
 			}
-		}else{
-			startScreen.update(activity);
-			startScreen.render(gl, activity);
 			
 		}
 			

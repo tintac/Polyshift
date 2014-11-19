@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".PolyshiftActivity"
-            android:label="@string/title_activity_triangle" ><intent-filter>
+            android:label="@string/title_poly_shift" ><intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

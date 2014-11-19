@@ -4,6 +4,6 @@
     <string name="app_name">Polyshift</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_polyshift">PolyshiftActivity</string>
-    <string name="title_activity_triangle">TriangleActivity</string>
+    <string name="title_poly_shift">PolyShift</string>
 
 </resources>
