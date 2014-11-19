@@ -28,7 +28,10 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	private GameListener gameListener;
 	private int touchX;
 	private int touchY;
+	private int touchedX;
+	private int touchedY;
 	private boolean isTouched;
+	private boolean isSwiped;
 	private int width;
 	private int height;
 
@@ -89,13 +92,17 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	public boolean onTouch(View v, MotionEvent event) {
 		if( event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			touchX = (int)event.getX();
-			touchY = (int)event.getY();
+			touchedX = (int)event.getX();
+			touchedY = (int)event.getY();
 			isTouched = true;
+			isSwiped = false;
 		}
 
 		else if( event.getAction() == MotionEvent.ACTION_UP ){
+			touchX = (int)event.getX();
+			touchY = (int)event.getY();
 			isTouched = false;
+			isSwiped = true;
 		}
 		try
 		{
@@ -131,10 +138,25 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	public int getTouchY() {
 		return touchY;
 	}
+	
+	public int getTouchedX() {
+		return touchedX;
+	}
+	
+	public int getTouchedY() {
+		return touchedY;
+	}
+	
 	public boolean isTouched( )
 	{
 		return isTouched;
 	}
+	
+	public boolean isSwiped( )
+	{
+		return isSwiped;
+	}
+	
 	public int getViewportWidth( )
 	{
 		return width;
@@ -144,6 +166,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	{
 		return height;
 	}
+	
 	public float getDeltaTime( )
 	{
 		return deltaTime;
