@@ -31,7 +31,7 @@ public class GameActivity extends Activity implements GLSurfaceView.Renderer, On
 	private int touchedX;
 	private int touchedY;
 	private boolean isTouched;
-	private boolean isSwiped;
+	public boolean isSwiped;
 	private int width;
 	private int height;
 

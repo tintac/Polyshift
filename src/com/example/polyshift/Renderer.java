@@ -22,6 +22,7 @@ public class Renderer {
 	int count = 0;
 	Texture texturePlayerOne;
 	Texture texturePlayerTwo;
+	Texture textureLocker;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -44,8 +45,8 @@ public class Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
-					Bitmap bitmapPlayerOne = null;;
-					Bitmap bitmapPlayerTwo = null;;
+					Bitmap bitmapPlayerOne = null;
+					Bitmap bitmapPlayerTwo = null;
 
 					
 					try
@@ -81,18 +82,32 @@ public class Renderer {
 			        objects[i][j].setMesh(mesh);
 				}
 				if(objects[i][j] instanceof Polynomio){
+					Bitmap bitmapLocker = null;
+					
+					try
+					{
+					    bitmapLocker = BitmapFactory.decodeStream( activity.getAssets().open( "locker.png" ) );
+					}
+					catch( Exception ex )
+					{
+						Log.d("Sample", "Failed loading locker texture.");
+			            System.exit(-1);
+					}
+					
 					Mesh mesh;
-					mesh = new Mesh( gl, 20, false, false, false );
-					
+					mesh = new Mesh( gl, 5, false, true, false );
+					mesh.texCoord(0f, 1f);
 					mesh.vertex( i*block_width, j*block_height, 0 );
-					
+					mesh.texCoord(1f, 1f);
 					mesh.vertex( i*block_width + object_width, j*block_height, block_height );
-			        
+					mesh.texCoord(1f, 0f);
 			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
-			        
+			        mesh.texCoord(0f, 0f);
 			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
-			        
+			        mesh.texCoord(0f, 1f);
 			        mesh.vertex( i*block_width, j*block_height, 0 );
+			       
+			        textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        
 			        objects[i][j].setMesh(mesh);   
 			        
@@ -214,12 +229,29 @@ public class Renderer {
 					}
 				}
 				if(objects[i][j] instanceof Polynomio){
-					gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
-					gl.glPushMatrix();
-					gl.glTranslatef(i*block_width, j*block_height, 0 );
-					objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
-					gl.glPopMatrix();
-					gl.glColor4f(1, 1, 1, 1);
+					Polynomio polynomio = (Polynomio) objects[i][j];
+					if(polynomio.isLocked){
+						gl.glEnable( GL10.GL_TEXTURE_2D );
+						gl.glEnable(GL10.GL_BLEND);
+						gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
+						textureLocker.bind();
+						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
+						gl.glPushMatrix();
+						gl.glTranslatef(i*block_width, j*block_height, 0 );
+						objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
+						gl.glPopMatrix();
+						gl.glColor4f(1, 1, 1, 1);
+						gl.glDisable(GL10.GL_BLEND);
+						gl.glDisable( GL10.GL_TEXTURE_2D );
+					}
+					else{
+						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
+						gl.glPushMatrix();
+						gl.glTranslatef(i*block_width, j*block_height, 0 );
+						objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
+						gl.glPopMatrix();
+						gl.glColor4f(1, 1, 1, 1);
+					}
 				}
 			}
 		}

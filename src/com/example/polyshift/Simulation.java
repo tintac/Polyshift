@@ -92,6 +92,7 @@ public class Simulation {
 			int touchedY = Math.round(objects[0].length - (activity.getTouchedY() / (activity.getViewportHeight() / objects[0].length)) - 1);
 			
 			if(x > touchedX && y == touchedY){
+				activity.isSwiped = false;
 				if(objects[touchedX][touchedY] instanceof Player){
 					movePlayer(touchedX, touchedY, RIGHT);
 				}
@@ -100,6 +101,7 @@ public class Simulation {
 				}
 			}
 			else if(x < touchedX && y == touchedY){
+				activity.isSwiped = false;
 				if(objects[touchedX][touchedY] instanceof Player){
 					movePlayer(touchedX, touchedY, LEFT);
 				}
@@ -108,6 +110,7 @@ public class Simulation {
 				}
 			}
 			else if(y > touchedY && x == touchedX){
+				activity.isSwiped = false;
 				if(objects[touchedX][touchedY] instanceof Player){
 					movePlayer(touchedX, touchedY, UP);
 				}
@@ -116,6 +119,7 @@ public class Simulation {
 				}
 			}
 			else if(y < touchedY && x == touchedX){
+				activity.isSwiped = false;
 				if(objects[touchedX][touchedY] instanceof Player){
 					movePlayer(touchedX, touchedY, DOWN);
 				}
@@ -130,7 +134,11 @@ public class Simulation {
 		if(objects[x][y] != null){
 			lastMovedObject  = objects[x][y];
 			if(objects[x][y] instanceof Polynomio){
+				if(lastMovedPolynomio instanceof Polynomio){
+					lastMovedPolynomio.isLocked = false;
+				}
 				lastMovedPolynomio = (Polynomio) objects[x][y];
+				objects[x][y].isLocked = true;
 			}
 			
 			if(direction.equals(RIGHT)){
@@ -266,7 +274,6 @@ public class Simulation {
 						else if(direction.equals(DOWN)){
 							block.y--;
 						}
-
 						polynomio.blocks.set(i, block);
 					}				
 				}

@@ -30,8 +30,36 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		super.onCreate(savedInstanceState);
 		
 		setGameListener(this);
+		
+		Log.d( "Polyshift", "Polyshift Spiel erstellt");
 	}
 
+	public void onSaveInstanceState( Bundle outState )
+	{
+		super.onSaveInstanceState( outState );
+		Log.d( "Polyshift", "Polyshift Spielstand gespeichert" );
+	}
+
+	@Override
+	public void onPause( )
+	{
+		super.onPause();
+		Log.d( "Polyshift", "Polyshift pausiert" );
+	}
+	
+	@Override
+	public void onResume( )
+	{
+		super.onResume();		
+		Log.d( "Polyshift", "Polyshift wiederhergestellt" );
+	}	
+	
+	@Override
+	public void onDestroy( )
+	{
+		super.onDestroy();
+		Log.d( "Polyshift", "Polyshift beendet" );
+	}
 	@Override
 	public void setup(GameActivity activity, GL10 gl) {
 		
