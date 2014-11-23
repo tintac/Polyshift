@@ -19,6 +19,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	StartScreen startScreen;
 	EndScreen endScreen;
 	Simulation simulation;
+	GameLoop gameLoop;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			startScreen = new StartScreen(gl, activity);
 			endScreen = new EndScreen(gl, activity);
 			simulation = new Simulation(activity);
+			gameLoop = new GameLoop();
 			renderer = new Renderer(activity, gl, simulation.objects);
 		}	
 	}
@@ -84,6 +86,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			renderer.setPerspective(activity, gl);
 			renderer.renderObjects(activity, gl, simulation.objects);
 			simulation.update(activity);
+			gameLoop.update(simulation);
 			if(simulation.hasWinner){
 				endScreen.setWinner(simulation.winner);
 				endScreen.render(gl, activity);

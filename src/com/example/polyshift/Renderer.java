@@ -139,9 +139,19 @@ public class Renderer {
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
-						texturePlayerOne.bind();
+						if(objects[i][j].isLocked){
+							textureLocker.bind();
+						}
+						else{
+							texturePlayerOne.bind();
+						}
 					}else{
-						texturePlayerTwo.bind();
+						if(objects[i][j].isLocked){
+							textureLocker.bind();
+						}
+						else{
+							texturePlayerTwo.bind();
+						}
 					}
 					if(objects[i][j].isMovingLeft){
 						if(objects[i][j].pixel_position.x == -1){

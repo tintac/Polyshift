@@ -14,6 +14,8 @@ public class Simulation {
 	final static String DOWN = "down";
 	
 	public boolean hasWinner =  false;
+	public Player player;
+	public Player player2;
 	public Player winner;
 	
 	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
@@ -50,9 +52,9 @@ public class Simulation {
 		directions.add(new int[]{3,1,2,3}); //14 Dreieck stehend - nach rechts zeigend
 		directions.add(new int[]{1,3,2,0}); //15 Quader
 		
-		Player player = new Player(true);
+		player = new Player(true);
 		setGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
-		Player player2 = new Player(false);
+		player2 = new Player(false);
 
 		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
 
@@ -93,37 +95,37 @@ public class Simulation {
 			
 			if(x > touchedX && y == touchedY){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player){
+				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, RIGHT);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio){
+				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, RIGHT);
 				}
 			}
 			else if(x < touchedX && y == touchedY){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player){
+				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, LEFT);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio){
+				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, LEFT);
 				}
 			}
 			else if(y > touchedY && x == touchedX){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player){
+				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, UP);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio){
+				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, UP);
 				}
 			}
 			else if(y < touchedY && x == touchedX){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player){
+				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, DOWN);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio){
+				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, DOWN);
 				}
 			}
@@ -248,35 +250,33 @@ public class Simulation {
 		return collision;
 	}
 	public void movePolynomio(int x, int y, String direction){
-		if(lastMovedPolynomio != objects[x][y]){
-			boolean collision = false;
-			Polynomio polynomio = (Polynomio) objects[x][y];
-			polynomio.sortBlocks(direction);
-			while(!collision){
+		boolean collision = false;
+		Polynomio polynomio = (Polynomio) objects[x][y];
+		polynomio.sortBlocks(direction);
+		while(!collision){
+			for(int i = 0; i < polynomio.blocks.size(); i++){
+				if(predictCollision(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction)){
+					collision = true;
+				}
+			}
+			if(!collision){
 				for(int i = 0; i < polynomio.blocks.size(); i++){
-					if(predictCollision(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction)){
-						collision = true;
+					moveObject(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction);
+					Block block = polynomio.blocks.get(i);
+					if(direction.equals(RIGHT)){
+						block.x++;
 					}
-				}
-				if(!collision){
-					for(int i = 0; i < polynomio.blocks.size(); i++){
-						moveObject(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction);
-						Block block = polynomio.blocks.get(i);
-						if(direction.equals(RIGHT)){
-							block.x++;
-						}
-						else if(direction.equals(LEFT)){
-							block.x--;
-						}
-						else if(direction.equals(UP)){
-							block.y++;
-						}
-						else if(direction.equals(DOWN)){
-							block.y--;
-						}
-						polynomio.blocks.set(i, block);
-					}				
-				}
+					else if(direction.equals(LEFT)){
+						block.x--;
+					}
+					else if(direction.equals(UP)){
+						block.y++;
+					}
+					else if(direction.equals(DOWN)){
+						block.y--;
+					}
+					polynomio.blocks.set(i, block);
+				}				
 			}
 		}
 	}
