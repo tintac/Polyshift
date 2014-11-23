@@ -16,8 +16,8 @@ public class GameLoop {
 	}
 	
 	public void update(Simulation simulation){
-		Log.d("turn","One: " + PlayerOnesTurn);
 		if(PlayerOnesTurn){
+			simulation.player2.isLocked = true;
 			if(simulation.player.isMovingRight || simulation.player.isMovingLeft || simulation.player.isMovingUp || simulation.player.isMovingDown){
 				RoundFinished = false;
 			}
