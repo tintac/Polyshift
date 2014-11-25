@@ -43,13 +43,13 @@ public class PerspectiveSample extends GameActivity implements GameListener
 		mesh.color( 0, 1, 0, 1 );
 		mesh.vertex( 0f, 0f, 0f );
 		mesh.color( 0, 1, 0, 1 );
-		mesh.vertex( 10f, 0f, 0f );
+		mesh.vertex( 9.6f, 0f, 0f );
 		
 		mesh2 = new Mesh( gl, 2, true, false, false );		
 		mesh2.color( 1, 0, 0, 1 );
 		mesh2.vertex( 0f, 0f, 0f );
 		mesh2.color( 1, 0, 0, 1 );
-		mesh2.vertex( 0f, 10f, 0f );
+		mesh2.vertex( 0f, 5.2f, 0f );
 		
 		mesh3 = new Mesh( gl, 2, true, false, false );		
 		mesh3.color( 0, 0, 1, 1 );
@@ -63,11 +63,11 @@ public class PerspectiveSample extends GameActivity implements GameListener
 		mesh4.color( 0, 1, 1, 1);
 		mesh4.vertex(0f, 0f, 0f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(+0.5f, 0f, -0.5f);
+		mesh4.vertex(+0.5f, 0f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(0f, 0f, -0.5f);
+		mesh4.vertex(0f, 0f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(0f, 0f, -0.5f);
+		mesh4.vertex(0f, 0f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
 		mesh4.vertex(0f, 0f, 0);
 		mesh4.color( 0, 1, 1, 1);
@@ -77,11 +77,11 @@ public class PerspectiveSample extends GameActivity implements GameListener
 		mesh4.color( 0, 1, 1, 1);
 		mesh4.vertex(+0.5f, +0.5f, 0f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(+0.5f, 0f, -0.5f);
+		mesh4.vertex(+0.5f, 0f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(+0.5f, +0.5f, -0.5f);
+		mesh4.vertex(+0.5f, +0.5f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
-		mesh4.vertex(0f, +0.5f, -0.5f);
+		mesh4.vertex(0f, +0.5f, -0.1f);
 		mesh4.color( 0, 1, 1, 1);
 		mesh4.vertex(+0.5f, +0.5f, 0f);
 		mesh4.color( 0, 1, 1, 1);
@@ -103,7 +103,7 @@ public class PerspectiveSample extends GameActivity implements GameListener
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
 		
-		gl.glTranslatef(-0.2f, -2.6f, -4.0f);
+		gl.glTranslatef(-4.8f, -2.6f, -4.0f);
 		
 		
 		

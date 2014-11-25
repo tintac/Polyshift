@@ -32,15 +32,11 @@ public class Renderer {
 		int width = size.x;
 		int height = size.y;
 		
-		block_width = activity.getViewportWidth() / objects.length;
-		block_height = activity.getViewportHeight() / objects[0].length;
+		block_width = 9.6f / objects.length;
+		block_height = 5.2f / objects[0].length;
 		
-		object_width = width / objects.length;
-		object_height = height / objects[0].length;
-		
-		
-		Log.d("width", "block_width: " + block_width);
-		Log.d("height", "block_height: " + block_height);
+		object_width = 9.6f / objects.length;
+		object_height = 5.2f / objects[0].length;
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -95,21 +91,39 @@ public class Renderer {
 					}
 					
 					Mesh mesh;
-					mesh = new Mesh( gl, 5, false, true, false );
-					mesh.texCoord(0f, 1f);
-					mesh.vertex( i*block_width, j*block_height, 0 );
-					mesh.texCoord(1f, 1f);
-					mesh.vertex( i*block_width + object_width, j*block_height, block_height );
-					mesh.texCoord(1f, 0f);
-			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
-			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
-			        mesh.texCoord(0f, 1f);
-			        mesh.vertex( i*block_width, j*block_height, 0 );
-			       
+					mesh = new Mesh( gl, 14, false, false, false );
+			        
+					mesh.vertex(i*block_width + object_width, j*block_height, 0f);
+					
+					mesh.vertex(i*block_width, j*block_height, 0f);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height, -0.5f);
+					
+					mesh.vertex(i*block_width, j*block_height, -0.5f);
+					
+					mesh.vertex(i*block_width, j*block_height, -0.5f);
+					
+					mesh.vertex(i*block_width, j*block_height, 0);
+					
+					mesh.vertex(i*block_width, +j*block_height + object_height, 0);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height, 0f);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height + object_height, 0f);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height, -0.5f);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height + object_height, -0.5f);
+					
+					mesh.vertex(i*block_width, j*block_height + object_height, -0.5f);
+					
+					mesh.vertex(i*block_width + object_width, j*block_height + object_height, 0f);
+					
+					mesh.vertex(i*block_width, j*block_height + object_height, 0f);
+			        
 			        textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        
-			        objects[i][j].setMesh(mesh);   
+			        objects[i][j].setMesh(mesh);
 			        
 				}
 			}
@@ -118,23 +132,22 @@ public class Renderer {
 	}
 	
 	public void setPerspective(GameActivity activity, GL10 gl){
-		gl.glViewport(0, 0, activity.getViewportWidth(), activity.getViewportHeight());
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		    
+        gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
+		  gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
 		
-		gl.glMatrixMode( GL10.GL_MODELVIEW );
-        gl.glLoadIdentity();
-		
+		gl.glTranslatef(-9.3f, -4.7f, -7.3f);		
 	}
 	
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
-		block_width = activity.getViewportWidth() / objects.length;
-		block_height = activity.getViewportHeight() / objects[0].length;
+		block_width = 9.6f / objects.length;
+		block_height = 5.2f / objects[0].length;
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
