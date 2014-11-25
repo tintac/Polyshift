@@ -123,7 +123,8 @@ public class Renderer {
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glLoadIdentity();
-		GLU.gluOrtho2D( gl, 0, activity.getViewportWidth(), 0, activity.getViewportHeight());
+		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
+		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
 		
 		gl.glMatrixMode( GL10.GL_MODELVIEW );
         gl.glLoadIdentity();

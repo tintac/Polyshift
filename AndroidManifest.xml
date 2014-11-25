@@ -20,6 +20,12 @@
         <activity
             android:name=".PolyshiftActivity"
             android:label="@string/title_poly_shift" ><intent-filter>
+
+            </intent-filter>
+        </activity>
+         <activity
+            android:name=".PerspectiveSample"
+            android:label="@string/title_poly_shift" ><intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
