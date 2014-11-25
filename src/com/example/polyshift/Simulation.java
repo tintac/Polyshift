@@ -2,12 +2,16 @@ package com.example.polyshift;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class Simulation {
 	
 	final int PLAYGROUND_MAX_X = 16;
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
+	final int PLAYGROUND_POPULATE = 4;
+	final int POLYNOMIO_SIZE = 4;
 	final static String RIGHT = "right";
 	final static String LEFT = "left";
 	final static String UP = "up";
@@ -34,54 +38,92 @@ public class Simulation {
 		ArrayList<int[]>directions = new ArrayList<int[]>();
 		
 		this.objects = new GameObject[PLAYGROUND_MAX_X+1][PLAYGROUND_MAX_Y+1];
-
-		directions.add(new int[]{1,1,1,0}); //0 Horizontaler Strich positive X-Achse
-		directions.add(new int[]{2,2,2,0}); //1 Horizontaler Strich negative X-Achse//
-		directions.add(new int[]{3,3,3,0}); //2 Vertikaler Strich positive Y-Achse
-		directions.add(new int[]{4,4,4,0}); //3 Vertikaler Strich negative Y-Achse
-		directions.add(new int[]{1,1,3,0}); //4 Liegendes L nach Oben zeigend
-		directions.add(new int[]{1,1,4,0}); //5 Liegendes L nach unten zeigend
-		directions.add(new int[]{3,3,2,0}); //6 Stehendes L nach Oben zeigend
-		directions.add(new int[]{4,4,1,0}); //7 Stehendes L nach unten zeigend
-		directions.add(new int[]{1,3,1,0}); //8 S-Form liegend
-		directions.add(new int[]{3,1,3,0}); //9 S-Form stehend - rechtsknick
-		directions.add(new int[]{3,2,3,0}); //10 S-Form stehend - linksknick
-		directions.add(new int[]{1,3,4,1}); //11 Dreieck liegend - nach oben zeigend
-		directions.add(new int[]{1,4,3,1}); //12 Dreieck liegend - nach unten zeigend
-		directions.add(new int[]{3,2,1,3}); //13 Dreieck stehend - nach links zeigend
-		directions.add(new int[]{3,1,2,3}); //14 Dreieck stehend - nach rechts zeigend
-		directions.add(new int[]{1,3,2,0}); //15 Quader
 		
 		player = new Player(true);
 		setGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
 		player2 = new Player(false);
-
 		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
-
-		polynomios.add(newPolynomio(directions.get(11),7,0));
-		polynomios.add(newPolynomio(directions.get(2),7,1));
-		polynomios.add(newPolynomio(directions.get(15),9,1));
-		polynomios.add(newPolynomio(directions.get(9),8,2));
-		polynomios.add(newPolynomio(directions.get(6),10,3));
-		polynomios.add(newPolynomio(directions.get(10),8,4));
-		polynomios.add(newPolynomio(directions.get(13),8,6));
-		polynomios.add(newPolynomio(directions.get(7),9,8));
 		
-		for(int i = 0;i<polynomios.size();i++){
-			Polynomio polynomio = polynomios.get(i);
-			for(int j = 0; j< polynomio.blocks.size();j++){
-				Block block = polynomio.blocks.get(j);
-				setGameObject(polynomio, block.x, block.y);
+		
+		for(int x = (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2);x <= (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2);x++){
+			for(int y = 0;y < PLAYGROUND_MAX_Y;y++){
+				if(!(objects[x][y] instanceof GameObject)){
+					int currentPolynomioSize = 0;
+					int breakUpCounter = 0;
+					Polynomio polynomio = new Polynomio();
+					int currentX = x;
+					int currentY = y;
+					int lastX = x;
+					int lastY = y;
+					boolean canGoRight = true;
+					boolean canGoLeft = true;
+					boolean canGoUp = true;
+					boolean canGoDown = true;
+					while((currentPolynomioSize < POLYNOMIO_SIZE &&
+							canGoRight &&
+							canGoLeft &&
+							canGoUp &&
+							canGoDown)){
+						boolean free = true;
+						lastX = currentX;
+						lastY = currentY;
+						int newBlockDirection =   (int)(Math.random()*4+1);
+						if(newBlockDirection == 1 && (currentX < (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2))){
+					            currentX++;
+						}
+						else if(newBlockDirection == 2 && (currentX > (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2))){ 
+					            currentX--; 
+						}
+			            else if(newBlockDirection == 3 && (currentY < PLAYGROUND_MAX_Y)){ 
+					            currentY++;
+			            }
+			            else if(newBlockDirection == 4 && (currentY > PLAYGROUND_MIN_Y)){ 
+					            currentY--;
+				        }
+						if(!(objects[currentX][currentY] instanceof GameObject)){
+							for(int i = 0; i < polynomio.size; i++){
+								Block block = polynomio.blocks.get(i);
+								if(block.x == currentX && block.y == currentY){
+									free = false;
+									currentX = lastX;
+									currentY = lastY;
+								}
+							}
+							if(free){
+								polynomio.addBlock(new Block(currentX,currentY));
+								polynomio.blockCounter();
+								currentPolynomioSize++;
+							}
+						}else{
+							currentX = lastX;
+							currentY = lastY;
+							if(newBlockDirection == 1 ){
+					            canGoRight = false;
+							}
+							else if(newBlockDirection == 2){ 
+					            canGoLeft = false;
+							}
+							else if(newBlockDirection == 3){ 
+					            canGoUp = false;
+							}
+							else if(newBlockDirection == 4){ 
+					            canGoDown = false;
+							}
+						}
+					}
+					if (polynomio.size == POLYNOMIO_SIZE){
+						polynomios.add(polynomio);
+						for(int j = 0; j< polynomio.blocks.size();j++){
+							Block block = polynomio.blocks.get(j);
+							setGameObject(polynomio, block.x, block.y);
+						}
+					}
+				}
 			}
 		}
-		
-	}
-		
-	public Polynomio newPolynomio(int[] direction, int startX, int startY){
-		return (new Polynomio(direction, 4, startX, startY));
-
 	}
 	
+		
 	public void setGameObject(GameObject object, int x, int y){
 		objects[x][y] = object;
 	}
