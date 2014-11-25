@@ -19,6 +19,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	StartScreen startScreen;
 	EndScreen endScreen;
 	Simulation simulation;
+	GameLoop gameLoop;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,36 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		super.onCreate(savedInstanceState);
 		
 		setGameListener(this);
+		
+		Log.d( "Polyshift", "Polyshift Spiel erstellt");
 	}
 
+	public void onSaveInstanceState( Bundle outState )
+	{
+		super.onSaveInstanceState( outState );
+		Log.d( "Polyshift", "Polyshift Spielstand gespeichert" );
+	}
+
+	@Override
+	public void onPause( )
+	{
+		super.onPause();
+		Log.d( "Polyshift", "Polyshift pausiert" );
+	}
+	
+	@Override
+	public void onResume( )
+	{
+		super.onResume();		
+		Log.d( "Polyshift", "Polyshift wiederhergestellt" );
+	}	
+	
+	@Override
+	public void onDestroy( )
+	{
+		super.onDestroy();
+		Log.d( "Polyshift", "Polyshift beendet" );
+	}
 	@Override
 	public void setup(GameActivity activity, GL10 gl) {
 		
@@ -39,6 +68,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			startScreen = new StartScreen(gl, activity);
 			endScreen = new EndScreen(gl, activity);
 			simulation = new Simulation(activity);
+			gameLoop = new GameLoop();
 			renderer = new Renderer(activity, gl, simulation.objects);
 		}	
 	}
@@ -56,6 +86,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			renderer.setPerspective(activity, gl);
 			renderer.renderObjects(activity, gl, simulation.objects);
 			simulation.update(activity);
+			gameLoop.update(simulation);
 			if(simulation.hasWinner){
 				endScreen.setWinner(simulation.winner);
 				endScreen.render(gl, activity);

@@ -6,6 +6,7 @@ public class GameObject {
 	public boolean isMovingRight = false;
 	public boolean isMovingUp = false;
 	public boolean isMovingDown = false;
+	public boolean isLocked = false;
 	public String lastState = "";
 	public float movingVelocity = 0.15f;
 	public Vector block_position;
