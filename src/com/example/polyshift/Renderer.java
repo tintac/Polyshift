@@ -22,6 +22,8 @@ public class Renderer {
 	int count = 0;
 	Texture texturePlayerOne;
 	Texture texturePlayerTwo;
+	Texture texturePlayerOneLock;
+	Texture texturePlayerTwoLock;
 	Texture textureLocker;
 	
 	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
@@ -47,12 +49,16 @@ public class Renderer {
 				if(objects[i][j] instanceof Player){
 					Bitmap bitmapPlayerOne = null;
 					Bitmap bitmapPlayerTwo = null;
+					Bitmap bitmapPlayerOneLock = null;
+					Bitmap bitmapPlayerTwoLock = null;
 
 					
 					try
 					{
-					    bitmapPlayerOne = BitmapFactory.decodeStream( activity.getAssets().open( "test.png" ) );
-					    bitmapPlayerTwo = BitmapFactory.decodeStream( activity.getAssets().open( "droid2.png" ) );
+					    bitmapPlayerOne = BitmapFactory.decodeStream( activity.getAssets().open( "player1.png" ) );
+					    bitmapPlayerOneLock = BitmapFactory.decodeStream( activity.getAssets().open( "player1_lock.png" ) );
+					    bitmapPlayerTwo = BitmapFactory.decodeStream( activity.getAssets().open( "player2.png" ) );
+					    bitmapPlayerTwoLock = BitmapFactory.decodeStream( activity.getAssets().open( "player2_lock.png" ) );
 					}
 					catch( Exception ex )
 					{
@@ -73,10 +79,10 @@ public class Renderer {
 			        
 			        if(objects[i][j].isPlayerOne){
 			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
-			        	
+			        	texturePlayerOneLock = new Texture(gl, bitmapPlayerOneLock, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        }else{
 			        	texturePlayerTwo = new Texture(gl, bitmapPlayerTwo, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
-			        	
+			        	texturePlayerTwoLock = new Texture(gl, bitmapPlayerTwoLock, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        }
 			        
 			        objects[i][j].setMesh(mesh);
@@ -140,14 +146,14 @@ public class Renderer {
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
 						if(objects[i][j].isLocked){
-							textureLocker.bind();
+							texturePlayerOneLock.bind();
 						}
 						else{
 							texturePlayerOne.bind();
 						}
 					}else{
 						if(objects[i][j].isLocked){
-							textureLocker.bind();
+							texturePlayerTwoLock.bind();
 						}
 						else{
 							texturePlayerTwo.bind();
