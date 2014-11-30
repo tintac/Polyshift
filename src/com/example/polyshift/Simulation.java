@@ -2,6 +2,8 @@ package com.example.polyshift;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class Simulation {
 	
 	final int PLAYGROUND_MAX_X = 16;
@@ -286,6 +288,7 @@ public class Simulation {
 			moveObject(x, y, direction);
 			if(direction.equals(RIGHT)){
 				x++;
+				Log.d("test", "x: " + x);
 			}
 			else if(direction.equals(LEFT)){
 				x--;

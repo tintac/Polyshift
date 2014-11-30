@@ -15,7 +15,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	Player player;
 	Player player2;
 	Polynomio poly;
-	Renderer renderer;
+	Renderer3D renderer;
 	StartScreen startScreen;
 	EndScreen endScreen;
 	Simulation simulation;
@@ -69,7 +69,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			endScreen = new EndScreen(gl, activity);
 			simulation = new Simulation(activity);
 			gameLoop = new GameLoop();
-			renderer = new Renderer(activity, gl, simulation.objects);
+			renderer = new Renderer3D(activity, gl, simulation.objects);
 		}	
 	}
 	  
@@ -84,6 +84,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		}
 		else{
 			renderer.setPerspective(activity, gl);
+			renderer.enableCoordinates(gl, simulation.objects);
 			renderer.renderObjects(activity, gl, simulation.objects);
 			simulation.update(activity);
 			gameLoop.update(simulation);

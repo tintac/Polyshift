@@ -1,5 +1,7 @@
 package com.example.polyshift;
 
+import java.util.ArrayList;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import com.example.polyshift.Mesh.PrimitiveType;
@@ -13,30 +15,30 @@ import android.opengl.GLU;
 import android.util.Log;
 import android.view.Display;
 
-public class Renderer {
+public class Renderer3D {
 	
 	float block_width;
 	float block_height;
 	float object_width;
 	float object_height;
+	float object_depth;
+	float width = 17f;
+	float height = 10f;
 	int count = 0;
 	Texture texturePlayerOne;
 	Texture texturePlayerTwo;
 	Texture textureLocker;
+	private ArrayList<Mesh> coordinates_list;
 	
-	public Renderer(GameActivity activity, GL10 gl, GameObject[][] objects){
+	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
+				
+		block_width = width / objects.length;
+		block_height = height / objects[0].length;
 		
-		Display display = activity.getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
+		object_width = width / objects.length;
+		object_height = height / objects[0].length;
 		
-		block_width = 9.6f / objects.length;
-		block_height = 5.2f / objects[0].length;
-		
-		object_width = 9.6f / objects.length;
-		object_height = 5.2f / objects[0].length;
+		object_depth = -0.5f;
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -59,13 +61,13 @@ public class Renderer {
 					Mesh mesh;
 					mesh = new Mesh( gl, 4, false, true, false );				
 					mesh.texCoord(0f, 1f);
-					mesh.vertex( i*block_width, j*block_height, 0 );
+					mesh.vertex( i/32*block_width, j/8*block_height, object_depth );
 					mesh.texCoord(1f, 1f);
-			        mesh.vertex( i*block_width + object_width, j*block_height, 0 );
+			        mesh.vertex( i/32*block_width + object_width, j/8*block_height, object_depth );
 			        mesh.texCoord(1f, 0f);
-			        mesh.vertex( i*block_width + object_width, j*block_height + object_height, 0 );
+			        mesh.vertex( i/32*block_width + object_width, j/8*block_height + object_height, object_depth );
 			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i*block_width, j*block_height + object_height, 0 );
+			        mesh.vertex( i/32*block_width, j/8*block_height + object_height, object_depth );
 			        
 			        if(objects[i][j].isPlayerOne){
 			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -91,35 +93,39 @@ public class Renderer {
 					}
 					
 					Mesh mesh;
-					mesh = new Mesh( gl, 14, false, false, false );
+					mesh = new Mesh( gl, 16, false, false, false );
 			        
-					mesh.vertex(i*block_width + object_width, j*block_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
 					
-					mesh.vertex(i*block_width, j*block_height, 0f);
+					mesh.vertex(i/32*block_width, j/8*block_height, 0f);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height, -0.5f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
 					
-					mesh.vertex(i*block_width, j*block_height, -0.5f);
+					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
 					
-					mesh.vertex(i*block_width, j*block_height, -0.5f);
+					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
 					
-					mesh.vertex(i*block_width, j*block_height, 0);
+					mesh.vertex(i/32*block_width, j/8*block_height, 0);
 					
-					mesh.vertex(i*block_width, +j*block_height + object_height, 0);
+					mesh.vertex(i/32*block_width, +j/8*block_height + object_height, 0);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height, -0.5f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height + object_height, -0.5f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, object_depth);
 					
-					mesh.vertex(i*block_width, j*block_height + object_height, -0.5f);
+					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
 					
-					mesh.vertex(i*block_width + object_width, j*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
 					
-					mesh.vertex(i*block_width, j*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width, j/8*block_height + object_height, 0f);
+					
+					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
+					
+					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
 			        
 			        textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        
@@ -134,20 +140,25 @@ public class Renderer {
 	public void setPerspective(GameActivity activity, GL10 gl){
 		    
         gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
-		  gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT  | GL10.GL_DEPTH_BUFFER_BIT);
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
 		
-		gl.glTranslatef(-9.3f, -4.7f, -7.3f);		
+		gl.glTranslatef(-8.5f, -5.0f, -7.3f);	
+		
+	    gl.glEnable(GL10.GL_DEPTH_TEST);
 	}
 	
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
-		block_width = 9.6f / objects.length;
-		block_height = 5.2f / objects[0].length;
+		if(coordinates_list != null){
+			for(Mesh mesh : coordinates_list){
+				mesh.render( PrimitiveType.Lines );
+			}
+		}
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -254,7 +265,7 @@ public class Renderer {
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Polynomio polynomio = (Polynomio) objects[i][j];
-					if(polynomio.isLocked){
+					/*if(polynomio.isLocked){
 						gl.glEnable( GL10.GL_TEXTURE_2D );
 						gl.glEnable(GL10.GL_BLEND);
 						gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
@@ -268,16 +279,39 @@ public class Renderer {
 						gl.glDisable(GL10.GL_BLEND);
 						gl.glDisable( GL10.GL_TEXTURE_2D );
 					}
-					else{
+					else{*/
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
 						gl.glPushMatrix();
 						gl.glTranslatef(i*block_width, j*block_height, 0 );
 						objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
 						gl.glPopMatrix();
 						gl.glColor4f(1, 1, 1, 1);
-					}
+					//}
 				}
 			}
+		}
+	}
+	
+	public void enableCoordinates(GL10 gl, GameObject[][] objects){
+		coordinates_list = new ArrayList<Mesh>();
+		
+		for(int x = 0; x < objects.length + 1; x++){
+			Mesh mesh = new Mesh(gl, 2, true, false, false);
+			mesh.color( 0, 1, 0, 1 );
+			mesh.vertex( block_width * x, 0, object_depth );
+			mesh.color( 0, 1, 0, 1 );
+			mesh.vertex( block_width * x, block_height * objects[0].length, object_depth );
+			mesh.render( PrimitiveType.Lines );
+			coordinates_list.add(mesh);
+		}
+		for(int y = 0; y < objects[0].length + 1; y++){
+			Mesh mesh = new Mesh(gl, 2, true, false, false);
+			mesh.color( 0, 1, 0, 1 );
+			mesh.vertex( 0, block_height * y, object_depth);
+			mesh.color( 0, 1, 0, 1 );
+			mesh.vertex( block_width * objects.length, block_height * y, object_depth );
+			mesh.render( PrimitiveType.Lines );
+			coordinates_list.add(mesh);
 		}
 	}
 }
