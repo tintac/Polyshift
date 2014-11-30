@@ -44,86 +44,92 @@ public class Simulation {
 		player2 = new Player(false);
 		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
 		
-		
-		for(int x = (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2);x <= (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2);x++){
-			for(int y = 0;y < PLAYGROUND_MAX_Y;y++){
-				if(!(objects[x][y] instanceof GameObject)){
-					int currentPolynomioSize = 0;
-					int breakUpCounter = 0;
-					Polynomio polynomio = new Polynomio();
-					int currentX = x;
-					int currentY = y;
-					int lastX = x;
-					int lastY = y;
-					boolean canGoRight = true;
-					boolean canGoLeft = true;
-					boolean canGoUp = true;
-					boolean canGoDown = true;
-					while((currentPolynomioSize < POLYNOMIO_SIZE &&
-							canGoRight &&
-							canGoLeft &&
-							canGoUp &&
-							canGoDown)){
-						boolean free = true;
-						lastX = currentX;
-						lastY = currentY;
-						int newBlockDirection =   (int)(Math.random()*4+1);
-						if(newBlockDirection == 1 && (currentX < (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2))){
-					            currentX++;
-						}
-						else if(newBlockDirection == 2 && (currentX > (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2))){ 
-					            currentX--; 
-						}
-			            else if(newBlockDirection == 3 && (currentY < PLAYGROUND_MAX_Y)){ 
-					            currentY++;
-			            }
-			            else if(newBlockDirection == 4 && (currentY > PLAYGROUND_MIN_Y)){ 
-					            currentY--;
-				        }
-						if(!(objects[currentX][currentY] instanceof GameObject)){
-							for(int i = 0; i < polynomio.size; i++){
-								Block block = polynomio.blocks.get(i);
-								if(block.x == currentX && block.y == currentY){
-									free = false;
-									currentX = lastX;
-									currentY = lastY;
+		int a = 0;
+		while(a<10){
+			for(int x = (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2);x <= (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2);x++){
+				for(int y = 0;y < PLAYGROUND_MAX_Y;y++){
+					if(!(objects[x][y] instanceof GameObject)){
+						int currentPolynomioSize = 0;
+						Polynomio polynomio = new Polynomio();
+						int currentX = x;
+						int currentY = y;
+						int lastX = x;
+						int lastY = y;
+						boolean canGoRight = true;
+						boolean canGoLeft = true;
+						boolean canGoUp = true;
+						boolean canGoDown = true;
+						while(currentPolynomioSize < POLYNOMIO_SIZE &&
+								canGoRight &&
+								canGoLeft &&
+								canGoUp &&
+								canGoDown){
+							boolean free = true;
+							lastX = currentX;
+							lastY = currentY;
+							int newBlockDirection =   (int)(Math.random()*4+1);
+							if(newBlockDirection == 1 && (currentX < (PLAYGROUND_MAX_X/2)+(PLAYGROUND_POPULATE/2))){
+						            currentX++;
+							}
+							else if(newBlockDirection == 2 && (currentX > (PLAYGROUND_MAX_X/2)-(PLAYGROUND_POPULATE/2))){ 
+						            currentX--; 
+							}
+				            else if(newBlockDirection == 3 && (currentY < PLAYGROUND_MAX_Y)){ 
+						            currentY++;
+				            }
+				            else if(newBlockDirection == 4 && (currentY > PLAYGROUND_MIN_Y)){ 
+						            currentY--;
+					        }
+							if(!(objects[currentX][currentY] instanceof GameObject)){
+								for(int i = 0; i < polynomio.size; i++){
+									Block block = polynomio.blocks.get(i);
+									if(block.x == currentX && block.y == currentY){
+										free = false;
+										currentX = lastX;
+										currentY = lastY;
+									}
+								}
+								if(free){
+									polynomio.addBlock(new Block(currentX,currentY));
+									polynomio.blockCounter();
+									currentPolynomioSize++;
+								}
+							}else{
+								currentX = lastX;
+								currentY = lastY;
+								if(newBlockDirection == 1 ){
+						            canGoRight = false;
+								}
+								else if(newBlockDirection == 2){ 
+						            canGoLeft = false;
+								}
+								else if(newBlockDirection == 3){ 
+						            canGoUp = false;
+								}
+								else if(newBlockDirection == 4){ 
+						            canGoDown = false;
 								}
 							}
-							if(free){
-								polynomio.addBlock(new Block(currentX,currentY));
-								polynomio.blockCounter();
-								currentPolynomioSize++;
-							}
-						}else{
-							currentX = lastX;
-							currentY = lastY;
-							if(newBlockDirection == 1 ){
-					            canGoRight = false;
-							}
-							else if(newBlockDirection == 2){ 
-					            canGoLeft = false;
-							}
-							else if(newBlockDirection == 3){ 
-					            canGoUp = false;
-							}
-							else if(newBlockDirection == 4){ 
-					            canGoDown = false;
-							}
 						}
-					}
-					if (polynomio.size == POLYNOMIO_SIZE){
-						polynomios.add(polynomio);
-						for(int j = 0; j< polynomio.blocks.size();j++){
-							Block block = polynomio.blocks.get(j);
-							setGameObject(polynomio, block.x, block.y);
+						if (polynomio.size == POLYNOMIO_SIZE){
+							polynomios.add(polynomio);
+							for(int j = 0; j< polynomio.blocks.size();j++){
+								Block block = polynomio.blocks.get(j);
+								setGameObject(polynomio, block.x, block.y);
+							}
 						}
 					}
 				}
 			}
+		a++;
 		}
+		
+		
+		
 	}
 	
 		
+	
 	public void setGameObject(GameObject object, int x, int y){
 		objects[x][y] = object;
 	}
