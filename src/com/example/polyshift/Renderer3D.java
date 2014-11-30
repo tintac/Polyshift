@@ -49,7 +49,7 @@ public class Renderer3D {
 					
 					try
 					{
-					    bitmapPlayerOne = BitmapFactory.decodeStream( activity.getAssets().open( "droid.png" ) );
+					    bitmapPlayerOne = BitmapFactory.decodeStream( activity.getAssets().open( "test.png" ) );
 					    bitmapPlayerTwo = BitmapFactory.decodeStream( activity.getAssets().open( "droid2.png" ) );
 					}
 					catch( Exception ex )

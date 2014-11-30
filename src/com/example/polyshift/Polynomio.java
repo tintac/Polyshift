@@ -8,23 +8,21 @@ import android.util.Log;
 public class Polynomio extends GameObject {
 	
 	public ArrayList<Block>blocks = new ArrayList<Block>();
-
-	private int size;
+	public int size = 0;
 	
-	public Polynomio(int [] direction, int size, int startX, int startY){
-		this.size = size;
+	public Polynomio(){
 		colors[0] = (float)Math.random();
 		colors[1] = (float)Math.random();
 		colors[2] = (float)Math.random();
 		colors[3] = (float)Math.random();
-		populate(direction,startX,startY);
+		//populate(direction,startX,startY);
 	}
 	
-	private void addBlock(int x, int y){
-		Block block = new Block(x, y);
+	public void addBlock(Block block){
 		blocks.add(block);
 	}
 	
+	/*
 	public void populate(int[]direction,int startX, int startY){
 		int x = startX;
 		int y = startY;
@@ -47,6 +45,8 @@ public class Polynomio extends GameObject {
 			}
 		}
 	}
+	
+	*/
 	public void sortBlocks(String direction){
 		if(direction.equals("left")){
 			Collections.sort(blocks);
@@ -60,6 +60,10 @@ public class Polynomio extends GameObject {
 		if(direction.equals("down")){
 			Collections.sort(blocks, new BlockComparator());
 		}
+	}
+
+	public void blockCounter() {
+		this.size++;
 	}
 	
 }
