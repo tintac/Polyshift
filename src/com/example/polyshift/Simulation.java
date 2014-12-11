@@ -10,7 +10,7 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
-	final int PLAYGROUND_POPULATE = 4;
+	final int PLAYGROUND_POPULATE = 9;
 	final int POLYNOMIO_SIZE = 4;
 	final static String RIGHT = "right";
 	final static String LEFT = "left";
@@ -21,6 +21,7 @@ public class Simulation {
 	public Player player;
 	public Player player2;
 	public Player winner;
+	
 	
 	ArrayList<Polynomio>polynomios = new ArrayList<Polynomio>();
 	
@@ -36,7 +37,17 @@ public class Simulation {
 	public void populate(){
 		
 		ArrayList<int[]>directions = new ArrayList<int[]>();
-		
+		ArrayList<float[]> colors = new ArrayList<float[]>();
+		float[] color1 = {(51f/255f),(77f/255),92f/255f,1f};
+		float[] color2 = {(71f/255f),(176f/255f),(156f/255f),1f};
+		float[] color3 = {(239f/255f),(201f/255f),(76f/255f),1f};
+		float[] color4 = {(226f/255f),(122f/255f),(65f/255f),1f};
+		float[] color5 = {(223f/255f),(73f/255f),(73f/255f),1f};
+		colors.add(color1);
+		colors.add(color2);
+		colors.add(color3);
+		colors.add(color4);
+		colors.add(color5);
 		this.objects = new GameObject[PLAYGROUND_MAX_X+1][PLAYGROUND_MAX_Y+1];
 		
 		player = new Player(true);
@@ -50,7 +61,8 @@ public class Simulation {
 				for(int y = 0;y < PLAYGROUND_MAX_Y;y++){
 					if(!(objects[x][y] instanceof GameObject)){
 						int currentPolynomioSize = 0;
-						Polynomio polynomio = new Polynomio();
+						int randomColor =  (int)(Math.random()*colors.size());
+						Polynomio polynomio = new Polynomio(colors.get(randomColor));
 						int currentX = x;
 						int currentY = y;
 						int lastX = x;
@@ -128,6 +140,7 @@ public class Simulation {
 		
 	}
 	
+	
 		
 	
 	public void setGameObject(GameObject object, int x, int y){
@@ -179,6 +192,7 @@ public class Simulation {
 			}
 		}
 	}
+	
 	public void moveObject(int x, int y, String direction){
 		
 		if(objects[x][y] != null){

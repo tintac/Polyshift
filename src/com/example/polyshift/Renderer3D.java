@@ -21,6 +21,7 @@ public class Renderer3D extends Renderer {
 	float width = 17f;
 	float height = 10f;
 	
+	
 	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
 		block_width = width / objects.length;
@@ -56,13 +57,13 @@ public class Renderer3D extends Renderer {
 					Mesh mesh;
 					mesh = new Mesh( gl, 4, false, true, false );				
 					mesh.texCoord(0f, 1f);
-					mesh.vertex( i/32*block_width, j/8*block_height, object_depth );
+					mesh.vertex( i/32*block_width, j/16*block_height, object_depth );
 					mesh.texCoord(1f, 1f);
-			        mesh.vertex( i/32*block_width + object_width, j/8*block_height, object_depth );
+			        mesh.vertex( i/32*block_width + object_width, j/16*block_height, object_depth );
 			        mesh.texCoord(1f, 0f);
-			        mesh.vertex( i/32*block_width + object_width, j/8*block_height + object_height, object_depth );
+			        mesh.vertex( i/32*block_width + object_width, j/16*block_height + object_height, object_depth );
 			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i/32*block_width, j/8*block_height + object_height, object_depth );
+			        mesh.vertex( i/32*block_width, j/16*block_height + object_height, object_depth );
 			        
 			        if(objects[i][j].isPlayerOne){
 			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -90,37 +91,37 @@ public class Renderer3D extends Renderer {
 					Mesh mesh;
 					mesh = new Mesh( gl, 16, false, false, false );
 			        
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height, 0f);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height, 0f);
+					mesh.vertex(i/32*block_width, j/16*block_height, 0f);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height, object_depth);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
+					mesh.vertex(i/32*block_width, j/16*block_height, object_depth);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
+					mesh.vertex(i/32*block_width, j/16*block_height, object_depth);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height, 0);
+					mesh.vertex(i/32*block_width, j/16*block_height, 0);
 					
-					mesh.vertex(i/32*block_width, +j/8*block_height + object_height, 0);
+					mesh.vertex(i/32*block_width, +j/16*block_height + object_height, 0);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height, 0f);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height + object_height, 0f);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height, object_depth);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, object_depth);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height + object_height, object_depth);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
+					mesh.vertex(i/32*block_width, j/16*block_height + object_height, object_depth);
 					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width + object_width, j/16*block_height + object_height, 0f);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, 0f);
+					mesh.vertex(i/32*block_width, j/16*block_height + object_height, 0f);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
+					mesh.vertex(i/32*block_width, j/16*block_height + object_height, object_depth);
 					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
+					mesh.vertex(i/32*block_width, j/16*block_height, object_depth);
 			        
 			        textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			        
