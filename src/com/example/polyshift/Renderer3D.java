@@ -1,18 +1,18 @@
 package com.example.polyshift;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.GLU;
+import android.util.Log;
 
 import com.example.polyshift.Mesh.PrimitiveType;
 import com.example.polyshift.Texture.TextureFilter;
 import com.example.polyshift.Texture.TextureWrap;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.opengl.GLU;
-import android.util.Log;
-import android.view.Display;
+import com.example.polyshift.Tools.MeshLoader;
 
 public class Renderer3D extends Renderer {
 	
@@ -20,6 +20,7 @@ public class Renderer3D extends Renderer {
 	float width = 16.6f;
 	float height = 9.8f;
 	int count;
+	
 	
 	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -36,6 +37,21 @@ public class Renderer3D extends Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
+					
+					
+					try {
+						Mesh mesh;
+						mesh = MeshLoader.loadObj(gl, activity.getAssets().open( "kugel.obj" ) );
+						
+						objects[i][j].setMesh(mesh);
+						
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					/*
 					Bitmap bitmapPlayerOne = null;
 					Bitmap bitmapPlayerTwo = null;
 					Bitmap bitmapPlayerOneLock = null;
@@ -58,13 +74,13 @@ public class Renderer3D extends Renderer {
 					Mesh mesh;
 					mesh = new Mesh( gl, 4, false, true, false );				
 					mesh.texCoord(0f, 1f);
-					mesh.vertex( i/32*block_width, j/16*block_height, object_depth );
+					mesh.vertex( block.x*block_width, block.y*block_height, object_depth );
 					mesh.texCoord(1f, 1f);
-			        mesh.vertex( i/32*block_width + object_width, j/16*block_height, object_depth );
+			        mesh.vertex( block.x*block_width + object_width, block.y*block_height, object_depth );
 			        mesh.texCoord(1f, 0f);
-			        mesh.vertex( i/32*block_width + object_width, j/16*block_height + object_height, object_depth );
+			        mesh.vertex( block.x*block_width + object_width, block.y*block_height + object_height, object_depth );
 			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i/32*block_width, j/16*block_height + object_height, object_depth );
+			        mesh.vertex( block.x*block_width, block.y*block_height + object_height, object_depth );
 			        
 			        if(objects[i][j].isPlayerOne){
 			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -75,6 +91,8 @@ public class Renderer3D extends Renderer {
 			        }
 			        
 			        objects[i][j].setMesh(mesh);
+			        
+			        */
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Log.d("test", "i :" + i + "j:" + j);
@@ -98,38 +116,38 @@ public class Renderer3D extends Renderer {
 					Polynomio polynomio = (Polynomio)objects[i][j];
 					for(Block block : polynomio.blocks){
 	
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //1
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f);
 						
-						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //2
+						mesh.vertex(block.x*block_width, block.y*block_height, 0f);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth);
 						
-						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
+						mesh.vertex(block.x*block_width, block.y*block_height, object_depth);
 						
-						mesh.vertex(block.x*block_width, +block.y*block_height + object_height, object_depth); //5
+						mesh.vertex(block.x*block_width, block.y*block_height, object_depth);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //6
+						mesh.vertex(block.x*block_width, block.y*block_height, 0);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //7
+						mesh.vertex(block.x*block_width, +block.y*block_height + object_height, 0);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //8
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //9
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f);
 						
-						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //10
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth);
 						
-						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //11
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth);
 						
-						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //12
+						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth);
 						
-						mesh.vertex(block.x*block_width, +block.y*block_height + object_height, object_depth); //13
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //14
-				        
-						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //15
+						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f);
 						
-						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //16
-			        
+						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth);
+						
+						mesh.vertex(block.x*block_width, block.y*block_height, object_depth);
+       
 					}
 					textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			       
@@ -149,9 +167,8 @@ public class Renderer3D extends Renderer {
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
-		
-		gl.glTranslatef(-8.3f, -4.9f, -7.3f);	
-		
+
+		gl.glTranslatef(-8.5f, -5.0f, -7.3f);		
 	}
 	
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
@@ -167,17 +184,17 @@ public class Renderer3D extends Renderer {
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
 						if(objects[i][j].isLocked){
-							texturePlayerOneLock.bind();
+							gl.glColor4f(1f,0f,0f,1f);
 						}
 						else{
-							texturePlayerOne.bind();
+							gl.glColor4f(1f,0f,0f,1f);
 						}
 					}else{
 						if(objects[i][j].isLocked){
-							texturePlayerTwoLock.bind();
+							gl.glColor4f(1f,1f,0f,1f);
 						}
 						else{
-							texturePlayerTwo.bind();
+							gl.glColor4f(1f,1f,0f,1f);
 						}
 					}
 					if(objects[i][j].isMovingLeft){
@@ -185,12 +202,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
 						}
 						if(objects[i][j].pixel_position.x > i*block_width){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],objects[i][j].pixel_position.x, j*block_height, 0 );
 							objects[i][j].pixel_position.x -= block_width * objects[i][j].movingVelocity;
 						}
 						else{
@@ -204,12 +216,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
 						}
 						if(objects[i][j].pixel_position.x < i*block_width){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],objects[i][j].pixel_position.x, j*block_height, 0 );
 							objects[i][j].pixel_position.x += block_width * objects[i][j].movingVelocity;
 						}
 						else{
@@ -223,12 +230,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
 						}
 						if(objects[i][j].pixel_position.y < j*block_height){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],i*block_width,objects[i][j].pixel_position.y, 0 );
 							objects[i][j].pixel_position.y += block_height * objects[i][j].movingVelocity;
 						}
 						else{
@@ -242,12 +244,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
 						}
 						if(objects[i][j].pixel_position.y > j*block_height){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],i*block_width,objects[i][j].pixel_position.y, 0 );
 							objects[i][j].pixel_position.y -= block_height * objects[i][j].movingVelocity;
 						}
 						else{
@@ -257,12 +254,7 @@ public class Renderer3D extends Renderer {
 						}
 					}
 					else{
-						gl.glEnable( GL10.GL_TEXTURE_2D );
-						gl.glPushMatrix();
-						gl.glTranslatef(i*block_width, j*block_height, 0 );
-						objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-						gl.glPopMatrix();
-						gl.glDisable( GL10.GL_TEXTURE_2D );
+						renderPlayer(gl, objects[i][j],i*block_width, j*block_height, 0 );
 					}
 				}
 				if(objects[i][j] instanceof Polynomio){
@@ -309,6 +301,16 @@ public class Renderer3D extends Renderer {
 				}
 			}
 		}
+	}
+	
+	public void renderPlayer(GL10 gl, GameObject player, float x, float y, float z){
+		gl.glEnable(GL10.GL_NORMALIZE);
+		gl.glPushMatrix();
+		gl.glTranslatef(x,y,z );
+		gl.glScalef(0.5f,0.5f,0.5f);
+		player.getMesh().render(PrimitiveType.TriangleFan);
+		gl.glPopMatrix();
+		gl.glDisable(GL10.GL_NORMALIZE);
 	}
 	
 	public void enableCoordinates(GL10 gl, GameObject[][] objects){
@@ -366,15 +368,13 @@ public class Renderer3D extends Renderer {
 		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
 		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
 		//gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+		gl.glEnable(GL10.GL_NORMALIZE);
+		
 		gl.glEnable(GL10.GL_LIGHTING);
         gl.glEnable(GL10.GL_LIGHT0);
 	    
 	    gl.glShadeModel(GL10.GL_SMOOTH);
 	    
 	    gl.glEnable(GL10.GL_COLOR_MATERIAL);
-	    
-	    gl.glEnable(GL10.GL_NORMALIZE);
-		
-		
 	}
 }
