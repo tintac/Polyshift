@@ -300,7 +300,12 @@ public class Simulation {
 	public void movePolynomio(int x, int y, String direction){
 		boolean collision = false;
 		Polynomio polynomio = (Polynomio) objects[x][y];
+		polynomio.block_position = new Vector(x,y,0);
 		polynomio.sortBlocks(direction);
+		polynomio.blocks.get(3).block_position.x = polynomio.blocks.get(3).x;
+		polynomio.blocks.get(0).block_position.x = polynomio.blocks.get(0).x;
+		polynomio.blocks.get(3).block_position.y = polynomio.blocks.get(3).y;
+		polynomio.blocks.get(0).block_position.y = polynomio.blocks.get(0).y;
 		while(!collision){
 			for(int i = 0; i < polynomio.blocks.size(); i++){
 				if(predictCollision(polynomio.blocks.get(i).x, polynomio.blocks.get(i).y, direction)){
@@ -334,7 +339,6 @@ public class Simulation {
 			moveObject(x, y, direction);
 			if(direction.equals(RIGHT)){
 				x++;
-				Log.d("test", "x: " + x);
 			}
 			else if(direction.equals(LEFT)){
 				x--;
@@ -351,7 +355,7 @@ public class Simulation {
 	public void checkPlayerPosition(){
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[0].length; j++){
-				if(lastMovedObject != null && objects[i][j] == lastMovedObject){
+				if(lastMovedObject != null && objects[i][j] == lastMovedObject && objects[i][j] instanceof Player){
 					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
 						if(objects[i][j].isPlayerOne && i == PLAYGROUND_MAX_X){
 							setWinner((Player) objects[i][j]);

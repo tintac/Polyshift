@@ -34,4 +34,6 @@ public abstract class Renderer {
 	public abstract void setPerspective(GameActivity activity, GL10 gl);
 	
 	public abstract void enableCoordinates(GL10 gl, GameObject[][] objects);
+	
+	public abstract void renderLight(GL10 gl, GameObject[][] objects);
 }

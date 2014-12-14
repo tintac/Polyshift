@@ -8,8 +8,9 @@ public class Block extends GameObject implements Comparable<Block>{
 	
 	public Block(int x, int y){
 		this.x = x;
-		this.y = y;
-		
+		this.y = y;	
+		this.pixel_position = new Vector(0,0,0);
+		this.block_position = new Vector(0,0,0);
 	}
 
 	@Override

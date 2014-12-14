@@ -9,12 +9,14 @@ public class Polynomio extends GameObject {
 	
 	public ArrayList<Block>blocks = new ArrayList<Block>();
 	public int size = 0;
+	public Vector block_position;
+	public Vector pixel_position = new Vector(0,0,0);
 	
 	public Polynomio(){
 		colors[0] = (float)Math.random();
 		colors[1] = (float)Math.random();
 		colors[2] = (float)Math.random();
-		colors[3] = (float)Math.random();
+		colors[3] = 1f;
 		//populate(direction,startX,startY);
 	}
 	

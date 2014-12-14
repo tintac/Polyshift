@@ -1,7 +1,6 @@
 package com.example.polyshift;
 
 import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import com.example.polyshift.Mesh.PrimitiveType;
@@ -18,8 +17,9 @@ import android.view.Display;
 public class Renderer3D extends Renderer {
 	
 	float object_depth;
-	float width = 17f;
-	float height = 10f;
+	float width = 16.6f;
+	float height = 9.8f;
+	int count;
 	
 	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
@@ -30,6 +30,8 @@ public class Renderer3D extends Renderer {
 		object_height = height / objects[0].length;
 		
 		object_depth = -0.5f;
+		
+		gl.glEnable(GL10.GL_DEPTH_TEST);
 		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
@@ -56,13 +58,13 @@ public class Renderer3D extends Renderer {
 					Mesh mesh;
 					mesh = new Mesh( gl, 4, false, true, false );				
 					mesh.texCoord(0f, 1f);
-					mesh.vertex( i/32*block_width, j/8*block_height, object_depth );
+					mesh.vertex( i/32*block_width, j/16*block_height, object_depth );
 					mesh.texCoord(1f, 1f);
-			        mesh.vertex( i/32*block_width + object_width, j/8*block_height, object_depth );
+			        mesh.vertex( i/32*block_width + object_width, j/16*block_height, object_depth );
 			        mesh.texCoord(1f, 0f);
-			        mesh.vertex( i/32*block_width + object_width, j/8*block_height + object_height, object_depth );
+			        mesh.vertex( i/32*block_width + object_width, j/16*block_height + object_height, object_depth );
 			        mesh.texCoord(0f, 0f);
-			        mesh.vertex( i/32*block_width, j/8*block_height + object_height, object_depth );
+			        mesh.vertex( i/32*block_width, j/16*block_height + object_height, object_depth );
 			        
 			        if(objects[i][j].isPlayerOne){
 			        	texturePlayerOne = new Texture(gl, bitmapPlayerOne, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -75,6 +77,9 @@ public class Renderer3D extends Renderer {
 			        objects[i][j].setMesh(mesh);
 				}
 				if(objects[i][j] instanceof Polynomio){
+					Log.d("test", "i :" + i + "j:" + j);
+					count ++;
+					Log.d("test", "count: " + count);
 					Bitmap bitmapLocker = null;
 					
 					try
@@ -88,53 +93,56 @@ public class Renderer3D extends Renderer {
 					}
 					
 					Mesh mesh;
-					mesh = new Mesh( gl, 16, false, false, false );
+					mesh = new Mesh( gl, 64, false, false, false );
+					
+					Polynomio polynomio = (Polynomio)objects[i][j];
+					for(Block block : polynomio.blocks){
+	
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //1
+						
+						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //2
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
+						
+						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
+						
+						mesh.vertex(block.x*block_width, +block.y*block_height + object_height, object_depth); //5
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //6
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //7
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //8
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //9
+						
+						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //10
+						
+						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //11
+						
+						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //12
+						
+						mesh.vertex(block.x*block_width, +block.y*block_height + object_height, object_depth); //13
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //14
+				        
+						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //15
+						
+						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //16
 			        
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height, 0f);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height, 0);
-					
-					mesh.vertex(i/32*block_width, +j/8*block_height + object_height, 0);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, 0f);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height, object_depth);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, object_depth);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
-					
-					mesh.vertex(i/32*block_width + object_width, j/8*block_height + object_height, 0f);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, 0f);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height + object_height, object_depth);
-					
-					mesh.vertex(i/32*block_width, j/8*block_height, object_depth);
-			        
-			        textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
-			        
-			        objects[i][j].setMesh(mesh);
-			        
+					}
+					textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
+			       
+					objects[i][j].setMesh(mesh);
 				}
 			}
 		}
 		
 	}
 	
-	public void setPerspective(GameActivity activity, GL10 gl){
-		    
+	public void setPerspective(GameActivity activity, GL10 gl){    
         gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
+        gl.glClearColor( 0.50f, 0.50f, 0.50f, 0.0f );
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT  | GL10.GL_DEPTH_BUFFER_BIT);
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
@@ -142,9 +150,8 @@ public class Renderer3D extends Renderer {
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
 		
-		gl.glTranslatef(-8.5f, -5.0f, -7.3f);	
+		gl.glTranslatef(-8.3f, -4.9f, -7.3f);	
 		
-	    gl.glEnable(GL10.GL_DEPTH_TEST);
 	}
 	
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
@@ -260,28 +267,45 @@ public class Renderer3D extends Renderer {
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Polynomio polynomio = (Polynomio) objects[i][j];
-					/*if(polynomio.isLocked){
-						gl.glEnable( GL10.GL_TEXTURE_2D );
-						gl.glEnable(GL10.GL_BLEND);
-						gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
-						textureLocker.bind();
-						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
-						gl.glPushMatrix();
-						gl.glTranslatef(i*block_width, j*block_height, 0 );
-						objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-						gl.glPopMatrix();
-						gl.glColor4f(1, 1, 1, 1);
-						gl.glDisable(GL10.GL_BLEND);
-						gl.glDisable( GL10.GL_TEXTURE_2D );
+					if(polynomio.isMovingRight){
+						polynomio.pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
+						polynomio.isMovingRight = false;
 					}
-					else{*/
-						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
-						gl.glPushMatrix();
-						gl.glTranslatef(i*block_width, j*block_height, 0 );
-						objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
-						gl.glPopMatrix();
-						gl.glColor4f(1, 1, 1, 1);
-					//}
+					else if(polynomio.isMovingLeft){
+						polynomio.pixel_position.x += (i - polynomio.blocks.get(0).block_position.x) * block_width;
+						polynomio.isMovingLeft = false;
+					}
+					else if(polynomio.isMovingUp){
+						polynomio.pixel_position.y += (j - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.y) * block_height;
+						polynomio.isMovingUp = false;
+					}
+					else if(polynomio.isMovingDown){
+						polynomio.pixel_position.y += (j - polynomio.blocks.get(0).block_position.y) * block_height;
+						polynomio.isMovingDown = false;
+					}
+					else{
+						if(polynomio.isLocked){
+							//gl.glEnable(GL10.GL_BLEND);
+							//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+							gl.glPushMatrix();
+							gl.glTranslatef(polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+							polynomio.getMesh().render(PrimitiveType.TriangleStrip);
+							gl.glPopMatrix();
+							gl.glColor4f(1, 1, 1, 1);
+							//gl.glDisable(GL10.GL_BLEND);
+						}
+						else{
+							//gl.glEnable(GL10.GL_BLEND);
+							//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+							gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
+							gl.glPushMatrix();
+							gl.glTranslatef(polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+							polynomio.getMesh().render(PrimitiveType.TriangleStrip);
+							gl.glPopMatrix();
+							gl.glColor4f(1, 1, 1, 1);
+							//gl.glDisable(GL10.GL_BLEND);
+						}
+					}
 				}
 			}
 		}
@@ -292,21 +316,65 @@ public class Renderer3D extends Renderer {
 		
 		for(int x = 0; x < objects.length + 1; x++){
 			Mesh mesh = new Mesh(gl, 2, true, false, false);
-			mesh.color( 0, 1, 0, 1 );
+			mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 			mesh.vertex( block_width * x, 0, object_depth );
-			mesh.color( 0, 1, 0, 1 );
+			mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 			mesh.vertex( block_width * x, block_height * objects[0].length, object_depth );
-			mesh.render( PrimitiveType.Lines );
 			coordinates_list.add(mesh);
+			Mesh mesh_d = new Mesh(gl, 2, true, false, false);
+			mesh_d.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_d.vertex( block_width * x, 0, object_depth );
+			mesh_d.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_d.vertex( block_width * x, 0, 0 );
+			coordinates_list.add(mesh_d);
+			Mesh mesh_u = new Mesh(gl, 2, true, false, false);
+			mesh_u.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_u.vertex( block_width * x, block_height * objects[0].length, object_depth );
+			mesh_u.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_u.vertex( block_width * x, block_height * objects[0].length, 0 );
+			coordinates_list.add(mesh_u);
+			
 		}
 		for(int y = 0; y < objects[0].length + 1; y++){
 			Mesh mesh = new Mesh(gl, 2, true, false, false);
-			mesh.color( 0, 1, 0, 1 );
+			mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 			mesh.vertex( 0, block_height * y, object_depth);
-			mesh.color( 0, 1, 0, 1 );
+			mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 			mesh.vertex( block_width * objects.length, block_height * y, object_depth );
-			mesh.render( PrimitiveType.Lines );
 			coordinates_list.add(mesh);
+			Mesh mesh_l = new Mesh(gl, 2, true, false, false);
+			mesh_l.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_l.vertex( 0, block_height * y, object_depth);
+			mesh_l.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_l.vertex( 0, block_height * y, 0 );
+			coordinates_list.add(mesh_l);
+			Mesh mesh_r = new Mesh(gl, 2, true, false, false);
+			mesh_r.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_r.vertex( block_width * objects.length, block_height * y, object_depth);
+			mesh_r.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_r.vertex( block_width * objects.length, block_height * y, 0 );
+			coordinates_list.add(mesh_r);
 		}
+	}
+	public void renderLight(GL10 gl, GameObject[][] objects){
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, new float[] { 1f, 1f, 1f, 1f }, 0);
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, new float[] { 1f, 1f, 1f, 1f }, 0);
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, new float[] { 1f, 1f, 1f, 1f }, 0);
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, new float[] { 8f, 4f, 1f, 1f }, 0);
+	
+		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .23f, .09f, .03f, 1f }, 0);
+		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
+		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
+		//gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+		gl.glEnable(GL10.GL_LIGHTING);
+        gl.glEnable(GL10.GL_LIGHT0);
+	    
+	    gl.glShadeModel(GL10.GL_SMOOTH);
+	    
+	    gl.glEnable(GL10.GL_COLOR_MATERIAL);
+	    
+	    gl.glEnable(GL10.GL_NORMALIZE);
+		
+		
 	}
 }
