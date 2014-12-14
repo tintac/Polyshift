@@ -1,19 +1,19 @@
 package com.example.polyshift;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.GLU;
+import android.util.Log;
+
 import com.example.polyshift.Mesh.PrimitiveType;
 import com.example.polyshift.Texture.TextureFilter;
 import com.example.polyshift.Texture.TextureWrap;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.opengl.GLU;
-import android.util.Log;
-import android.view.Display;
+import com.example.polyshift.Tools.MeshLoader;
 
 public class Renderer3D extends Renderer {
 	
@@ -35,6 +35,21 @@ public class Renderer3D extends Renderer {
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
+					
+					
+					try {
+						Mesh mesh;
+						mesh = MeshLoader.loadObj(gl, activity.getAssets().open( "kugel.obj" ) );
+						
+						objects[i][j].setMesh(mesh);
+						
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					/*
 					Bitmap bitmapPlayerOne = null;
 					Bitmap bitmapPlayerTwo = null;
 					Bitmap bitmapPlayerOneLock = null;
@@ -74,6 +89,8 @@ public class Renderer3D extends Renderer {
 			        }
 			        
 			        objects[i][j].setMesh(mesh);
+			        
+			        */
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Bitmap bitmapLocker = null;
@@ -142,7 +159,6 @@ public class Renderer3D extends Renderer {
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
-		
 		gl.glTranslatef(-8.5f, -5.0f, -7.3f);	
 		
 	    gl.glEnable(GL10.GL_DEPTH_TEST);
@@ -161,17 +177,17 @@ public class Renderer3D extends Renderer {
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
 						if(objects[i][j].isLocked){
-							texturePlayerOneLock.bind();
+							gl.glColor4f(1f,0f,0f,1f);
 						}
 						else{
-							texturePlayerOne.bind();
+							gl.glColor4f(1f,0f,0f,1f);
 						}
 					}else{
 						if(objects[i][j].isLocked){
-							texturePlayerTwoLock.bind();
+							gl.glColor4f(1f,1f,0f,1f);
 						}
 						else{
-							texturePlayerTwo.bind();
+							gl.glColor4f(1f,1f,0f,1f);
 						}
 					}
 					if(objects[i][j].isMovingLeft){
@@ -179,12 +195,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
 						}
 						if(objects[i][j].pixel_position.x > i*block_width){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],objects[i][j].pixel_position.x, j*block_height, 0 );
 							objects[i][j].pixel_position.x -= block_width * objects[i][j].movingVelocity;
 						}
 						else{
@@ -198,12 +209,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
 						}
 						if(objects[i][j].pixel_position.x < i*block_width){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(objects[i][j].pixel_position.x, j*block_height, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],objects[i][j].pixel_position.x, j*block_height, 0 );
 							objects[i][j].pixel_position.x += block_width * objects[i][j].movingVelocity;
 						}
 						else{
@@ -217,12 +223,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
 						}
 						if(objects[i][j].pixel_position.y < j*block_height){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],i*block_width,objects[i][j].pixel_position.y, 0 );
 							objects[i][j].pixel_position.y += block_height * objects[i][j].movingVelocity;
 						}
 						else{
@@ -236,12 +237,7 @@ public class Renderer3D extends Renderer {
 							objects[i][j].pixel_position.y = objects[i][j].block_position.y*block_height;
 						}
 						if(objects[i][j].pixel_position.y > j*block_height){
-							gl.glEnable( GL10.GL_TEXTURE_2D );
-							gl.glPushMatrix();
-							gl.glTranslatef(i*block_width,objects[i][j].pixel_position.y, 0 );
-							objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-							gl.glPopMatrix();
-							gl.glDisable( GL10.GL_TEXTURE_2D );
+							renderPlayer(gl, objects[i][j],i*block_width,objects[i][j].pixel_position.y, 0 );
 							objects[i][j].pixel_position.y -= block_height * objects[i][j].movingVelocity;
 						}
 						else{
@@ -251,12 +247,7 @@ public class Renderer3D extends Renderer {
 						}
 					}
 					else{
-						gl.glEnable( GL10.GL_TEXTURE_2D );
-						gl.glPushMatrix();
-						gl.glTranslatef(i*block_width, j*block_height, 0 );
-						objects[i][j].getMesh().render(PrimitiveType.TriangleFan);
-						gl.glPopMatrix();
-						gl.glDisable( GL10.GL_TEXTURE_2D );
+						renderPlayer(gl, objects[i][j],i*block_width, j*block_height, 0 );
 					}
 				}
 				if(objects[i][j] instanceof Polynomio){
@@ -278,6 +269,7 @@ public class Renderer3D extends Renderer {
 					else{*/
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],objects[i][j].colors[3]);
 						gl.glPushMatrix();
+						gl.glFrontFace(GL10.GL_CW);
 						gl.glTranslatef(i*block_width, j*block_height, 0 );
 						objects[i][j].getMesh().render(PrimitiveType.TriangleStrip);
 						gl.glPopMatrix();
@@ -287,6 +279,17 @@ public class Renderer3D extends Renderer {
 			}
 		}
 	}
+	
+	public void renderPlayer(GL10 gl, GameObject player, float x, float y, float z){
+		gl.glEnable(GL10.GL_NORMALIZE);
+		gl.glPushMatrix();
+		gl.glTranslatef(x,y,z );
+		gl.glScalef(0.5f,0.5f,0.5f);
+		player.getMesh().render(PrimitiveType.TriangleFan);
+		gl.glPopMatrix();
+		gl.glDisable(GL10.GL_NORMALIZE);
+	}
+	
 	
 	public void enableCoordinates(GL10 gl, GameObject[][] objects){
 		coordinates_list = new ArrayList<Mesh>();
