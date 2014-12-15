@@ -70,6 +70,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			simulation = new Simulation(activity);
 			gameLoop = new GameLoop();
 			renderer = new Renderer3D(activity, gl, simulation.objects);
+			renderer.enableCoordinates(gl, simulation.objects);
 		}	
 	}
 	  
@@ -84,6 +85,7 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		}
 		else{
 			renderer.setPerspective(activity, gl);
+			renderer.renderLight(gl, simulation.objects);
 			renderer.renderObjects(activity, gl, simulation.objects);
 			simulation.update(activity);
 			gameLoop.update(simulation);
