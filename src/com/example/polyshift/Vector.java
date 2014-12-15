@@ -61,5 +61,9 @@ public class Vector implements Serializable
                 float b = v.y - y;
                 float c = v.z - z;
                 return FloatMath.sqrt( a * a + b * b + c * c );
+        }
+        public static Vector normalize(Vector v) 
+        {       float length = FloatMath.sqrt( v.x * v.x + v.y * v.y + v.z * v.z );
+        		return new Vector(v.x/length,v.y/length,v.z/length);
         }       
 }

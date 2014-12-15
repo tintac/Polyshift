@@ -1,5 +1,7 @@
 package com.example.polyshift;
 
+import java.util.ArrayList;
+
 public class GameObject {
 	
 	public boolean isMovingLeft = false;
@@ -14,6 +16,7 @@ public class GameObject {
 	private Mesh mesh;
 	public  float []colors = new float[4];
 	boolean isPlayerOne;
+	public ArrayList<Mesh> border_list = new ArrayList<Mesh>();
 
 	public Mesh getMesh() {
 		return mesh;
@@ -23,9 +26,8 @@ public class GameObject {
 		this.mesh = mesh;
 		this.pixel_position = new Vector(-1,-1,0);
 	}
-	public void getColors(){
-		
-		
+	public void setBorder(Mesh mesh){
+		this.border_list.add(mesh);
 	}
 
 }

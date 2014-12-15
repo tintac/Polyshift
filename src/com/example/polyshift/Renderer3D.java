@@ -116,135 +116,150 @@ public class Renderer3D extends Renderer {
 					Polynomio polynomio = (Polynomio)objects[i][j];
 					for(Block block : polynomio.blocks){
 						// Untere Seite
-						Vector normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
+						Vector normal1 = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
 								new Vector (block.x*block_width + object_width, block.y*block_height,0f),
 								new Vector(block.x*block_width + object_width, block.y*block_height, object_depth));
+						
+						Vector normal2 = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
+								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
+								new Vector(block.x*block_width, block.y*block_height, object_depth));
+						
+						Vector normal = Vector.normalize(normal1.add(normal2));
+						
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //1
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //2
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
 						
-						normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
-								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
-								new Vector(block.x*block_width, block.y*block_height, object_depth));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //1
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
 						
 						//Obere Seite
-						normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
+						normal1 = calculateNormal(new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
 								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f),
 								new Vector(block.x*block_width + object_width, block.y*block_height + object_height, object_depth));
+						
+						normal2 = calculateNormal(new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
+								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth),
+								new Vector(block.x*block_width, block.y*block_height + object_height, object_depth));
+						normal = Vector.normalize(normal1.add(normal2));
+						
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //b
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //c
 						
-						normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
-								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth),
-								new Vector(block.x*block_width, block.y*block_height + object_height, object_depth));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //c
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth); //d
 						
 						//Linke Seite
-						normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
+						normal1 = calculateNormal(new Vector (block.x*block_width, block.y*block_height, 0f),
 								new Vector (block.x*block_width, block.y*block_height, object_depth),
 								new Vector(block.x*block_width, block.y*block_height + object_height, 0f));
-						mesh.normal(normal.x,normal.y,normal.z);
+						normal2 = calculateNormal(new Vector (block.x*block_width, block.y*block_height, object_depth),
+								new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
+								new Vector(block.x*block_width, block.y*block_height + object_height, object_depth));
+						normal = Vector.normalize(normal1.add(normal2));
+						
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //1
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
 						
-						normal = calculateNormal(new Vector (block.x*block_width, block.y*block_height, object_depth),
-								new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
-								new Vector(block.x*block_width, block.y*block_height + object_height, object_depth));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth); //d
 						
 						//Rechte Seite
-						normal = calculateNormal(
+						normal1 = calculateNormal(
 								new Vector (block.x*block_width + object_width, block.y*block_height, 0f),
 								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
 								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f));
-						mesh.normal(normal.x,normal.y,normal.z);
+						normal2 = calculateNormal(
+								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
+								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f),
+								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth));
+						normal = Vector.normalize(normal1.add(normal2));
+						
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //2
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //b
 						
-						normal = calculateNormal(
-								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
-								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f),
-								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //b
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //c
 						
 						//Vordere Seite
-						normal = calculateNormal(
+						normal1 = calculateNormal(
 								new Vector (block.x*block_width, block.y*block_height, 0f),
 								new Vector (block.x*block_width + object_width, block.y*block_height, 0f),
 								new Vector (block.x*block_width, block.y*block_height + object_height, 0f));
-						mesh.normal(normal.x,normal.y,normal.z);
+						normal2 = calculateNormal(
+								new Vector (block.x*block_width + object_width, block.y*block_height, 0f),
+								new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
+								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f));
+						normal = Vector.normalize(normal1.add(normal2));
+						
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, 0f); //1
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //2
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
 						
-						normal = calculateNormal(
-								new Vector (block.x*block_width + object_width, block.y*block_height, 0f),
-								new Vector (block.x*block_width, block.y*block_height + object_height, 0f),
-								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, 0f));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, 0f); //2
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, 0f); //a
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, 0f); //b
 						
 						//Hintere Seite
-						normal = calculateNormal(
+						normal1 = calculateNormal(
 								new Vector (block.x*block_width, block.y*block_height, object_depth),
 								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
 								new Vector (block.x*block_width, block.y*block_height + object_height, object_depth));
-						mesh.normal(normal.x,normal.y,normal.z);
+						normal2 = calculateNormal(
+								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
+								new Vector (block.x*block_width, block.y*block_height + object_height, object_depth),
+								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth));
+						normal = Vector.normalize(normal1.add(normal2));
+						
+						mesh.normal(normal1.x,normal1.y,normal1.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, object_depth); //4
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth); //d
 						
-						normal = calculateNormal(
-								new Vector (block.x*block_width + object_width, block.y*block_height, object_depth),
-								new Vector (block.x*block_width, block.y*block_height + object_height, object_depth),
-								new Vector (block.x*block_width + object_width, block.y*block_height + object_height, object_depth));
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height, object_depth); //3
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height + object_height, object_depth); //d
-						mesh.normal(normal.x,normal.y,normal.z);
+						mesh.normal(normal2.x,normal2.y,normal2.z);
 						mesh.vertex(block.x*block_width + object_width, block.y*block_height + object_height, object_depth); //c
 						
 						
@@ -261,6 +276,62 @@ public class Renderer3D extends Renderer {
 						mesh.normal(normal.x,normal.y,normal.z);
 						mesh.vertex(block.x*block_width, block.y*block_height, object_depth);*/
        
+						if(block.x+1 < objects.length && objects[block.x+1][block.y] != objects[block.x][block.y]){
+							Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * (block.x+1), block_height * block.y, 0 );
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * (block.x+1), block_height * (block.y+1) , 0 );
+							Mesh depth_border_mesh = new Mesh(gl, 2, true, false, false);
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * (block.x+1), block_height * block.y, object_depth );
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * (block.x+1), block_height * (block.y+1) , object_depth );
+							block.setBorder(border_mesh);
+							block.setBorder(depth_border_mesh);
+						}
+						if(block.x-1 >= 0 && objects[block.x-1][block.y] != objects[block.x][block.y]){
+							Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * block.x, block_height * block.y, 0 );
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * block.x, block_height * (block.y+1) , 0 );
+							Mesh depth_border_mesh = new Mesh(gl, 2, true, false, false);
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * block.x, block_height * block.y, object_depth );
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * block.x, block_height * (block.y+1) , object_depth );
+							block.setBorder(border_mesh);
+							block.setBorder(depth_border_mesh);
+						}
+						if(block.y+1 < objects[0].length && objects[block.x][block.y+1] != objects[block.x][block.y]){
+							Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * block.x, block_height * (block.y+1), 0 );
+							border_mesh.color( 0f, 0f, 0f, 1 );
+							border_mesh.vertex( block_width * (block.x+1), block_height * (block.y+1) , 0 );
+							Mesh depth_border_mesh = new Mesh(gl, 2, true, false, false);
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * block.x, block_height * (block.y+1), object_depth );
+							depth_border_mesh.color( 0f, 0f, 0f, 1 );
+							depth_border_mesh.vertex( block_width * (block.x+1), block_height * (block.y+1) , object_depth );
+							block.setBorder(border_mesh);
+							block.setBorder(depth_border_mesh);
+						}
+						if(block.y-1 >= 0 && objects[block.x][block.y-1] != objects[block.x][block.y]){
+							Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+							border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+							border_mesh.vertex( block_width * block.x, block_height * block.y, 0 );
+							border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+							border_mesh.vertex( block_width * (block.x+1), block_height * block.y , 0 );
+							Mesh depth_border_mesh = new Mesh(gl, 2, true, false, false);
+							depth_border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+							depth_border_mesh.vertex( block_width * block.x, block_height * block.y, object_depth );
+							depth_border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+							depth_border_mesh.vertex( block_width * (block.x+1), block_height * block.y , object_depth );
+							block.setBorder(border_mesh);
+							block.setBorder(depth_border_mesh);
+						}
 					}
 					textureLocker = new Texture(gl, bitmapLocker, TextureFilter.Linear, TextureFilter.Linear, TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 			       
@@ -285,7 +356,7 @@ public class Renderer3D extends Renderer {
 	
 	public void setPerspective(GameActivity activity, GL10 gl){    
         gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
-        gl.glClearColor( 0.50f, 0.50f, 0.50f, 0.0f );
+        gl.glClearColor( 238f/255f, 233f/255f, 192f/255f, 0.0f );
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT  | GL10.GL_DEPTH_BUFFER_BIT);
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
@@ -313,17 +384,37 @@ public class Renderer3D extends Renderer {
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
 						if(objects[i][j].isLocked){
-							gl.glColor4f(1f,0f,0f,1f);
+							gl.glDisable(GL10.GL_COLOR_MATERIAL);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .23f, .09f, .03f, 1f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
+							gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+							//gl.glColor4f(1f,0f,0f,1f);
 						}
 						else{
-							gl.glColor4f(1f,0f,0f,1f);
+							gl.glDisable(GL10.GL_COLOR_MATERIAL);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .23f, .09f, .03f, 1f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
+							gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+							//gl.glColor4f(1f,0f,0f,1f);
 						}
 					}else{
 						if(objects[i][j].isLocked){
-							gl.glColor4f(1f,1f,0f,1f);
+							gl.glDisable(GL10.GL_COLOR_MATERIAL);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .19f, .19f, .19f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .51f, .51f, .51f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .51f, .51f, .51f, 1.0f }, 0);
+							gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+							//gl.glColor4f(1f,0f,0f,1f);
 						}
 						else{
-							gl.glColor4f(1f,1f,0f,1f);
+							gl.glDisable(GL10.GL_COLOR_MATERIAL);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .19f, .19f, .19f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .51f, .51f, .51f, 1.0f }, 0);
+							gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .51f, .51f, .51f, 1.0f }, 0);
+							gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+							//gl.glColor4f(1f,0f,0f,1f);
 						}
 					}
 					if(objects[i][j].isMovingLeft){
@@ -385,6 +476,7 @@ public class Renderer3D extends Renderer {
 					else{
 						renderPlayer(gl, objects[i][j],i*block_width, j*block_height, 0 );
 					}
+					gl.glEnable(GL10.GL_COLOR_MATERIAL);
 					gl.glColor4f(1, 1, 1, 1);
 				}
 				if(objects[i][j] instanceof Polynomio){
@@ -407,27 +499,30 @@ public class Renderer3D extends Renderer {
 					}
 					else{
 						if(polynomio.isLocked){
-							//gl.glEnable(GL10.GL_BLEND);
-							//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glPushMatrix();
-							gl.glTranslatef(polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
-							polynomio.getMesh().render(PrimitiveType.Triangles);
-							gl.glPopMatrix();
-							gl.glColor4f(1, 1, 1, 1);
-							//gl.glDisable(GL10.GL_BLEND);
-						}
-						else{
-							//gl.glEnable(GL10.GL_BLEND);
-							//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+							gl.glEnable(GL10.GL_BLEND);
+							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
 							gl.glPushMatrix();
 							gl.glTranslatef(polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
 							polynomio.getMesh().render(PrimitiveType.Triangles);
 							gl.glPopMatrix();
 							gl.glColor4f(1, 1, 1, 1);
-							//gl.glDisable(GL10.GL_BLEND);
+							gl.glDisable(GL10.GL_BLEND);
+						}
+						else{
+							gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
+							gl.glPushMatrix();
+							gl.glTranslatef(polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+							polynomio.getMesh().render(PrimitiveType.Triangles);
+							gl.glPopMatrix();
+							gl.glColor4f(1, 1, 1, 1);
 						}
 					}
+					/*for(Block block : polynomio.blocks){
+						for(Mesh mesh : block.border_list){
+							mesh.render(PrimitiveType.Lines);
+						}
+					}*/
 				}
 			}
 		}
@@ -440,7 +535,7 @@ public class Renderer3D extends Renderer {
 		gl.glScalef(object_width/2.2f,object_height/2.2f,object_depth/2.2f);
 		player.getMesh().render(PrimitiveType.TriangleFan);
 		gl.glPopMatrix();
-		gl.glDisable(GL10.GL_NORMALIZE);
+		
 	}
 	
 	public void enableCoordinates(GL10 gl, GameObject[][] objects){
@@ -496,10 +591,11 @@ public class Renderer3D extends Renderer {
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightColor,0 );
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightColor,0 );
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_SPECULAR, lightColor,0 );
-		float[] direction = { -1 / (float)Math.sqrt(2), -1 / (float)Math.sqrt(2), 0, 0 };
+		float[] direction = { 5, 5, 1, 0 };
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_POSITION, direction,0 );
 		gl.glEnable( GL10.GL_LIGHT0 );
 		gl.glEnable( GL10.GL_COLOR_MATERIAL );
+		//gl.glShadeModel(GL10.GL_SMOOTH);
 		gl.glEnable(GL10.GL_NORMALIZE);
 		
 		/*
