@@ -159,8 +159,10 @@ public class Renderer3D extends Renderer {
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
-		gl.glTranslatef(-8.5f, -5.0f, -7.3f);	
 		
+		//gl.glTranslatef(-8.5f, -5.0f, -7.3f);	
+
+		GLU.gluLookAt(gl, 8.5f, 5.0f, 7.4f, 8.5f, 5.0f, 0f, 0f, 1f, 0f);
 	    gl.glEnable(GL10.GL_DEPTH_TEST);
 	}
 	
@@ -281,10 +283,20 @@ public class Renderer3D extends Renderer {
 	}
 	
 	public void renderPlayer(GL10 gl, GameObject player, float x, float y, float z){
+		gl.glEnable( GL10.GL_LIGHTING );
+		float[] lightColor = { 1, 1, 1, 1 };
+		float[] ambientLightColor = {0.2f, 0.2f, 0.2f, 1 };
+		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightColor,0 );
+		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightColor,0 );
+		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_SPECULAR, lightColor,0 );
+		float[] direction = { -1 / (float)Math.sqrt(2), -1 / (float)Math.sqrt(2), 0, 0 };
+		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_POSITION, direction,0 );
+		gl.glEnable( GL10.GL_LIGHT0 );
+		gl.glEnable( GL10.GL_COLOR_MATERIAL );
 		gl.glEnable(GL10.GL_NORMALIZE);
 		gl.glPushMatrix();
-		gl.glTranslatef(x,y,z );
-		gl.glScalef(0.5f,0.5f,0.5f);
+		gl.glTranslatef(x+0.5f,y+0.5f,z-0.4f );
+		gl.glScalef(0.4f,0.4f,0.4f);
 		player.getMesh().render(PrimitiveType.TriangleFan);
 		gl.glPopMatrix();
 		gl.glDisable(GL10.GL_NORMALIZE);
