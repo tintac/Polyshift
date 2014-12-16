@@ -51,28 +51,14 @@ public class Renderer3D extends Renderer {
 					}	
 				}
 				if(objects[i][j] instanceof Polynomio){
-						Polynomio polynomio = (Polynomio)objects[i][j];
-					for(Block block : polynomio.blocks){
-						objects[i][j].setMesh(blockMesh);
-					}
+						Polynomio polynomio = (Polynomio) objects[i][j];
+						Float random = (float) (Math.random()* (0 - -0.1) + -0.1);
+						polynomio.pixel_position.z = random;
+						polynomio.setMesh(blockMesh);
 				}
 			}
 		}
 	}
-	
-	
-	public Vector calculateNormal(Vector x, Vector y, Vector z){
-		Vector a = y.sub(x);
-		Vector b = z.sub(x);
-		
-		Vector normal = new Vector(
-				(a.y * b.z) - (a.z * b.y),
-				(a.z * b.x) - (a.x * b.z),
-				(a.x * b.y) - (a.y * b.x)
-				);
-		return normal;
-	}
-	
 	
 	public void setPerspective(GameActivity activity, GL10 gl){    
         gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
@@ -207,13 +193,13 @@ public class Renderer3D extends Renderer {
 						gl.glEnable(GL10.GL_BLEND);
 						gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
-						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
 						gl.glColor4f(1, 1, 1, 1);
 						gl.glDisable(GL10.GL_BLEND);
 					}
 					else{
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
-						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
 						gl.glColor4f(1, 1, 1, 1);
 					}
 
@@ -299,28 +285,6 @@ public class Renderer3D extends Renderer {
 		gl.glEnable(GL10.GL_NORMALIZE);
 		
 		
-		
-		
-		/*
-		gl.glEnable(GL10.GL_LIGHTING);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, new float[] { 0.2f,0.2f, 0.2f, 1f }, 0);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, new float[] { 1f, 1f, 1f, 1f }, 0);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, new float[] { 1f, 1f, 1f, 1f }, 0);
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, new float[] { 5f, 5f, 20f, 0f }, 0);
-	
-		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .23f, .09f, .03f, 1f }, 0);
-		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
-		//gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
-		//gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
-		gl.glEnable(GL10.GL_NORMALIZE);
-		
-	
-        gl.glEnable(GL10.GL_LIGHT0);
-	    
-//	    gl.glShadeModel(GL10.GL_SMOOTH);
-	    
-	    gl.glEnable(GL10.GL_COLOR_MATERIAL);
-	    */
 	    
 	}
 }
