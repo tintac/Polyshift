@@ -269,7 +269,7 @@ public class Renderer2D extends Renderer {
 	}
 
 	@Override
-	public void renderLight(GL10 gl, GameObject[][] objects) {
+	public void renderLight(GL10 gl) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -85,7 +85,6 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		}
 		else{
 			renderer.setPerspective(activity, gl);
-			renderer.renderLight(gl, simulation.objects);
 			renderer.renderObjects(activity, gl, simulation.objects);
 			simulation.update(activity);
 			gameLoop.update(simulation);
