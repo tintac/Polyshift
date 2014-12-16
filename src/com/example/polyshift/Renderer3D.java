@@ -14,6 +14,7 @@ import com.example.polyshift.Tools.MeshLoader;
 public class Renderer3D extends Renderer {
 	
 	float object_depth;
+	float added_depth;
 	float width = 24.9f/1.5f/1.5f;
 	float height = 14.7f/1.5f/1.5f;
 	int count;
@@ -51,10 +52,42 @@ public class Renderer3D extends Renderer {
 					}	
 				}
 				if(objects[i][j] instanceof Polynomio){
-						Polynomio polynomio = (Polynomio) objects[i][j];
-						Float random = (float) (Math.random()* (0 - -0.1) + -0.1);
-						polynomio.pixel_position.z = random;
-						polynomio.setMesh(blockMesh);
+					Polynomio polynomio = (Polynomio) objects[i][j];
+					polynomio.setMesh(blockMesh);
+					
+					float line_depth =  0.04f;
+					if(i+1 < objects.length && objects[i+1][j] != objects[i][j]){
+						Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * (i+1), block_height * j, line_depth );
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * (i+1), block_height * (j+1) , line_depth );
+						polynomio.setBorder(border_mesh);
+					}
+					if(i-1 >= 0 && objects[i-1][j] != objects[i][j]){
+						Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * i, block_height * j, line_depth );
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * i, block_height * (j+1) , line_depth );
+						polynomio.setBorder(border_mesh);
+					}
+					if(j+1 < objects[0].length && objects[i][j+1] != objects[i][j]){
+						Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * i, block_height * (j+1), line_depth );
+						border_mesh.color( 0f, 0f, 0f, 1 );
+						border_mesh.vertex( block_width * (i+1), block_height * (j+1) , line_depth );
+						polynomio.setBorder(border_mesh);
+					}
+					if(j-1 >= 0 && objects[i][j-1] != objects[i][j]){
+						Mesh border_mesh = new Mesh(gl, 2, true, false, false);
+						border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+						border_mesh.vertex( block_width * i, block_height * j, line_depth );
+						border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
+						border_mesh.vertex( block_width * (i+1), block_height * j , line_depth );
+						polynomio.setBorder(border_mesh);
+					}				
 				}
 			}
 		}
@@ -88,14 +121,14 @@ public class Renderer3D extends Renderer {
 					if(objects[i][j].isPlayerOne){
 						gl.glColor4f((51f/255f),(77f/255),(92f/255f),1f);
 						if(objects[i][j].isLocked){
-							gl.glEnable(GL10.GL_BLEND);
+							//gl.glEnable(GL10.GL_BLEND);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glColor4f((51f/255f),(77f/255),(92f/255f),0.3f);
 						}
 					}else{
 						gl.glColor4f((223f/255f),(73f/255f),(73f/255f),1.0f);
 						if(objects[i][j].isLocked){
-							gl.glEnable(GL10.GL_BLEND);
+							//gl.glEnable(GL10.GL_BLEND);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glColor4f((223f/255f),(73f/255f),(73f/255f),0.3f);
 						}
@@ -172,6 +205,12 @@ public class Renderer3D extends Renderer {
 					if(polynomio.isMovingRight){
 						polynomio.pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
 						polynomio.isMovingRight = false;
+						for(Mesh mesh : polynomio.border_list){
+							gl.glPushMatrix();
+							gl.glTranslatef(i*block_width,j*object_height,0);
+							mesh.render(PrimitiveType.Lines);
+							gl.glPopMatrix();
+						}
 					}
 					else if(polynomio.isMovingLeft){
 						polynomio.pixel_position.x += (i - polynomio.blocks.get(0).block_position.x) * block_width;
@@ -201,8 +240,13 @@ public class Renderer3D extends Renderer {
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
 						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
 						gl.glColor4f(1, 1, 1, 1);
+						for(Mesh mesh : polynomio.border_list){
+							gl.glPushMatrix();
+							//gl.glTranslatef(i*block_width,j*object_height,0);
+							mesh.render(PrimitiveType.Lines);
+							gl.glPopMatrix();
+						}
 					}
-
 				}
 			}
 		}
@@ -283,8 +327,6 @@ public class Renderer3D extends Renderer {
 		gl.glEnable( GL10.GL_COLOR_MATERIAL );
 		gl.glShadeModel(GL10.GL_FLAT);
 		gl.glEnable(GL10.GL_NORMALIZE);
-		
-		
 	    
 	}
 }
