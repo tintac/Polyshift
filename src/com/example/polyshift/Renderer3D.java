@@ -51,28 +51,14 @@ public class Renderer3D extends Renderer {
 					}	
 				}
 				if(objects[i][j] instanceof Polynomio){
-						Polynomio polynomio = (Polynomio)objects[i][j];
-					for(Block block : polynomio.blocks){
-						objects[i][j].setMesh(blockMesh);
-					}
+						Polynomio polynomio = (Polynomio) objects[i][j];
+						Float random = (float) (Math.random()* (0 - -0.3) + -0.3);
+						polynomio.pixel_position.z = random;
+						polynomio.setMesh(blockMesh);
 				}
 			}
 		}
 	}
-	
-	
-	public Vector calculateNormal(Vector x, Vector y, Vector z){
-		Vector a = y.sub(x);
-		Vector b = z.sub(x);
-		
-		Vector normal = new Vector(
-				(a.y * b.z) - (a.z * b.y),
-				(a.z * b.x) - (a.x * b.z),
-				(a.x * b.y) - (a.y * b.x)
-				);
-		return normal;
-	}
-	
 	
 	public void setPerspective(GameActivity activity, GL10 gl){    
         gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
@@ -105,10 +91,11 @@ public class Renderer3D extends Renderer {
 						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
 						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
 						gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+						//gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_EMISSION, new float[] { 1f, 1f, 1f, 1f }, 0);
 						if(objects[i][j].isLocked){
-							gl.glEnable(GL10.GL_BLEND);
+							//gl.glEnable(GL10.GL_BLEND);
+							//gl.glMaterialfv(GL10.GL_BACK, GL10.GL_EMISSION, new float[] { 1f, 1f, 1f, 1f }, 0);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glEnable(GL10.GL_COLOR_MATERIAL);
 							gl.glColor4f(1, 1, 1, .5f);
 						}
 					}else{
@@ -117,11 +104,11 @@ public class Renderer3D extends Renderer {
 						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .51f, .51f, .51f, 1.0f }, 0);
 						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .51f, .51f, .51f, 1.0f }, 0);
 						gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
-					
-						if(objects[i][j].isLocked){
-							gl.glEnable(GL10.GL_BLEND);
+						//gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_EMISSION, new float[] { 1f, 1f, 1f, 1f }, 0);
+						if(objects[i][j].isLocked){;
+							//gl.glEnable(GL10.GL_BLEND);
+							//gl.glMaterialfv(GL10.GL_BACK, GL10.GL_EMISSION, new float[] { 1f, 1f, 1f, 1f }, 0);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glEnable(GL10.GL_COLOR_MATERIAL);
 							gl.glColor4f(1, 1, 1, .5f);
 						}
 					}
@@ -217,13 +204,13 @@ public class Renderer3D extends Renderer {
 						gl.glEnable(GL10.GL_BLEND);
 						gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
-						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
 						gl.glColor4f(1, 1, 1, 1);
 						gl.glDisable(GL10.GL_BLEND);
 					}
 					else{
 						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
-						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
+						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
 						gl.glColor4f(1, 1, 1, 1);
 					}
 					
@@ -314,7 +301,7 @@ public class Renderer3D extends Renderer {
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_POSITION, direction,0 );
 		gl.glEnable( GL10.GL_LIGHT0 );
 		gl.glEnable( GL10.GL_COLOR_MATERIAL );
-		gl.glShadeModel(GL10.GL_SMOOTH);
+		gl.glShadeModel(GL10.GL_FLAT);
 		gl.glEnable(GL10.GL_NORMALIZE);
 		
 		

@@ -10,7 +10,7 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
-	final int PLAYGROUND_POPULATE = 9;
+	final int PLAYGROUND_POPULATE = 8;
 	final int POLYNOMIO_SIZE = 4;
 	final static String RIGHT = "right";
 	final static String LEFT = "left";
@@ -53,7 +53,7 @@ public class Simulation {
 		player = new Player(true);
 		setGameObject(player, PLAYGROUND_MIN_X, PLAYGROUND_MAX_Y/2);
 		player2 = new Player(false);
-		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y);
+		setGameObject(player2, PLAYGROUND_MAX_X,PLAYGROUND_MAX_Y/2);
 		
 		int a = 0;
 		while(a<10){
@@ -378,7 +378,13 @@ public class Simulation {
 							setWinner((Player) objects[i][j]);
 						}
 						else if((predictCollision(i, j, UP) && objects[i][j].lastState.equals(UP)) || (predictCollision(i, j, DOWN) && objects[i][j].lastState.equals(DOWN))){
-							if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
+							if(j+1 < objects[0].length && objects[i][j+1] instanceof Player){
+								movePlayer(i,j+1,UP);
+							}
+							else if(j-1 >= 0 && objects[i][j-1] instanceof Player){
+								movePlayer(i,j-1,DOWN);
+							}
+							else if(!predictCollision(i, j, RIGHT) && predictCollision(i, j, LEFT)){
 								movePlayer(i, j, RIGHT);
 							}
 							else if(predictCollision(i, j, RIGHT) && !predictCollision(i, j, LEFT)){
@@ -386,7 +392,13 @@ public class Simulation {
 							}
 						}
 						else if((predictCollision(i, j, RIGHT) && objects[i][j].lastState.equals(RIGHT)) || (predictCollision(i, j, LEFT) && objects[i][j].lastState.equals(LEFT))){
-							if(!predictCollision(i, j, UP) && predictCollision(i, j, DOWN)){
+							if(i+1 < objects.length && objects[i+1][j] instanceof Player){
+								movePlayer(i+1,j,RIGHT);
+							}
+							else if(i-1 >= 0 && objects[i-1][j] instanceof Player){
+								movePlayer(i-1,j,LEFT);
+							}
+							else if(!predictCollision(i, j, UP) && predictCollision(i, j, DOWN)){
 								movePlayer(i, j, UP);
 							}
 							else if(predictCollision(i, j, UP) && !predictCollision(i, j, DOWN)){
