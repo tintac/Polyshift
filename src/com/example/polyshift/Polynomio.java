@@ -11,7 +11,7 @@ public class Polynomio extends GameObject {
 	public int size = 0;
 	public Vector block_position;
 	public Vector pixel_position = new Vector(0,0,0);
-	
+	public float movingVelocity = 0.01f;
 	public Polynomio(float[]color){
 		colors[0] = color[0];
 		colors[1] = color[1];
