@@ -38,7 +38,7 @@ public class Simulation {
 		
 		ArrayList<int[]>directions = new ArrayList<int[]>();
 		ArrayList<float[]> colors = new ArrayList<float[]>();
-		float[] color1 = {(51f/255f),(77f/255),92f/255f,1f};
+		float[] color1 = {(51f/255f),(77f/255),(92f/255f),1f};
 		float[] color2 = {(71f/255f),(176f/255f),(156f/255f),1f};
 		float[] color3 = {(239f/255f),(201f/255f),(76f/255f),1f};
 		float[] color4 = {(226f/255f),(122f/255f),(65f/255f),1f};

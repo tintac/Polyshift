@@ -33,7 +33,7 @@ public class Renderer3D extends Renderer {
 		
 		Mesh blockMesh = null;
 		try {
-			blockMesh = MeshLoader.loadObj(gl, activity.getAssets().open( "cube.obj" ) );
+			blockMesh = MeshLoader.loadObj(gl, activity.getAssets().open( "block.obj" ) );
 		} catch (IOException e1) {
 			Log.d("Fehler:","..loading cube");
 		}
@@ -83,7 +83,7 @@ public class Renderer3D extends Renderer {
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
-		GLU.gluLookAt(gl, 5.5f, 3.38f, 4.75f, 5.5f, 3.38f, -5f, 0f, 1f, 0f);
+		GLU.gluLookAt(gl, 5.5f, 3.38f, 4.8f, 5.5f, 3.38f, -5f, 0f, 1f, 0f);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 	}
 
@@ -100,29 +100,18 @@ public class Renderer3D extends Renderer {
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
 					if(objects[i][j].isPlayerOne){
-						gl.glDisable(GL10.GL_COLOR_MATERIAL);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .23f, .09f, .03f, 1f }, 0);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .55f, .21f, .07f, 1.0f }, 0);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .58f, .22f, .07f, 1.0f }, 0);
-						gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
+						gl.glColor4f((51f/255f),(77f/255),(92f/255f),1f);
 						if(objects[i][j].isLocked){
 							gl.glEnable(GL10.GL_BLEND);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glEnable(GL10.GL_COLOR_MATERIAL);
-							gl.glColor4f(1, 1, 1, .5f);
+							gl.glColor4f((51f/255f),(77f/255),(92f/255f),0.3f);
 						}
 					}else{
-						gl.glDisable(GL10.GL_COLOR_MATERIAL);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] { .19f, .19f, .19f, 1.0f }, 0);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] { .51f, .51f, .51f, 1.0f }, 0);
-						gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] { .51f, .51f, .51f, 1.0f }, 0);
-						gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 51.2f);
-					
+						gl.glColor4f((223f/255f),(73f/255f),(73f/255f),1.0f);
 						if(objects[i][j].isLocked){
 							gl.glEnable(GL10.GL_BLEND);
 							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glEnable(GL10.GL_COLOR_MATERIAL);
-							gl.glColor4f(1, 1, 1, .5f);
+							gl.glColor4f((223f/255f),(73f/255f),(73f/255f),0.3f);
 						}
 					}
 					
@@ -187,6 +176,7 @@ public class Renderer3D extends Renderer {
 					else{
 						renderPlayer(gl, objects[i][j],i*block_width, j*block_height, 0 );
 					}
+					
 					gl.glDisable(GL10.GL_BLEND);
 					gl.glEnable(GL10.GL_COLOR_MATERIAL);
 					gl.glColor4f(1, 1, 1, 1);
@@ -226,14 +216,7 @@ public class Renderer3D extends Renderer {
 						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, 0 );
 						gl.glColor4f(1, 1, 1, 1);
 					}
-					
-					
-					
-					/*for(Block block : polynomio.blocks){
-						for(Mesh mesh : block.border_list){
-							mesh.render(PrimitiveType.Lines);
-						}
-					}*/
+
 				}
 			}
 		}
@@ -242,8 +225,7 @@ public class Renderer3D extends Renderer {
 	private void blockRenderer(GL10 gl,GameObject polynomio, float x, float y, float z){
 		gl.glPushMatrix();
 		gl.glTranslatef(x+(block_width/2),y+(block_height/2),z+object_depth/2 );
-		gl.glScalef(object_width/2f,object_height/2f,object_depth/2f);
-		renderLight(gl);
+		gl.glScalef(object_width*0.88f,object_height*3.4f,object_depth);
 		polynomio.getMesh().render(PrimitiveType.Triangles);
 		gl.glPopMatrix();
 	}
@@ -251,7 +233,6 @@ public class Renderer3D extends Renderer {
 		gl.glPushMatrix();
 		gl.glTranslatef(x+(block_width/2),y+(block_height/2),z+object_depth/2 );
 		gl.glScalef(object_width/2.2f,object_height/2.2f,object_depth/2.2f);
-		renderLight(gl);
 		player.getMesh().render(PrimitiveType.Triangles);
 		gl.glPopMatrix();
 		
@@ -310,11 +291,11 @@ public class Renderer3D extends Renderer {
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightColor,0 );
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightColor,0 );
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_SPECULAR, lightColor,0 );
-		float[] direction = { 0f, 0f, -100f, 0 };
+		float[] direction = { 0f, 0f, -10f, 0 };
 		gl.glLightfv( GL10.GL_LIGHT0, GL10.GL_POSITION, direction,0 );
 		gl.glEnable( GL10.GL_LIGHT0 );
 		gl.glEnable( GL10.GL_COLOR_MATERIAL );
-		gl.glShadeModel(GL10.GL_SMOOTH);
+		gl.glShadeModel(GL10.GL_FLAT);
 		gl.glEnable(GL10.GL_NORMALIZE);
 		
 		
