@@ -10,7 +10,7 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
-	final int PLAYGROUND_POPULATE = 8;
+	final int PLAYGROUND_POPULATE = 9;
 	final int POLYNOMIO_SIZE = 4;
 	final static String RIGHT = "right";
 	final static String LEFT = "left";
@@ -134,14 +134,8 @@ public class Simulation {
 				}
 			}
 		a++;
-		}
-		
-		
-		
+		}	
 	}
-	
-	
-		
 	
 	public void setGameObject(GameObject object, int x, int y){
 		objects[x][y] = object;
@@ -347,6 +341,7 @@ public class Simulation {
 			}
 		}
 	}
+	
 	public void movePlayer(int x, int y, String direction){
 		objects[x][y].block_position = new Vector(x,y,0);
 		while(!predictCollision(x, y, direction)){

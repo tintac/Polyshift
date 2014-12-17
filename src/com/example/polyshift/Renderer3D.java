@@ -130,19 +130,16 @@ public class Renderer3D extends Renderer {
 					if(objects[i][j].isPlayerOne){
 						gl.glColor4f((51f/255f*1.5f),(77f/255*1.5f),(100f/255f*1.5f),1f);
 						if(objects[i][j].isLocked){
-							//gl.glEnable(GL10.GL_BLEND);
-							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glColor4f((51f/255f/1.5f),(77f/255/1.5f),(92f/255f/1.5f),0.3f);
+							
+							gl.glColor4f((51f/255f/1.5f),(77f/255/1.5f),(92f/255f/1.5f),1f);
 						}
 					}else{
 						gl.glColor4f((223f/255f),(73f/255f),(73f/255f),1.0f);
 						if(objects[i][j].isLocked){
-							//gl.glEnable(GL10.GL_BLEND);
-							gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-							gl.glColor4f((223f/255f/2.5f),(73f/255f/2.5f),(73f/255f/2.5f),0.3f);
+							
+							gl.glColor4f((223f/255f/2.5f),(73f/255f/2.5f),(73f/255f/2.5f),1f);
 						}
 					}
-					
 					if(objects[i][j].isMovingLeft){
 						if(objects[i][j].pixel_position.x == -1){
 							objects[i][j].pixel_position.x = objects[i][j].block_position.x*block_width;
@@ -178,7 +175,6 @@ public class Renderer3D extends Renderer {
 						}
 						if(objects[i][j].pixel_position.y < j*block_height){
 							renderPlayer(gl, objects[i][j],i*block_width,objects[i][j].pixel_position.y, 0 );
-						
 							objects[i][j].pixel_position.y += block_height * objects[i][j].movingVelocity;
 						}
 						else{
@@ -211,25 +207,75 @@ public class Renderer3D extends Renderer {
 				}
 				if(objects[i][j] instanceof Polynomio){
 					Polynomio polynomio = (Polynomio) objects[i][j];
+					gl.glColor4f(polynomio.colors[0],polynomio.colors[1],polynomio.colors[2],1f);
 					if(polynomio.isMovingRight){
-						polynomio.pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
-						polynomio.border_pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
-						polynomio.isMovingRight = false;
+						for(Block block : polynomio.blocks){
+							if(polynomio.pixel_position.x == -1){
+								polynomio.pixel_position.x = block.x*block_width;
+							}
+							if(polynomio.pixel_position.x <i*block_width){
+								blockRenderer(gl, polynomio,polynomio.pixel_position.x, block.y*block_height, 0 );
+								polynomio.border_pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
+								polynomio.pixel_position.x += block_width * polynomio.movingVelocity;
+							}
+							else{
+								polynomio.isMovingRight = false;
+								polynomio.lastState = Simulation.RIGHT;
+								polynomio.pixel_position.x = -1;
+							}
+						}
 					}
 					else if(polynomio.isMovingLeft){
-						polynomio.pixel_position.x += (i - polynomio.blocks.get(0).block_position.x) * block_width;
-						polynomio.border_pixel_position.x += (i - polynomio.blocks.get(0).block_position.x) * block_width;
-						polynomio.isMovingLeft = false;
+						for(Block block : polynomio.blocks){
+							if(polynomio.pixel_position.x == -1 ){
+								polynomio.pixel_position.x = block.x*block_width;
+							}
+							if(polynomio.pixel_position.x > i*block_width){
+								blockRenderer(gl, polynomio,polynomio.pixel_position.x, block.y*block_height, 0 );
+								polynomio.border_pixel_position.x += (i - polynomio.blocks.get(0).block_position.x) * block_width;
+								polynomio.pixel_position.x -= block_width * polynomio.movingVelocity;
+								
+							}
+							else{
+								polynomio.isMovingLeft = false;
+								polynomio.lastState = Simulation.LEFT;
+								polynomio.pixel_position.x = -1;
+							}
+						}
 					}
 					else if(polynomio.isMovingUp){
-						polynomio.pixel_position.y += (j - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.y) * block_height;
-						polynomio.border_pixel_position.y += (j - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.y) * block_height;
-						polynomio.isMovingUp = false;
+						for(Block block : polynomio.blocks){
+							if(polynomio.pixel_position.y == -1){
+								polynomio.pixel_position.y = block.y*block_height;
+							}
+							if(polynomio.pixel_position.y < j*block_height){
+								blockRenderer(gl, polynomio,block.x*block_width,polynomio.pixel_position.y, 0 );
+								polynomio.border_pixel_position.y += (j - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.y) * block_height;
+								polynomio.pixel_position.y += block_height * polynomio.movingVelocity;
+							}
+							else{
+								polynomio.isMovingUp = false;
+								polynomio.lastState = Simulation.UP;
+								polynomio.pixel_position.y = -1;
+							}
+						}
 					}
 					else if(polynomio.isMovingDown){
-						polynomio.pixel_position.y += (j - polynomio.blocks.get(0).block_position.y) * block_height;
-						polynomio.border_pixel_position.y += (j - polynomio.blocks.get(0).block_position.y) * block_height;
-						polynomio.isMovingDown = false;
+						for(Block block : polynomio.blocks){
+							if(polynomio.pixel_position.y == -1){
+								polynomio.pixel_position.y = block.y*block_height;
+							}
+								if(polynomio.pixel_position.y >= j*block_height){
+								blockRenderer(gl, polynomio,block.x*block_width,polynomio.pixel_position.y, 0 );
+								polynomio.border_pixel_position.y += (j - polynomio.blocks.get(0).block_position.y) * block_height;
+								polynomio.pixel_position.y -= block_height * polynomio.movingVelocity;
+							}
+							else{
+								polynomio.isMovingDown = false;
+								polynomio.lastState = Simulation.DOWN;
+								polynomio.pixel_position.y = -1;
+							}
+						}
 					}
 					else{
 						polynomio.pixel_position.x = i *block_width;
@@ -247,15 +293,14 @@ public class Renderer3D extends Renderer {
 						}
 					}
 					else{
-						gl.glColor4f(objects[i][j].colors[0],objects[i][j].colors[1],objects[i][j].colors[2],0.5f);
 						blockRenderer(gl,polynomio,polynomio.pixel_position.x, polynomio.pixel_position.y, polynomio.pixel_position.z );
-						gl.glColor4f(1, 1, 1, 1);
-						for(Mesh mesh : polynomio.border_list){
-							gl.glPushMatrix();
-							gl.glTranslatef(polynomio.border_pixel_position.x,polynomio.border_pixel_position.y,0);
-							mesh.render(PrimitiveType.Lines);
-							gl.glPopMatrix();
-						}
+					}
+					gl.glColor4f(1, 1, 1, 1);
+					for(Mesh mesh : polynomio.border_list){
+						gl.glPushMatrix();
+						gl.glTranslatef(polynomio.border_pixel_position.x,polynomio.border_pixel_position.y,0);
+						mesh.render(PrimitiveType.Lines);
+						gl.glPopMatrix();
 					}
 				}
 			}
