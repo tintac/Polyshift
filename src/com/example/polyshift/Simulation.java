@@ -10,7 +10,7 @@ public class Simulation {
 	final int PLAYGROUND_MIN_X = 0;
 	final int PLAYGROUND_MAX_Y = 8;
 	final int PLAYGROUND_MIN_Y = 0;
-	final int PLAYGROUND_POPULATE = 9;
+	final int PLAYGROUND_POPULATE = 8;
 	final int POLYNOMIO_SIZE = 4;
 	final static String RIGHT = "right";
 	final static String LEFT = "left";
@@ -150,19 +150,19 @@ public class Simulation {
 			
 			if(x > touchedX && y == touchedY){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
+				if(touchedX >= PLAYGROUND_MIN_X && objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, RIGHT);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
+				if(touchedX >= PLAYGROUND_MIN_X && objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, RIGHT);
 				}
 			}
 			else if(x < touchedX && y == touchedY){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
+				if(touchedX <= PLAYGROUND_MAX_X && objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, LEFT);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
+				if(touchedX <= PLAYGROUND_MAX_X &&objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, LEFT);
 				}
 			}
@@ -177,10 +177,10 @@ public class Simulation {
 			}
 			else if(y < touchedY && x == touchedX){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
+				if(touchedY <= PLAYGROUND_MAX_Y && objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, DOWN);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
+				if(touchedY <= PLAYGROUND_MAX_Y && objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, DOWN);
 				}
 			}
@@ -364,6 +364,10 @@ public class Simulation {
 	public void checkPlayerPosition(){
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[0].length; j++){
+				if(objects[i][j] instanceof Polynomio){
+					Polynomio polynomio = (Polynomio) objects[i][j];
+					polynomio.isRendered = false;
+				}
 				if(lastMovedObject != null && objects[i][j] == lastMovedObject && objects[i][j] instanceof Player){
 					if(!objects[i][j].isMovingRight && !objects[i][j].isMovingLeft && !objects[i][j].isMovingUp && !objects[i][j].isMovingDown){
 						if(objects[i][j].isPlayerOne && i == PLAYGROUND_MAX_X){

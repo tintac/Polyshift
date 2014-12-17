@@ -21,7 +21,7 @@ public class EndScreen implements GameScreen {
 	
 	public EndScreen( GL10 gl, GameActivity activity )
 	{			
-		pictureMesh = new Mesh( gl, 4, false, true, false );
+		pictureMesh = new Mesh( gl, 4, true, true, false );
 		pictureMesh.texCoord(0, 0);
 		pictureMesh.vertex(-1, 1, 0 );
 		pictureMesh.texCoord(1, 0);
@@ -64,6 +64,7 @@ public class EndScreen implements GameScreen {
 	public void render(GL10 gl, GameActivity activity) 
 	{	
 		gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
+		gl.glClearColor( 238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 0.0f );
 		gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		gl.glEnable( GL10.GL_TEXTURE_2D );
 		gl.glMatrixMode( GL10.GL_PROJECTION );

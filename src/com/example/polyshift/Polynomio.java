@@ -13,6 +13,7 @@ public class Polynomio extends GameObject {
 	public Vector pixel_position = new Vector(0,0,0);
 	public float movingVelocity = 0.02f;
 	public Vector border_pixel_position = new Vector(0,0,0);
+	public boolean isRendered = false;
 
 	public Polynomio(float[]color){
 		colors[0] = color[0];
