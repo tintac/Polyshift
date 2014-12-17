@@ -17,6 +17,7 @@ public class Renderer3D extends Renderer {
 	float added_depth;
 	float width = 24.9f/1.5f/1.5f;
 	float height = 14.7f/1.5f/1.5f;
+	ArrayList<Mesh> finish_list;
 	int count;
 	
 	
@@ -29,6 +30,8 @@ public class Renderer3D extends Renderer {
 		object_height = height / objects[0].length;
 		
 		object_depth = -0.5f;
+		
+		finish_list = new ArrayList<Mesh>();
 		
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 		
@@ -112,6 +115,12 @@ public class Renderer3D extends Renderer {
 		if(coordinates_list != null){
 			for(Mesh mesh : coordinates_list){
 				mesh.render( PrimitiveType.Lines );
+			}
+		}
+		
+		if(finish_list != null){
+			for(Mesh mesh : finish_list){
+				mesh.render( PrimitiveType.TriangleStrip );
 			}
 		}
 	
@@ -300,18 +309,51 @@ public class Renderer3D extends Renderer {
 			mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 			mesh.vertex( block_width * objects.length, block_height * y, object_depth );
 			coordinates_list.add(mesh);
-			Mesh mesh_l = new Mesh(gl, 2, true, false, false);
-			mesh_l.color( 0.4f, 0.4f, 0.4f, 1 );
+			Mesh mesh_l = new Mesh(gl, 5, true, false, true);
+			mesh_l.color((223f/255f)*2.8f,(73f/255f)*2.8f,(73f/255f)*2.8f,1.0f);
 			mesh_l.vertex( 0, block_height * y, object_depth);
-			mesh_l.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_l.color((223f/255f)*2.8f,(73f/255f)*2.8f,(73f/255f)*2.8f,1.0f);
 			mesh_l.vertex( 0, block_height * y, 0 );
+			mesh_l.color((223f/255f)*2.8f,(73f/255f)*2.8f,(73f/255f)*2.8f,1.0f);
+			if(y < objects[0].length){
+				mesh_l.vertex( 0, block_height * (y+1), 0 );
+			}
+			else{
+				mesh_l.vertex( 0, block_height * y, 0 );
+			}
+			mesh_l.color((223f/255f)*2.8f,(73f/255f)*2.8f,(73f/255f)*2.8f,1.0f);
+			if(y < objects[0].length){
+				mesh_l.vertex( 0, block_height * (y+1), object_depth);
+			}
+			else{
+				mesh_l.vertex( 0, block_height * y, object_depth);
+			}
+			mesh_l.color((223f/255f)*2.8f,(73f/255f)*2.8f,(73f/255f)*2.8f,1.0f);
+			mesh_l.vertex( 0, block_height * y, object_depth);
+			finish_list.add(mesh_l);
 			coordinates_list.add(mesh_l);
-			Mesh mesh_r = new Mesh(gl, 2, true, false, false);
-			mesh_r.color( 0.4f, 0.4f, 0.4f, 1 );
+			Mesh mesh_r = new Mesh(gl, 5, true, false, true);
+			mesh_r.color((51f/255f*3),(77f/255*3),(92f/255f*3),1f);
 			mesh_r.vertex( block_width * objects.length, block_height * y, object_depth);
-			mesh_r.color( 0.4f, 0.4f, 0.4f, 1 );
+			mesh_r.color((51f/255f*3),(77f/255*3),(92f/255f*3),1f);
 			mesh_r.vertex( block_width * objects.length, block_height * y, 0 );
-			coordinates_list.add(mesh_r);
+			mesh_r.color((51f/255f*3),(77f/255*3),(92f/255f*3),1f);
+			if(y < objects[0].length){
+				mesh_r.vertex( block_width * objects.length, block_height * (y+1), 0 );
+			}
+			else{
+				mesh_r.vertex( block_width * objects.length, block_height * y, 0 );
+			}
+			mesh_r.color((51f/255f*3),(77f/255*3),(92f/255f*3),1f);
+			if(y < objects[0].length){
+				mesh_r.vertex( block_width * objects.length, block_height * (y+1), object_depth);
+			}
+			else{
+				mesh_r.vertex( block_width * objects.length, block_height * y, object_depth);
+			}
+			mesh_r.color((51f/255f*3),(77f/255*3),(92f/255f*3),1f);
+			mesh_r.vertex( block_width * objects.length, block_height * y, object_depth);
+			finish_list.add(mesh_r);
 		}
 	}
 	public void renderLight(GL10 gl){

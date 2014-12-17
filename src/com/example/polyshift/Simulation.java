@@ -174,10 +174,10 @@ public class Simulation {
 			}
 			else if(y > touchedY && x == touchedX){
 				activity.isSwiped = false;
-				if(objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
+				if(touchedY >= PLAYGROUND_MIN_Y && objects[touchedX][touchedY] instanceof Player && !objects[touchedX][touchedY].isLocked){
 					movePlayer(touchedX, touchedY, UP);
 				}
-				if(objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
+				if(touchedY >= PLAYGROUND_MIN_Y && objects[touchedX][touchedY] instanceof Polynomio && !(lastMovedObject instanceof Polynomio) && !objects[touchedX][touchedY].isLocked){
 					movePolynomio(touchedX, touchedY, UP);
 				}
 			}
