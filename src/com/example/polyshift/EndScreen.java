@@ -4,6 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLU;
 import android.sax.TextElementListener;
 import android.util.Log;
 
@@ -22,12 +23,16 @@ public class EndScreen implements GameScreen {
 	public EndScreen( GL10 gl, GameActivity activity )
 	{			
 		pictureMesh = new Mesh( gl, 4, true, true, false );
+		pictureMesh.color(238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 1.0f );
 		pictureMesh.texCoord(0, 0);
 		pictureMesh.vertex(-1, 1, 0 );
+		pictureMesh.color(238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 1.0f );
 		pictureMesh.texCoord(1, 0);
 		pictureMesh.vertex(1, 1, 0 );
+		pictureMesh.color(238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 1.0f );
 		pictureMesh.texCoord(1, 1);
 		pictureMesh.vertex(1, -1, 0 );
+		pictureMesh.color(238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 1.0f );
 		pictureMesh.texCoord(0, 1);
 		pictureMesh.vertex(-1, -1, 0 );
 		
@@ -66,10 +71,16 @@ public class EndScreen implements GameScreen {
 		gl.glViewport( 0, 0, activity.getViewportWidth(), activity.getViewportHeight() );
 		gl.glClearColor( 238f/255f/1.1f, 233f/255f/1.1f, 192f/255f/1.1f, 0.0f );
 		gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
+		gl.glDisable(GL10.GL_LIGHTING);
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glEnable( GL10.GL_TEXTURE_2D );
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glLoadIdentity();
-		gl.glMatrixMode( GL10.GL_MODELVIEW );
+		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
+		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
+		GLU.gluLookAt(gl, 5.5f, 3.38f, 4.8f, 5.5f, 3.38f, -5f, 0f, 1f, 0f);
+		gl.glEnable(GL10.GL_DEPTH_TEST);
 		gl.glLoadIdentity();
 		if(winner.isPlayerOne){
 			textureWinnerPlayerOne.bind();
