@@ -14,15 +14,38 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
         public static final int logo=0x7f020001;
     }
+    public static final class id {
+        public static final int EditEmail=0x7f050004;
+        public static final int EditLastname=0x7f050003;
+        public static final int EditName=0x7f050002;
+        public static final int EditPassword=0x7f050005;
+        public static final int EditUsername=0x7f050001;
+        public static final int LoginButton=0x7f050008;
+        public static final int Logo=0x7f050000;
+        public static final int RepeatPassword=0x7f050006;
+        public static final int SignupButton=0x7f050007;
+        public static final int debug=0x7f050009;
+    }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_polyshift=0x7f030001;
-        public static final int activity_triangle=0x7f030002;
+        public static final int activity_signup=0x7f030002;
+        public static final int activity_triangle=0x7f030003;
+        public static final int activity_welcome=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int email=0x7f040008;
         public static final int hello_world=0x7f040001;
+        public static final int lastname=0x7f040007;
+        public static final int login=0x7f04000c;
+        public static final int logo=0x7f040004;
+        public static final int name=0x7f040006;
+        public static final int password=0x7f040009;
+        public static final int repeat_password=0x7f04000a;
+        public static final int signup=0x7f04000b;
         public static final int title_activity_polyshift=0x7f040002;
         public static final int title_poly_shift=0x7f040003;
+        public static final int username=0x7f040005;
     }
 }

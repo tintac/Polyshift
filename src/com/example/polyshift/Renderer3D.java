@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.graphics.Point;
 import android.opengl.GLU;
 import android.util.Log;
+import android.view.Display;
 
 import com.example.polyshift.Mesh.PrimitiveType;
 import com.example.polyshift.Tools.MeshLoader;
@@ -22,6 +24,17 @@ public class Renderer3D extends Renderer {
 	
 	
 	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
+		
+		Display display = activity.getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		float display_x = size.x;
+		float display_y = size.y;
+		
+		if (display_x/display_y < 1.5){ // 4:3 Bildschirmformat
+			width = 21.15f/1.5f/1.5f;
+			height = 14.7f/1.5f/1.5f; //18.7
+		}
 		
 		block_width = width / objects.length;
 		block_height = height / objects[0].length;
@@ -105,7 +118,13 @@ public class Renderer3D extends Renderer {
 		gl.glLoadIdentity();
 		float aspectRatio = (float)activity.getViewportWidth() / activity.getViewportHeight();
 		GLU.gluPerspective( gl, 67, aspectRatio, 1, 100 );
-		GLU.gluLookAt(gl, 5.5f, 3.38f, 4.8f, 5.5f, 3.38f, -5f, 0f, 1f, 0f);
+		if(aspectRatio < 1.5){ // 4:3 Bildschirmformat
+			GLU.gluLookAt(gl, 8.9f, 3.38f, 4.8f, 3.78f, 3.38f, -5f, -3000f, 1f, 0f); // 4.7
+			// GLU.gluLookAt(gl, 4.7f, 3.38f, 4.8f, 4.7f, 3.38f, -5f, 0f, 1f, 0f);
+		}
+		else{ // 16:9 Bildschirmformat
+			GLU.gluLookAt(gl, 5.5f, 3.38f, 4.8f, 5.5f, 3.38f, -5f, 0f, 1f, 0f);
+		}
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 	}
 
@@ -368,7 +387,7 @@ public class Renderer3D extends Renderer {
 		gl.glEnable( GL10.GL_LIGHT0 );
 		gl.glEnable( GL10.GL_COLOR_MATERIAL );
 		gl.glShadeModel(GL10.GL_FLAT);
-		gl.glEnable(GL10.GL_NORMALIZE);
+		//gl.glEnable(GL10.GL_NORMALIZE);
 	    
 	}
 }
