@@ -13,12 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,10 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.polyshift.R;
+import com.example.polyshift.Tools.AlertDialogs;
 import com.example.polyshift.Tools.PasswordHash;
 import com.example.polyshift.Tools.PHPConnector;
-import com.example.polyshift.PolyshiftActivity;
-import com.example.polyshift.Tools.AlertDialogs;
 
 public class WelcomeActivity extends Activity {
 	
@@ -108,10 +104,10 @@ public class WelcomeActivity extends Activity {
              activity.startActivity(intent);
          }else if(response.equalsIgnoreCase("No Such User Found")){
         	 dialog.dismiss();
-             AlertDialogs.showAlert(activity,"Login Error","User not found or password incorrect.");
+             AlertDialogs.showAlert(activity, "Login Error", "User not found or password incorrect.");
          }else{
             dialog.dismiss();
-            AlertDialogs.showAlert(activity,"Login Error","Connection Error.");
+            AlertDialogs.showAlert(activity, "Login Error", "Connection Error.");
          }
     }
 

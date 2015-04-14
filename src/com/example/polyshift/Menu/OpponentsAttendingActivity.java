@@ -6,13 +6,11 @@ import java.util.HashMap;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.example.polyshift.Adapter.OpponentAdapter;
+import com.example.polyshift.Adapter.AcceptOpponentAdapter;
 import com.example.polyshift.R;
 import com.example.polyshift.Tools.AlertDialogs;
 import com.example.polyshift.Tools.PHPConnector;
-import com.example.polyshift.Menu.ChooseOpponentActivity.MyMenuItemStuffListener;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -27,13 +25,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 
 public class OpponentsAttendingActivity extends ListActivity {
 	
     public static ArrayList<HashMap<String, String>> opponents_attending_list = new ArrayList<HashMap<String,String>>();
-    public static OpponentAdapter mAdapter;
+    public static AcceptOpponentAdapter mAdapter;
     public static ProgressDialog dialog = null;
     public String response = "";
 
@@ -58,9 +55,9 @@ public class OpponentsAttendingActivity extends ListActivity {
         
        if (opponents_attending_list != null && opponents_attending_list.size() != 0) {
        
-	        mAdapter = new OpponentAdapter(this,
+	        mAdapter = new AcceptOpponentAdapter(this,
                     opponents_attending_list,
-	        		 R.layout.activity_choose_opponents_item,
+	        		 R.layout.activity_choose_opponent_item,
 	                 new String[] {"title"},
 	                 new int[] {R.id.title});
 	        
@@ -108,40 +105,45 @@ public class OpponentsAttendingActivity extends ListActivity {
                 }
 
                 if (response.equals("opponent accepted")) {
-                    Log.d("res:",response);
-                    AlertDialogs.showAlert(OpponentsAttendingActivity.this, "Hinweis", "Gegner wurden gespeichert.");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setMessage("Gegner wurden gespeichert.");
-                        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            public void onCancel(DialogInterface dialog) {
-                                final Intent intent = new Intent(OpponentsAttendingActivity.this, ChooseOpponentActivity.class);
-                                startActivity(intent);
-                            }});
-                        builder.show();
+                    Log.d("res:", response);
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                    builder.setMessage("Gegner wurden gespeichert.");
+                    builder.setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    final Intent intent = new Intent(OpponentsAttendingActivity.this, ChooseOpponentActivity.class);
+                                    startActivity(intent);
+                                    dialog.cancel();
+                                }
+                    });
+                    builder.show();
 
                 } else {
                     AlertDialogs.showAlert(OpponentsAttendingActivity.this, "Fehler", "Mindestens ein Gegner konnte nicht gespeichert werden.");
                 }
+                break;
 
-	          case R.id.action_decline:
-		        	dialog = ProgressDialog.show(OpponentsAttendingActivity.this, "", getString(R.string.dialog_opponent_handling), true);
-		            new Thread(
-		            	new Runnable(){
-		            		public void run(){
-		            			for(String user: mAdapter.getCheckedUserIDs()) {
-			            			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		            				nameValuePairs.add(new BasicNameValuePair("opponent", user));
-		            				PHPConnector.doRequest(nameValuePairs, "decline_opponent.php");
-								}
-		            		}
-		        		}
-		            ).start();
-		             intent = new Intent(OpponentsAttendingActivity.this, MainMenuActivity.class);
-		            startActivity(intent);
-		            break;
-	          
-	          default:
-	            break;
+	        case R.id.action_decline:
+                Log.d("string","bla");
+                dialog = ProgressDialog.show(OpponentsAttendingActivity.this, "", getString(R.string.dialog_opponent_handling), true);
+                new Thread(
+                    new Runnable(){
+                        public void run(){
+                            for(String user: mAdapter.getCheckedUserIDs()) {
+                                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                                nameValuePairs.add(new BasicNameValuePair("opponent", user));
+                                PHPConnector.doRequest(nameValuePairs, "decline_opponent.php");
+                            }
+                        }
+                    }
+                ).start();
+                 intent = new Intent(OpponentsAttendingActivity.this, MainMenuActivity.class);
+                startActivity(intent);
+                break;
+
+                default:
+                break;
+
         }
 	          return true;
   }

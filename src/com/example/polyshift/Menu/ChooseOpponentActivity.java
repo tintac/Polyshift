@@ -16,11 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.polyshift.Adapter.OpponentAdapter;
+import com.example.polyshift.Adapter.AcceptOpponentAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.polyshift.Adapter.ChooseOpponentAdapter;
 import com.example.polyshift.R;
 import com.example.polyshift.Tools.PHPConnector;
 
@@ -31,7 +32,7 @@ public class ChooseOpponentActivity extends ListActivity {
     public static ArrayList<HashMap<String, String>> friends_list = new ArrayList<HashMap<String,String>>();
     public static ArrayList<HashMap<String, String>> friends_attending_list = new ArrayList<HashMap<String,String>>();
     private ListView settings;
-    public static OpponentAdapter mAdapter;
+    public static ChooseOpponentAdapter mAdapter;
     private int bell_number = 0;
     public static Activity activity;
 
@@ -55,7 +56,7 @@ public class ChooseOpponentActivity extends ListActivity {
             e.printStackTrace();
         }
 
-        mAdapter = new OpponentAdapter(this,
+        mAdapter = new ChooseOpponentAdapter(this,
                 friends_list,
                 R.layout.activity_choose_opponent,
                 new String[] {"title"},

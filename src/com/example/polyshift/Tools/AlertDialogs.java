@@ -23,7 +23,7 @@ public class AlertDialogs {
 	public String store;
 	public String date;
 	public Calendar new_date;
-	static AlertDialog alert;
+	static android.app.AlertDialog alert;
 	
 	public AlertDialogs(Activity activity){
 		this.activity = activity;
@@ -32,7 +32,7 @@ public class AlertDialogs {
 	public static void showAlert(final Activity ParentActivity, final String title, final String message){
         ParentActivity.runOnUiThread(new Runnable() {
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ParentActivity);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ParentActivity);
                 builder.setTitle(title);
                 builder.setMessage(message)
                         .setCancelable(false)
@@ -40,7 +40,7 @@ public class AlertDialogs {
                             public void onClick(DialogInterface dialog, int id) {
                             }
                         });
-                AlertDialog alert = builder.create();
+                android.app.AlertDialog alert = builder.create();
                 alert.show();
             }
         });
@@ -48,7 +48,7 @@ public class AlertDialogs {
 	public static void showLoginAgainAlert(final Activity ParentActivity){
         ParentActivity.runOnUiThread(new Runnable() {
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ParentActivity);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ParentActivity);
                 builder.setTitle("Sitzung abgelaufen");
                 builder.setMessage("Bitte erneut anmelden.")
                         .setCancelable(false)

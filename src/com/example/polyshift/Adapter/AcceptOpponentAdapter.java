@@ -15,14 +15,14 @@ import android.widget.TextView;
 
 import com.example.polyshift.R;
 
-public class OpponentAdapter extends SimpleAdapter {
+public class AcceptOpponentAdapter extends SimpleAdapter {
     private ArrayList<String> checked_user_ids;
     private LayoutInflater inflater;
     public ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String,String>>();
 
-	public OpponentAdapter(Context context,
-                           List<? extends Map<String, ?>> data, int resource, String[] from,
-                           int[] to) {
+	public AcceptOpponentAdapter(Context context,
+                                 List<? extends Map<String, ?>> data, int resource, String[] from,
+                                 int[] to) {
 		super(context, data, resource, from, to);
 		this.inflater = LayoutInflater.from(context);
 		this.checked_user_ids = new ArrayList<String>();
