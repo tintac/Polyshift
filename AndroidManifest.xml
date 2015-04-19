@@ -48,6 +48,8 @@
         <activity android:name=".Menu.ChooseOpponentActivity" />
         <activity android:name=".Menu.NewOpponentActivity" />
         <activity android:name=".Menu.OpponentsAttendingActivity" />
+        <activity android:name=".Menu.MyGamesActivity" />
+        <activity android:name=".Menu.GamesAttendingActivity" />
 
 
     </application>

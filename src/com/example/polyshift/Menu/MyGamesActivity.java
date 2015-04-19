@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,32 +23,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.polyshift.Adapter.ChooseOpponentAdapter;
+import com.example.polyshift.Adapter.MyGamesAdapter;
 import com.example.polyshift.R;
 import com.example.polyshift.Tools.PHPConnector;
 
 /**
  * Created by Andi on 12.03.2015.
  */
-public class ChooseOpponentActivity extends ListActivity {
-    public static ArrayList<HashMap<String, String>> friends_list = new ArrayList<HashMap<String,String>>();
-    public static ArrayList<HashMap<String, String>> friends_attending_list = new ArrayList<HashMap<String,String>>();
+public class MyGamesActivity extends ListActivity {
+    public static ArrayList<HashMap<String, String>> games_list = new ArrayList<HashMap<String,String>>();
+    public static ArrayList<HashMap<String, String>> games_attending_list = new ArrayList<HashMap<String,String>>();
     private ListView settings;
-    public static ChooseOpponentAdapter mAdapter;
+    public static MyGamesAdapter mAdapter;
     private int bell_number = 0;
     public static Activity activity;
 
-    public ChooseOpponentActivity() {
+    public MyGamesActivity() {
         // Empty constructor required for fragment subclasses
         activity = this;
     }
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("Meine Gegner");
-        setContentView(R.layout.activity_choose_opponent);
+        setTitle("Meine Spiele");
+        setContentView(R.layout.activity_my_games);
 
-
-        Thread friends_thread = new FriendsThread();
+        Thread friends_thread = new GamesThread();
         friends_thread.start();
         try {
             long waitMillis = 10000;
@@ -58,9 +59,9 @@ public class ChooseOpponentActivity extends ListActivity {
             e.printStackTrace();
         }
 
-        mAdapter = new ChooseOpponentAdapter(this,
-                friends_list,
-                R.layout.activity_choose_opponent,
+        mAdapter = new MyGamesAdapter(this,
+                games_list,
+                R.layout.activity_my_games,
                 new String[] {"title"},
                 new int[] {R.id.title});
 
@@ -83,13 +84,13 @@ public class ChooseOpponentActivity extends ListActivity {
     // Action Bar Button
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.new_opponent, menu);
+        inflater.inflate(R.menu.new_game, menu);
 
         final View menu_hotlist = menu.findItem(R.id.action_attending_contacts).getActionView();
 
         MenuItem bell_button = menu.findItem(R.id.action_attending_contacts);
         TextView ui_bell = (TextView) menu_hotlist.findViewById(R.id.hotlist_hot);
-        bell_number = friends_attending_list.size();
+        bell_number = games_attending_list.size();
         if (bell_number == 0) {
             bell_button.setVisible(false);
         } else {
@@ -100,7 +101,7 @@ public class ChooseOpponentActivity extends ListActivity {
         new MyMenuItemStuffListener(menu_hotlist, "Show hot message") {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), OpponentsAttendingActivity.class);
+                Intent intent = new Intent(v.getContext(), GamesAttendingActivity.class);
                 startActivity(intent);
             }
         };
@@ -147,48 +148,43 @@ public class ChooseOpponentActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_new_contacts:
-                Intent intent = new Intent(this, NewOpponentActivity.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
     }
 
-    public class FriendsThread extends Thread{
+    public class GamesThread extends Thread{
         public void run(){
 
-            String stringResponse = PHPConnector.doRequest("get_opponents.php");
+            String stringResponse = PHPConnector.doRequest("get_games.php");
             String[] data_unformatted = stringResponse.split(",");
-            friends_list = new ArrayList<HashMap<String,String>>();
-            if(!stringResponse.equals("no opponents found")){
-                for(String item : data_unformatted){
-                    HashMap<String, String>data_map = new HashMap<String, String>();
+            games_list = new ArrayList<HashMap<String,String>>();
+            if(!stringResponse.equals("no games found")) {
+                for (String item : data_unformatted) {
+                    HashMap<String, String> data_map = new HashMap<String, String>();
                     String[] data_array = item.split(":");
-                    data_map.put("ID", data_array[0]);
-                    data_map.put("title", data_array[1]);
-                    friends_list.add(data_map);
+                    data_map.put("game_id", data_array[0]);
+                    data_map.put("opponent_id", data_array[1].split("=")[1]);
+                    data_map.put("opponent_name", data_array[2].split("=")[1]);
+                    data_map.put("game_accepted", data_array[3].split("=")[1]);
+                    data_map.put("opponents_turn", data_array[4].split("=")[1]);
+                    data_map.put("my_game", data_array[5].split("=")[1]);
+                    Log.d("Map", data_map.toString());
+                    games_list.add(data_map);
                 }
-            }else{
-                HashMap<String, String>data_map = new HashMap<String, String>();
-                data_map.put("ID", "0");
-                data_map.put("title", "Du hast noch keine Gegner");
-                friends_list.add(data_map);
             }
-
-            stringResponse = PHPConnector.doRequest("get_opponents_attending.php");
+            stringResponse = PHPConnector.doRequest("get_games_attending.php");
             data_unformatted = stringResponse.split(",");
-            friends_attending_list = new ArrayList<HashMap<String,String>>();
-            if(!stringResponse.equals("no opponents found")){
+            games_attending_list = new ArrayList<HashMap<String,String>>();
+            if(!stringResponse.equals("no games found")){
                 for(String item : data_unformatted){
-                    HashMap<String, String>data_map = new HashMap<String, String>();
+                    HashMap<String, String> data_map = new HashMap<String, String>();
                     String[] data_array = item.split(":");
-                    data_map.put("ID", data_array[0]);
-                    data_map.put("title", data_array[1]);
-                    friends_attending_list.add(data_map);
+                    data_map.put("game_id", data_array[0]);
+                    data_map.put("opponent_id", data_array[1].split("=")[1]);
+                    data_map.put("opponent_name", data_array[2].split("=")[1]);
+                    data_map.put("game_accepted", data_array[3].split("=")[1]);
+                    data_map.put("opponents_turn", data_array[4].split("=")[1]);
+                    data_map.put("my_game", data_array[5].split("=")[1]);
+                    games_attending_list.add(data_map);
                 }
             }
         }

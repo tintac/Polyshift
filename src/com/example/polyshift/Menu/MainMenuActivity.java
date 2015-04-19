@@ -16,6 +16,7 @@ import com.example.polyshift.R;
 public class MainMenuActivity extends Activity {
 
     Button newGameButton;
+    Button myGamesButton;
     Button quitGameButton;
     Button offlineGameButton;
     @Override
@@ -26,6 +27,7 @@ public class MainMenuActivity extends Activity {
         setContentView(R.layout.activity_main_menu);
 
         newGameButton = (Button)findViewById(R.id.new_game_button);
+        myGamesButton = (Button)findViewById(R.id.my_games_button);
         quitGameButton = (Button)findViewById(R.id.quit_game_button);
         offlineGameButton = (Button)findViewById(R.id.offline_game_button);
 
@@ -37,11 +39,27 @@ public class MainMenuActivity extends Activity {
             }
         });
 
+        myGamesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MyGamesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         offlineGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), PolyshiftActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        quitGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
     }
