@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.example.polyshift.Adapter.AcceptGameAdapter;
 import com.example.polyshift.Adapter.AcceptOpponentAdapter;
+import com.example.polyshift.PolyshiftActivity;
 import com.example.polyshift.R;
 import com.example.polyshift.Tools.AlertDialogs;
 import com.example.polyshift.Tools.PHPConnector;
@@ -90,14 +91,14 @@ public class GamesAttendingActivity extends ListActivity {
                     e.printStackTrace();
                 }
 
-                if (response.equals("opponent accepted")) {
+                if (response.equals("game accepted")) {
                     Log.d("res:", response);
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Herausforderung wurde angenommen.");
+                    builder.setMessage("Herausforderung wurde angenommen. Spiel wird gestartet.");
                     builder.setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    final Intent intent = new Intent(GamesAttendingActivity.this, ChooseOpponentActivity.class);
+                                    final Intent intent = new Intent(GamesAttendingActivity.this, PolyshiftActivity.class);
                                     startActivity(intent);
                                     dialog.cancel();
                                 }
@@ -110,13 +111,12 @@ public class GamesAttendingActivity extends ListActivity {
                 break;
 
 	        case R.id.action_decline:
-                dialog = ProgressDialog.show(GamesAttendingActivity.this, "", getString(R.string.dialog_opponent_handling), true);
                 new Thread(
                     new Runnable(){
                         public void run(){
-                            for(String user: mAdapter.getCheckedGameIDs()) {
+                            for(String game_id: mAdapter.getCheckedGameIDs()) {
                                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                                nameValuePairs.add(new BasicNameValuePair("opponent", user));
+                                nameValuePairs.add(new BasicNameValuePair("game", game_id));
                                 PHPConnector.doRequest(nameValuePairs, "decline_game.php");
                             }
                         }
@@ -135,10 +135,10 @@ public class GamesAttendingActivity extends ListActivity {
     }
     public class AddGamesThread extends Thread{
         public void run() {
-            for (String user : mAdapter.getCheckedGameIDs()) {
-                Log.d("user",user);
+            for (String game_id : mAdapter.getCheckedGameIDs()) {
+                Log.d("game",game_id);
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("opponent", user));
+                nameValuePairs.add(new BasicNameValuePair("game", game_id));
                 response = PHPConnector.doRequest(nameValuePairs, "accept_game.php");
             }
         }

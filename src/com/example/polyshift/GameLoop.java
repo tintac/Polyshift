@@ -1,8 +1,12 @@
 package com.example.polyshift;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-import android.util.Log;
+import com.example.polyshift.Tools.PHPConnector;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 public class GameLoop {
 	
@@ -13,6 +17,15 @@ public class GameLoop {
 		Random random = new Random();
 		PlayerOnesTurn = random.nextBoolean();
 		RoundFinished = true;
+        new Thread(
+            new Runnable(){
+                public void run(){
+                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                    nameValuePairs.add(new BasicNameValuePair("playerOnesTurn", "" + PlayerOnesTurn));
+                    PHPConnector.doRequest(nameValuePairs, "update_game.php");
+                }
+            }
+        ).start();
 	}
 	
 	public void update(Simulation simulation){

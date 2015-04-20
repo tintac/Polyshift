@@ -3,6 +3,7 @@ package com.example.polyshift.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.polyshift.Menu.GamesAttendingActivity;
+import com.example.polyshift.PolyshiftActivity;
 import com.example.polyshift.R;
 import com.example.polyshift.Tools.PHPConnector;
 
@@ -56,6 +59,23 @@ public class MyGamesAdapter extends SimpleAdapter {
             } else {
                 status_view.setText(data.get(position).get("opponent_name") + " macht einen Zug.");
             }
+            status_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(
+                            new Runnable(){
+                                public void run(){
+                                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                                    nameValuePairs.add(new BasicNameValuePair("game", data.get(position).get("game_id")));
+                                    PHPConnector.doRequest(nameValuePairs, "update_game.php");
+                                }
+                            }
+
+                    ).start();
+                    final Intent intent = new Intent(context, PolyshiftActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
 	    return convertView; 
     }

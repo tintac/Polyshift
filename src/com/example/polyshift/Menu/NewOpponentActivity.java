@@ -67,7 +67,6 @@ public class NewOpponentActivity extends Activity {
 						public void run() {
 				        	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 							nameValuePairs.add(new BasicNameValuePair("opponent",username));
-							
 							PHPConnector.doRequest(nameValuePairs, "add_opponent.php");
 						}
 	        		});

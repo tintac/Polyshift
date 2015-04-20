@@ -2,12 +2,16 @@ package com.example.polyshift;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.polyshift.Tools.PHPConnector;
 
 
 public class PolyshiftActivity extends GameActivity implements GameListener {
@@ -20,18 +24,20 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 	EndScreen endScreen;
 	Simulation simulation;
 	GameLoop gameLoop;
+    private Menu menu;
+    private String response;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-	    
+		requestWindowFeature(Window.FEATURE_OPTIONS_PANEL);
+
 		super.onCreate(savedInstanceState);
 		
 		setGameListener(this);
-		
+
 		Log.d( "Polyshift", "Polyshift Spiel erstellt");
 	}
 
@@ -61,6 +67,13 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 		super.onDestroy();
 		Log.d( "Polyshift", "Polyshift beendet" );
 	}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_status, menu);
+        this.menu = menu;
+        return true;
+    }
+
 	@Override
 	public void setup(GameActivity activity, GL10 gl) {
 		
@@ -71,6 +84,30 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
 			gameLoop = new GameLoop();
 			renderer = new Renderer3D(activity, gl, simulation.objects);
 			renderer.enableCoordinates(gl, simulation.objects);
+
+            Thread game_status_thread = new GameStatusThread();
+            game_status_thread.start();
+            try {
+                long waitMillis = 10000;
+                while (game_status_thread.isAlive()) {
+                    game_status_thread.join(waitMillis);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MenuItem game_status = menu.findItem(R.id.action_game_status);
+                    String game[] = response.split(":");
+                    if(game[4].equals("false")) {
+                        setTitle("Du bist dran!");
+                    }
+                    else{
+                        setTitle(game[2].split("=")[1] + " ist dran.");
+                    }
+                }
+            });
 		}	
 	}
 	  
@@ -110,4 +147,9 @@ public class PolyshiftActivity extends GameActivity implements GameListener {
         }
 
 	}
+    private class GameStatusThread extends Thread{
+        public void run(){
+            response = PHPConnector.doRequest("get_game_status.php");
+        }
+    }
 }

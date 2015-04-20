@@ -124,8 +124,6 @@ public class OpponentsAttendingActivity extends ListActivity {
                 break;
 
 	        case R.id.action_decline:
-                Log.d("string","bla");
-                dialog = ProgressDialog.show(OpponentsAttendingActivity.this, "", getString(R.string.dialog_opponent_handling), true);
                 new Thread(
                     new Runnable(){
                         public void run(){
