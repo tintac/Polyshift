@@ -19,45 +19,45 @@ public class Renderer3D extends Renderer {
 	float height = 14.7f/1.5f/1.5f;
 	ArrayList<Mesh> finish_list;
 	int count;
-	
-	
+
+
 	public Renderer3D(GameActivity activity, GL10 gl, GameObject[][] objects){
-		
+
 		block_width = width / objects.length;
 		block_height = height / objects[0].length;
-		
+
 		object_width = width / objects.length;
 		object_height = height / objects[0].length;
-		
+
 		object_depth = -0.5f;
-		
+
 		finish_list = new ArrayList<Mesh>();
-		
+
 		gl.glEnable(GL10.GL_DEPTH_TEST);
-		
+
 		Mesh blockMesh = null;
 		try {
 			blockMesh = MeshLoader.loadObj(gl, activity.getAssets().open( "block.obj" ) );
 		} catch (IOException e1) {
 			Log.d("Fehler:","..loading cube");
 		}
-		
 		for(int i = 0; i < objects.length; i++){
 			for(int j = 0; j < objects[i].length; j++){
 				if(objects[i][j] instanceof Player){
 					try {
+
 						Mesh mesh;
 						mesh = MeshLoader.loadObj(gl, activity.getAssets().open( "sphere.obj" ) );
-						objects[i][j].setMesh(mesh);	
-						
+						objects[i][j].setMesh(mesh);
+
 					} catch (IOException e1) {
 						Log.d("Fehler:","..loading sphere");
-					}	
+					}
 				}
-				if(objects[i][j] instanceof Polynomio){
-					Polynomio polynomio = (Polynomio) objects[i][j];
+				if(objects[i][j] instanceof Polynomino){
+					Polynomino polynomio = (Polynomino) objects[i][j];
 					polynomio.setMesh(blockMesh);
-					
+
 					float line_depth =  0.04f;
 					if(i+1 < objects.length && objects[i+1][j] != objects[i][j]){
 						Mesh border_mesh = new Mesh(gl, 2, true, false, false);
@@ -90,7 +90,7 @@ public class Renderer3D extends Renderer {
 						border_mesh.color( 0.4f, 0.4f, 0.4f, 1 );
 						border_mesh.vertex( block_width * (i+1), block_height * j , line_depth );
 						polynomio.setBorder(border_mesh);
-					}				
+					}
 				}
 			}
 		}
@@ -205,8 +205,8 @@ public class Renderer3D extends Renderer {
 					gl.glEnable(GL10.GL_COLOR_MATERIAL);
 					gl.glColor4f(1, 1, 1, 1);
 				}
-				if(objects[i][j] instanceof Polynomio){
-					Polynomio polynomio = (Polynomio) objects[i][j];
+				if(objects[i][j] instanceof Polynomino){
+					Polynomino polynomio = (Polynomino) objects[i][j];
 					if(polynomio.isMovingRight){
 						polynomio.pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;
 						polynomio.border_pixel_position.x += (i - polynomio.blocks.get(polynomio.blocks.size()-1).block_position.x) * block_width;

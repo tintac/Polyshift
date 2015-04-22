@@ -1,8 +1,9 @@
 package com.example.polyshift;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class Block extends GameObject implements Comparable<Block>{
+public class Block extends GameObject implements Comparable<Block>,Serializable{
 	public int x;
 	public int y;
 	

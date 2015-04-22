@@ -1,8 +1,9 @@
 package com.example.polyshift;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameObject {
+public class GameObject{
 	
 	public boolean isMovingLeft = false;
 	public boolean isMovingRight = false;

@@ -1,5 +1,6 @@
 package com.example.polyshift;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -17,7 +18,7 @@ import javax.microedition.khronos.opengles.GL11;
  * @author mzechner
  *
  */
-public final class Mesh
+public final class Mesh implements Serializable
 {
 	public enum PrimitiveType
 	{

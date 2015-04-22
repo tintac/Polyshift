@@ -71,7 +71,7 @@ public class Renderer2D extends Renderer {
 			        
 			        objects[i][j].setMesh(mesh);
 				}
-				if(objects[i][j] instanceof Polynomio){
+				if(objects[i][j] instanceof Polynomino){
 					Bitmap bitmapLocker = null;
 					
 					try
@@ -119,7 +119,7 @@ public class Renderer2D extends Renderer {
         gl.glLoadIdentity();
 		
 	}
-	
+
 	public void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects){
 		
 		block_width = activity.getViewportWidth() / objects.length;
@@ -234,8 +234,8 @@ public class Renderer2D extends Renderer {
 						gl.glDisable( GL10.GL_TEXTURE_2D );
 					}
 				}
-				if(objects[i][j] instanceof Polynomio){
-					Polynomio polynomio = (Polynomio) objects[i][j];
+				if(objects[i][j] instanceof Polynomino){
+					Polynomino polynomio = (Polynomino) objects[i][j];
 					if(polynomio.isLocked){
 						gl.glEnable( GL10.GL_TEXTURE_2D );
 						gl.glEnable(GL10.GL_BLEND);

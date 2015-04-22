@@ -8,6 +8,7 @@ import com.example.polyshift.Mesh.PrimitiveType;
 import com.example.polyshift.Texture.TextureFilter;
 import com.example.polyshift.Texture.TextureWrap;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -28,7 +29,7 @@ public abstract class Renderer {
 	Texture texturePlayerTwoLock;
 	Texture textureLocker;
 	ArrayList<Mesh> coordinates_list;
-	
+
 	public abstract void renderObjects(GameActivity activity, GL10 gl, GameObject[][] objects);
 	
 	public abstract void setPerspective(GameActivity activity, GL10 gl);
